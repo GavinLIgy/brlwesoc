@@ -1,0 +1,320 @@
+11/20/2019 02:26
+
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8ksim
+iverilog -s testbench -o hx8kdemo_tb.vvp hx8kdemo_tb.v hx8kdemo.v spimemio.v simpleuart.v picosoc.v ../picorv32.v spiflash.v `yosys-config --datdir/ice40/cells_sim.v`
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+test1 = 
+1e149650
+test2 = 
+01000101
+
+Math-operation subfunctions:
+test1 + test2 = 
+1f149751
+test1 - test2 = 
+1d14954f
+test1 * test2 = 
+742e6482
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8ksim
+riscv32-unknown-elf-gcc -DHX8KDEMO -march=rv32imc -Wl,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
+In file included from firmware.c:27:
+brlwe.c: In function 'BRLWE_Key_Gen':
+brlwe.c:65:25: warning: initializer-string for array of chars is too long
+  uint8_t _r1[BRLWE_N] = "(uint8_t) 1, (uint8_t) 0, (uint8_t) 1 , (uint8_t) 0 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:66:25: warning: initializer-string for array of chars is too long
+  uint8_t _r2[BRLWE_N] = "(uint8_t) 1, (uint8_t) 0, (uint8_t) 0 , (uint8_t) 1 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:68:17: warning: passing argument 1 of 'BRLWE_init_hex' from incompatible pointer type [-Wincompatible-pointer-types]
+  BRLWE_init_hex(&r2, _r2, 0);
+                 ^~~
+In file included from firmware.c:27:
+brlwe.c:42:52: note: expected 'struct BRLWE_Ring_polynomials *' but argument is of type 'struct BRLWE_Ring_polynomials **'
+ void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev) {
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+In file included from firmware.c:27:
+brlwe.c: In function 'BRLWE_Encry':
+brlwe.c:84:25: warning: initializer-string for array of chars is too long
+  uint8_t _e1[BRLWE_N] = "(uint8_t) 1, (uint8_t) 1, (uint8_t) 1 , (uint8_t) 0 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:85:25: warning: initializer-string for array of chars is too long
+  uint8_t _e2[BRLWE_N] = "(uint8_t) 0, (uint8_t) 1, (uint8_t) 1 , (uint8_t) 1 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:86:25: warning: initializer-string for array of chars is too long
+  uint8_t _e3[BRLWE_N] = "(uint8_t) 1, (uint8_t) 0, (uint8_t) 1 , (uint8_t) 0 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+riscv32-unknown-elf-objcopy -O verilog hx8kdemo_fw.elf hx8kdemo_fw.hex
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+test1 = 
+1e149650
+test2 = 
+01000101
+
+Math-operation subfunctions:
+test1 + test2 = 
+1f149751
+test1 - test2 = 
+1d14954f
+test1 * test2 = 
+742e6482
+
+Key Generation:
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8ksim
+iverilog -s testbench -o hx8kdemo_tb.vvp hx8kdemo_tb.v hx8kdemo.v spimemio.v simpleuart.v picosoc.v ../picorv32.v spiflash.v `yosys-config --datdir/ice40/cells_sim.v`
+riscv32-unknown-elf-gcc -DHX8KDEMO -march=rv32imc -Wl,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
+In file included from firmware.c:27:
+brlwe.c: In function 'BRLWE_Key_Gen':
+brlwe.c:65:25: warning: initializer-string for array of chars is too long
+  uint8_t _r1[BRLWE_N] = "(uint8_t) 1, (uint8_t) 0, (uint8_t) 1 , (uint8_t) 0 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:66:25: warning: initializer-string for array of chars is too long
+  uint8_t _r2[BRLWE_N] = "(uint8_t) 1, (uint8_t) 0, (uint8_t) 0 , (uint8_t) 1 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:68:17: warning: passing argument 1 of 'BRLWE_init_hex' from incompatible pointer type [-Wincompatible-pointer-types]
+  BRLWE_init_hex(&r2, _r2, 0);
+                 ^~~
+In file included from firmware.c:27:
+brlwe.c:42:52: note: expected 'struct BRLWE_Ring_polynomials *' but argument is of type 'struct BRLWE_Ring_polynomials **'
+ void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev) {
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+In file included from firmware.c:27:
+brlwe.c: In function 'BRLWE_Encry':
+brlwe.c:84:25: warning: initializer-string for array of chars is too long
+  uint8_t _e1[BRLWE_N] = "(uint8_t) 1, (uint8_t) 1, (uint8_t) 1 , (uint8_t) 0 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:85:25: warning: initializer-string for array of chars is too long
+  uint8_t _e2[BRLWE_N] = "(uint8_t) 0, (uint8_t) 1, (uint8_t) 1 , (uint8_t) 1 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+brlwe.c:86:25: warning: initializer-string for array of chars is too long
+  uint8_t _e3[BRLWE_N] = "(uint8_t) 1, (uint8_t) 0, (uint8_t) 1 , (uint8_t) 0 ";
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+riscv32-unknown-elf-objcopy -O verilog hx8kdemo_fw.elf hx8kdemo_fw.hex
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+test1 = 
+1e149650
+test2 = 
+01000101
+
+Key Generation:
+
+11/20/2019 3:33
+
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8ksim
+riscv32-unknown-elf-gcc -DHX8KDEMO -march=rv32imc -Wl,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
+In file included from firmware.c:27:
+brlwe.c: In function 'BRLWE_Key_Gen':
+brlwe.c:68:17: warning: passing argument 1 of 'BRLWE_init_hex' from incompatible pointer type [-Wincompatible-pointer-types]
+  BRLWE_init_hex(&r2, _r2, 0);
+                 ^~~
+In file included from firmware.c:27:
+brlwe.c:42:52: note: expected 'struct BRLWE_Ring_polynomials *' but argument is of type 'struct BRLWE_Ring_polynomials **'
+ void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev) {
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+riscv32-unknown-elf-objcopy -O verilog hx8kdemo_fw.elf hx8kdemo_fw.hex
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex -DRBINLWEENCT=1
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+test1 = 
+1e149650
+test2 = 
+01000101
+
+Key Generation:
+public key = 
+ddb489e8
+secret key = 
+e0030000
+
+Encryption:
+a = 
+1e149650
+public key = 
+ddb489e8
+original message = 
+01000101
+secret message = 
+89c4b465
+75cfe51a
+
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8ksim
+riscv32-unknown-elf-gcc -DHX8KDEMO -march=rv32imc -Wl,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
+In file included from firmware.c:27:
+brlwe.c: In function 'BRLWE_Key_Gen':
+brlwe.c:68:17: warning: passing argument 1 of 'BRLWE_init_hex' from incompatible pointer type [-Wincompatible-pointer-types]
+  BRLWE_init_hex(&r2, _r2, 0);
+                 ^~~
+In file included from firmware.c:27:
+brlwe.c:42:52: note: expected 'struct BRLWE_Ring_polynomials *' but argument is of type 'struct BRLWE_Ring_polynomials **'
+ void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev) {
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+riscv32-unknown-elf-objcopy -O verilog hx8kdemo_fw.elf hx8kdemo_fw.hex
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex -DRBINLWEENCT=1
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+test1 = 
+1e149650
+test2 = 
+01000101
+
+Key Generation:
+public key = 
+ddb489e8
+secret key = 
+dc030000
+
+Encryption:
+a = 
+1e149650
+public key = 
+ddb489e8
+original message = 
+01000101
+secret message = 
+89c4b465
+65cfe51a
+
+Decryption:
+a = 
+1e149650
+secret key = 
+dc030000
+secret message = 
+89c4b465
+65cfe51a
+original message = 
+01000101
+decrypted message = 
+01000000
+
+11/20/2019 12:15
+
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8ksim
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex -DRBINLWEENCT=1
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+test1 = 
+1e149650
+test2 = 
+01000101
+
+Key Generation:
+public key = 
+ddb489e8
+secret key = 
+dc030000
+
+Encryption:
+a = 
+1e149650
+public key = 
+ddb489e8
+original message = 
+01000101
+secret message = 
+89c4b465
+65cfe51a
+
+Decryption:
+a = 
+1e149650
+secret key = 
+dc030000
+secret message = 
+89c4b465
+65cfe51a
+original message = 
+01000101
+decrypted message = 
+01000000
+
+11/20/2019 14:16
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8ksim
+iverilog -s testbench -o hx8kdemo_tb.vvp hx8kdemo_tb.v hx8kdemo.v spimemio.v simpleuart.v picosoc.v ../picorv32.v spiflash.v `yosys-config --datdir/ice40/cells_sim.v`
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex -DRBINLWEENCT=1
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+
+Key Generation:
+public key = 
+f782bb92
+secret key = 
+01000001
+
+Encryption:
+a = 
+1e149650
+public key = 
+f782bb92
+original message = 
+01000101
+secret message = 
+38e3c9fb
+2ce7b44d
+
+Decryption:
+a = 
+1e149650
+secret key = 
+01000001
+secret message = 
+38e3c9fb
+2ce7b44d
+original message = 
+01000101
+decrypted message = 
+01000101
+
+11/20/2019 16:11
+gli@ubuntu:~/picorv32/brlwesoc$ make hx8kprog
+riscv32-unknown-elf-gcc -DHX8KDEMO -DRBINLWEENCT=1 -march=rv32imc -Wl,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
+riscv32-unknown-elf-objcopy -O binary hx8kdemo_fw.elf hx8kdemo_fw.bin
+iceprog hx8kdemo.bin
+init..
+cdone: high
+reset..
+cdone: low
+flash ID: 0x20 0xBA 0x16 0x10 0x00 0x00 0x23 0x71 0x32 0x74 0x11 0x00 0x58 0x00 0x39 0x17 0x05 0x17 0x85 0xCC
+file size: 135100
+erase 64kB sector at 0x000000..
+erase 64kB sector at 0x010000..
+erase 64kB sector at 0x020000..
+programming..
+reading..
+VERIFY OK
+cdone: high
+Bye.
+iceprog -o 1M hx8kdemo_fw.bin
+init..
+cdone: high
+reset..
+cdone: low
+flash ID: 0x20 0xBA 0x16 0x10 0x00 0x00 0x23 0x71 0x32 0x74 0x11 0x00 0x58 0x00 0x39 0x17 0x05 0x17 0x85 0xCC
+file size: 9548
+erase 64kB sector at 0x100000..
+programming..
+reading..
+VERIFY OK
+cdone: high
+Bye.
+
+

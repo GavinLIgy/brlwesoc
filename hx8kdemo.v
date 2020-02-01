@@ -127,6 +127,25 @@ module hx8kdemo (
 		.iomem_rdata  (iomem_rdata )
 	);
 
+	wire        simplerng_enable;
+	wire        simplerng_dat_we;
+	wire 	    simplerng_dat_re;
+	wire [31:0] simplerng_dat_di;
+	wire [31:0] simplerng_dat_do;
+	wire        simplerng_dat_wait;
+
+	simplerng #(.NUM_BITS(32)) dut(	
+		.clk(		clk	),
+		.resetn(	resetn	),
+
+		.enable(	simplerng_enable	),
+		.dat_we(	simplerng_dat_we	),
+		.dat_re(	simplerng_dat_re	),
+		.dat_di(	simplerng_dat_di	),
+		.dat_do(	simplerng_dat_do	),
+		.dat_wait(	simplerng_dat_wait	));	
+
+
 	assign debug_ser_tx = ser_tx;
 	assign debug_ser_rx = ser_rx;
 

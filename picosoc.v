@@ -121,14 +121,6 @@ module picosoc (
 	wire        simpleuart_reg_dat_sel = mem_valid && (mem_addr == 32'h 0200_0008);
 	wire [31:0] simpleuart_reg_dat_do;
 	wire        simpleuart_reg_dat_wait;
-	
-	wire        simplerng_enable = mem_valid && (mem_addr == 32'h 0200_0004);;
-
-	wire        simplerng_dat_we;
-	wire 	    simplerng_dat_re;
-	wire [31:0] simplerng_dat_di;
-	wire [31:0] dat_do;
-	wire        dat_wait;
 
 	assign mem_ready = (iomem_valid && iomem_ready) || spimem_ready || ram_ready || spimemio_cfgreg_sel ||
 			simpleuart_reg_div_sel || (simpleuart_reg_dat_sel && !simpleuart_reg_dat_wait);
@@ -209,19 +201,6 @@ module picosoc (
 		.reg_dat_do  (simpleuart_reg_dat_do),
 		.reg_dat_wait(simpleuart_reg_dat_wait)
 	);
-
-	
-
-	simplerng #(.NUM_BITS(32)) dut(	
-		.clk(		clk	),
-		.resetn(	resetn	),
-
-		.enable(	enable	),
-		.dat_we(	dat_we	),
-		.dat_re(	dat_re	),
-		.dat_di(	dat_di	),
-		.dat_do(	dat_do	),
-		.dat_wait(	dat_wait));	
 
 	always @(posedge clk)
 		ram_ready <= mem_valid && !mem_ready && mem_addr < 4*MEM_WORDS;

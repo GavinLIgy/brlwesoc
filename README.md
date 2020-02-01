@@ -55,6 +55,7 @@ and upload them to a connected iCEBreaker Board.
 | 0x02000008 .. 0x0200000B | UART Send/Recv Data Register            |
 | 0x03000000 .. 0xFFFFFFFF | Memory mapped user peripherals          |
 
+Peripherals:
 | 0x03001000 .. 0x03001003 | RNG Data Register                       |
 
 Reading from the addresses in the internal SRAM region beyond the end of the

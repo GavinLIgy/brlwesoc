@@ -42,6 +42,7 @@ extern uint32_t sram;
 #define reg_uart_clkdiv (*(volatile uint32_t*)0x02000004)
 #define reg_uart_data (*(volatile uint32_t*)0x02000008)
 #define reg_leds (*(volatile uint32_t*)0x03000000)
+
 #define reg_rng_data (*(volatile uint32_t*)0x03001000)
 
 // --------------------------------------------------------
@@ -249,54 +250,6 @@ void print_dec(uint32_t v)
 	else if (v >= 1) { putchar('1'); v -= 1; }
 	else putchar('0');
 }
-/*
-void print_flt(double flt)
-{
-	int icnt = 0;
-	int tmpint = 0;
-     
-	tmpint = (int)flt;
-        print_dec(tmpint);
-	putchar('.');
-	flt = flt - tmpint;
-	tmpint = (int)(flt * 1000000);
-	print_dec(tmpint);
-	return;
-}*/
-
-/*read rng component*/
-char getrng_prompt(char *prompt)
-{
-	int32_t c = -1;
-
-	uint32_t cycles_begin, cycles_now, cycles;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
-
-	reg_leds = ~0;
-
-	if (prompt)
-		print(prompt);
-
-	while (c == -1) {
-		__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-		cycles = cycles_now - cycles_begin;
-		if (cycles > 12000000) {
-			if (prompt)
-				print(prompt);
-			cycles_begin = cycles_now;
-			reg_leds = ~reg_leds;
-		}
-		c = reg_rng_data;
-	}
-
-	reg_leds = 0;
-	return c;
-}
-
-char getrng()
-{
-	return getrng_prompt(0);
-}
 
 char getchar_prompt(char *prompt)
 {
@@ -397,23 +350,6 @@ int my_memcmp(uint8_t *str1,uint8_t *str2,int len){
 	if(*str1<*str2)
 		return -1;
 }
-/*
-static inline char *my_align(char *ptr)
-{
-    return (void*)((unsigned int)(ptr+15)&~0xf);
-}
-
-char * malloc( unsigned int size )
-{
-    static char *heap_pointer = 0;
-    char *rp;
-    if ( ! heap_pointer )
-        heap_pointer = my_align(HEAP_BASE);
-    rp = heap_pointer;
-    heap_pointer = align(rp+size);
-    return rp;
-}
-*/
 
 void cmd_memtest()
 {
@@ -464,6 +400,20 @@ void cmd_memtest()
 
 	print(" passed\n");
 }
+
+/*------------rng component------------------*/
+static void setseed32(uint8_t* str)
+{	
+	int i;
+	uint32_t tmp = 0x00000000;
+	for (i = 0; i < 4; i++) {
+		tmp = tmp << 8;
+		tmp = tmp + str[i];
+	}//for uint8_t to uint32_t
+	
+	reg_rng_data = tmp;
+}
+
 
 // --------------------------------------------------------
 
@@ -798,17 +748,17 @@ void main()
 	set_flash_qspi_flag();
 
 	reg_leds = 127;//=0x7f=8'b0111_1111
-	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
+	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 
 	//testbench of each functions
 
 	#if defined(RBINLWEENC1) && (RBINLWEENC1 == 1)
-	#define BRLWE_N 256 // n = 256 : polynomials length
-	#define BRLWE_Q 128 // q = 128 : log2(q) = coeffidences data length; causing 1 bit of each byte wasted when q = 128
+		#define BRLWE_N 256 // n = 256 : polynomials length
+		#define BRLWE_Q 128 // q = 128 : log2(q) = coeffidences data length; causing 1 bit of each byte wasted when q = 128
 	#elif defined(RBINLWEENC2) && (RBINLWEENC2 == 1)
 	//test bench for configure2(N = 256, Q = 256)
-	#define BRLWE_N 256
-	#define BRLWE_Q 256
+		#define BRLWE_N 256
+		#define BRLWE_Q 256
 	uint8_t test_1[BRLWE_N] = { \
 		(uint8_t)43,(uint8_t)98,(uint8_t)100,(uint8_t)95,(uint8_t)218,(uint8_t)37,(uint8_t)156,(uint8_t)50\
 		,(uint8_t)45,(uint8_t)89,(uint8_t)128,(uint8_t)74,(uint8_t)14,(uint8_t)182,(uint8_t)53,(uint8_t)216\
@@ -968,109 +918,4 @@ void main()
 		print("The error count is"); print_flt(count);
 		print(" , the error possibility is "); print_flt(errorprob);print(" .\n");*/
 	}
-
-	/*
-	reg_leds = 31;
-	reg_uart_clkdiv = 104;
-	print("Booting..\n");
-
-	reg_leds = 63;
-	set_flash_qspi_flag();
-
-	reg_leds = 127;
-	while (getchar_prompt("Press ENTER to continue..\n") != '\r') /*{  wait  }*/
-
-	/*print("\n");
-	print("  ____  _          ____         ____\n");
-	print(" |  _ \\(_) ___ ___/ ___|  ___  / ___|\n");
-	print(" | |_) | |/ __/ _ \\___ \\ / _ \\| |\n");
-	print(" |  __/| | (_| (_) |__) | (_) | |___\n");
-	print(" |_|   |_|\\___\\___/____/ \\___/ \\____|\n");
-	print("\n");
-
-	print("Total memory: ");
-	print_dec(MEM_TOTAL / 1024);
-	print(" KiB\n");
-	print("\n");
-
-	cmd_memtest();
-	print("\n");
-
-	cmd_print_spi_state();
-	print("\n");
-
-	while (1)
-	{
-		print("\n");
-
-		print("Select an action:\n");
-		print("\n");
-		print("   [1] Read SPI Flash ID\n");
-		print("   [2] Read SPI Config Regs\n");
-		print("   [3] Switch to default mode\n");
-		print("   [4] Switch to Dual I/O mode\n");
-		print("   [5] Switch to Quad I/O mode\n");
-		print("   [6] Switch to Quad DDR mode\n");
-		print("   [7] Toggle continuous read mode\n");
-		print("   [9] Run simplistic benchmark\n");
-		print("   [0] Benchmark all configs\n");
-		print("   [M] Run Memtest\n");
-		print("   [S] Print SPI state\n");
-		print("   [e] Echo UART\n");
-		print("\n");
-
-		for (int rep = 10; rep > 0; rep--)
-		{
-			print("Command> ");
-			char cmd = getchar();
-			if (cmd > 32 && cmd < 127)
-				putchar(cmd);
-			print("\n");
-
-			switch (cmd)
-			{
-			case '1':
-				cmd_read_flash_id();
-				break;
-			case '2':
-				cmd_read_flash_regs();
-				break;
-			case '3':
-				set_flash_mode_spi();
-				break;
-			case '4':
-				set_flash_mode_dual();
-				break;
-			case '5':
-				set_flash_mode_quad();
-				break;
-			case '6':
-				set_flash_mode_qddr();
-				break;
-			case '7':
-				reg_spictrl = reg_spictrl ^ 0x00100000;
-				break;
-			case '9':
-				cmd_benchmark(true, 0);
-				break;
-			case '0':
-				cmd_benchmark_all();
-				break;
-			case 'M':
-				cmd_memtest();
-				break;
-			case 'S':
-				cmd_print_spi_state();
-				break;
-			case 'e':
-				cmd_echo();
-				break;
-			default:
-				continue;
-			}
-
-			break;
-		}
-	}
-  */
 }

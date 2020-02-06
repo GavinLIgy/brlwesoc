@@ -253,11 +253,13 @@ void print_dec(uint32_t v)
 
 char getchar_prompt(char *prompt)
 {
+	//read the uart recv register while sending string.
 	int32_t c = -1;
 
 	uint32_t cycles_begin, cycles_now, cycles;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
-
+	//insert the asymbly code of c language
+	
 	reg_leds = ~0;
 
 	if (prompt)
@@ -409,11 +411,22 @@ static void setseed32(uint8_t* str)
 	for (i = 0; i < 4; i++) {
 		tmp = tmp << 8;
 		tmp = tmp + str[i];
-	}//for uint8_t to uint32_t
+	}//for uint8_t hex to uint32_t
 	
 	reg_rng_data = tmp;
 }
 
+static int getrandom(uint8_t* str)
+{	
+	uint32_t tmp = 0x00000000;
+	tmp = reg_rng_data;
+	
+	int i = 0;
+	for (i = 0; i < 4; i++)	{
+		str[i]=tmp/0x01000000;
+		tmp = tmp << 8;
+	}//for uint32_t hex to uint8_t
+}
 
 // --------------------------------------------------------
 

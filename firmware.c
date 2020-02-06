@@ -416,7 +416,7 @@ static void setseed32(uint8_t* str)
 	reg_rng_data = tmp;
 }
 
-static int getrandom(uint8_t* str)
+static void getrandom(uint8_t* str)
 {	
 	uint32_t tmp = 0x00000000;
 	tmp = reg_rng_data;
@@ -426,6 +426,25 @@ static int getrandom(uint8_t* str)
 		str[i]=tmp/0x01000000;
 		tmp = tmp << 8;
 	}//for uint32_t hex to uint8_t
+}
+
+static void debug_rdcycle()
+{
+	uint32_t cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+	
+	uint32_t tmp = cycles_begin;
+	uint8_t str[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
+	
+	int i = 0;
+	for (i = 0; i < 4; i++)	{
+		str[i]=tmp/0x01000000;
+		tmp = tmp << 8;
+	}//for uint32_t hex to uint8_t
+	
+	print("Cycle now in hex is : ");
+	phex(str);
+	print("\r\n");
 }
 
 // --------------------------------------------------------
@@ -851,8 +870,9 @@ void main()
 #endif
 
 	
-	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
-	//uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };
+	uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
+	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };
+	uint8_t test_5[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials a, m, n;
@@ -865,7 +885,14 @@ void main()
 	phex(m.polynomial);
 	//print("test3 = \n");
 	//phex(n.polynomial);
-	
+
+	print("\nRNG generation:\r\n");
+	getrandom(test_5);
+	BRLWE_init_hex(&m, test_5, 0);
+	print("random number = \n");
+	phex(m.polynomial);
+	debug_rdcycle();
+	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
@@ -929,6 +956,7 @@ void main()
 		/*count = counterr(m.polynomial, dm);
 		double errorprob = count / BRLWE_N;
 		print("The error count is"); print_flt(count);
-		print(" , the error possibility is "); print_flt(errorprob);print(" .\n");*/
+		print(" , the error possibility is "); print_flt(errorprob);print(" .\n");
 	}
+	*/
 }

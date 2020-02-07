@@ -79,7 +79,7 @@ module hx8kdemo (
 			gpio <= 0;
 		end else begin
 			iomem_ready <= 0;
-			if (iomem_valid && !iomem_ready && iomem_addr[31:24] == 8'h 03) begin
+			if (iomem_valid && !iomem_ready && iomem_addr == 32'h 0300_0000) begin
 				iomem_ready <= 1;
 				iomem_rdata <= gpio;
 				if (iomem_wstrb[0]) gpio[ 7: 0] <= iomem_wdata[ 7: 0];

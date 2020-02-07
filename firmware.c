@@ -442,7 +442,7 @@ static void debug_rdcycle()
 		tmp = tmp << 8;
 	}//for uint32_t hex to uint8_t
 	
-	print("Cycle now in hex is : ");
+	print("Cycle now in hex is : 0x");
 	phex(str);
 	print("\r\n");
 }
@@ -869,29 +869,33 @@ void main()
 	#define BRLWE_Q 256
 #endif
 
-	
 	uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };
 	uint8_t test_5[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials a, m, n;
-	print("\nPolynomial initialization step:\r\n");
+	//print("\nPolynomial initialization step:\r\n");
 	BRLWE_init_hex(&a, test_1, 0);
-	BRLWE_init_hex(&m, test_2, 0);	
-	print("test1 = \n");
+	//BRLWE_init_hex(&m, test_2, 0);	
+	print("test1(Seed) = \n");
 	phex(a.polynomial);
-	print("test2 = \n");
-	phex(m.polynomial);
+	//print("test2 = \n");
+	//phex(m.polynomial);
 	//print("test3 = \n");
 	//phex(n.polynomial);
 
+	//test: RNG generation
 	print("\nRNG generation:\r\n");
+	debug_rdcycle();
+	setseed32(test_1);
+	debug_rdcycle();
 	getrandom(test_5);
 	BRLWE_init_hex(&m, test_5, 0);
+	debug_rdcycle();
 	print("random number = \n");
 	phex(m.polynomial);
-	debug_rdcycle();
+	
 	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");

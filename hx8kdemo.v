@@ -150,8 +150,11 @@ module hx8kdemo (
 			iomem_rdata <= 0;
 			iomem_ready <= 0;
 		end else begin
-			iomem_ready <= simplerng_dat_sel && !simplerng_dat_wait;
-			iomem_rdata <= simplerng_dat_sel ? simplerng_dat_do : 32'h 0000_0000;
+			iomem_ready <= 0;
+			if (iomem_valid && !iomem_ready && iomem_addr == 32'h 0300_1000) begin
+				iomem_ready <= 1;
+				iomem_rdata <= simplerng_dat_do;
+			end
 		end
 	end
 

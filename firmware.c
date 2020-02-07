@@ -430,7 +430,7 @@ static void getrandom(uint8_t* str)
 
 static void debug_rdcycle()
 {
-	uint32_t cycles_now;
+	uint32_t cycles_begin;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
 	uint32_t tmp = cycles_begin;

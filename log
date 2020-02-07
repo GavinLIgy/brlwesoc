@@ -317,4 +317,21 @@ VERIFY OK
 cdone: high
 Bye.
 
+2/7/2020 20：57
+riscv32-unknown-elf-gcc -DHX8KDEMO -DRBINLWEENCT=1 -march=rv32imc -Wl,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
+riscv32-unknown-elf-objcopy -O verilog hx8kdemo_fw.elf hx8kdemo_fw.hex
+vvp -N hx8kdemo_tb.vvp +firmware=hx8kdemo_fw.hex -DRBINLWEENCT=1
+VCD info: dumpfile testbench.vcd opened for output.
+Booting..
+
+Polynomial initialization step:
+test1 = 
+1e149650
+test2 = 
+01000101
+
+RNG generation:
+random number = 
+0000007f
+Cycle now in hex is : 0009e777
 

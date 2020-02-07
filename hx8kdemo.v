@@ -134,19 +134,26 @@ module hx8kdemo (
 	wire [31:0] simplerng_dat_do;
 	wire        simplerng_dat_wait;
 	
-	wire        simpleuart_dat_sel;//data selector
+	wire        simplerng_dat_sel;//data selector
 
 	assign simplerng_enable = 1'b1;//RNG keep enable; No pause-restart feature;
 
-	assign simpleuart_dat_sel = iomem_valid && (iomem_addr == 32'h 0300_1000);
+	assign simplerng_dat_sel = iomem_valid && (iomem_addr == 32'h 0300_1000);
 
-	assign simplerng_dat_we = simpleuart_dat_sel ? iomem_wstrb[0] : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; soc can write
-	assign simplerng_dat_re = simpleuart_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; soc can read
+	assign simplerng_dat_we = simplerng_dat_sel ? iomem_wstrb[0] : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; soc can write
+	assign simplerng_dat_re = simplerng_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; soc can read
 	
 	assign simplerng_dat_di = iomem_wdata; 
-
-	assign iomem_rdata = simpleuart_dat_sel ? simplerng_dat_do : 32'h 0000_0000;
-	assign iomem_ready = simpleuart_dat_sel && !simplerng_dat_wait;
+	
+	always @(posedge clk) begin
+		if (!resetn) begin
+			iomem_rdata <= 0;
+			iomem_ready <= 0;
+		end else begin
+			iomem_ready <= simplerng_dat_sel && !simplerng_dat_wait;
+			iomem_rdata <= simplerng_dat_sel ? simplerng_dat_do : 32'h 0000_0000;
+		end
+	end
 
 	simplerng #(.NUM_BITS(32)) dut(	
 		.clk(		clk	),

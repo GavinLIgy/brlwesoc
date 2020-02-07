@@ -151,13 +151,13 @@ module hx8kdemo (
 			iomem_ready <= 0;
 		end else begin
 			iomem_ready <= 0;
-			if (iomem_valid && !iomem_ready && iomem_addr == 32'h 0300_1000) begin
+			if (!iomem_ready && simplerng_dat_sel) begin
 				iomem_ready <= 1;
-				iomem_rdata <= simplerng_dat_do;
+				iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_we) ) ? 32'hffff_ffff : simplerng_dat_do;
 			end
 		end
 	end
-
+ 
 	simplerng #(.NUM_BITS(32)) dut(	
 		.clk(		clk	),
 		.resetn(	resetn	),

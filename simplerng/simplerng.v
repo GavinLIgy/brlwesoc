@@ -43,9 +43,6 @@ module simplerng #(parameter NUM_BITS = 32)
 		.o_LFSR_Data(	dat_do		),
 		.o_LFSR_Done(	wir_dat_wait	));
 
-
-
-
 `else
   `ifdef RNGMode1
       //Mode = 1:  TRNG_CrypTech

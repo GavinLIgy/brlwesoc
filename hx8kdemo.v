@@ -153,7 +153,7 @@ module hx8kdemo (
 			iomem_ready <= 0;
 			if (!iomem_ready && simplerng_dat_sel) begin
 				iomem_ready <= 1;
-				iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_we) ) ? 32'hffff_ffff : simplerng_dat_do;
+				iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do;
 			end
 		end
 	end

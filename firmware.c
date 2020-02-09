@@ -884,7 +884,7 @@ void main()
 	//test bench for configure2(N = 256, Q = 256)
 		#define BRLWE_N 256
 		#define BRLWE_Q 256
-	uint8_t test_1[BRLWE_N] = { \
+	//uint8_t test_1[BRLWE_N] = { \
 		(uint8_t)43,(uint8_t)98,(uint8_t)100,(uint8_t)95,(uint8_t)218,(uint8_t)37,(uint8_t)156,(uint8_t)50\
 		,(uint8_t)45,(uint8_t)89,(uint8_t)128,(uint8_t)74,(uint8_t)14,(uint8_t)182,(uint8_t)53,(uint8_t)216\
 		,(uint8_t)235,(uint8_t)220,(uint8_t)90,(uint8_t)98,(uint8_t)41,(uint8_t)129,(uint8_t)116,(uint8_t)44\
@@ -968,10 +968,10 @@ void main()
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials a, m, n;
 	print("\nPolynomial initialization step:\r\n");
-	BRLWE_init_hex(&a, test_1, 0);
+	//BRLWE_init_hex(&a, test_1, 0);
 	//BRLWE_init_hex(&m, test_2, 0);	
-	print("test1 = \n");
-	phex(a.polynomial);
+	//print("test1 = \n");
+	//phex(a.polynomial);
 	//print("test2 = \n");
 	//phex(m.polynomial);
 	//print("test3 = \n");

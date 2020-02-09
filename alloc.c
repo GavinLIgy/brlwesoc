@@ -62,6 +62,41 @@ static signed char  mem_init_flag = -1; /*内存分配系统初始化的标志(-
 * 返回  : 无
 ********************************************************************************
 */
+void * memcpy (void *dest, const void *src, int n)
+{
+	// print("**MEMCPY**\n");
+	char *a = dest;
+	const char *b = src;
+	while (n--) *(a++) = *(b++);
+	return dest;
+}
+
+int memcmp(uint8_t *str1,uint8_t *str2,int len){
+	while(len--)
+	{
+	while(*str1==*str2)
+	{
+		if(*str1=='\0') return 0;
+		str1++;
+		str2++;
+	}
+	}
+	if(*str1>*str2)
+		return 1;
+	if(*str1<*str2)
+		return -1;
+}
+
+void* memset(void* s, int c, size_t n)
+{    
+unsigned char* p = (unsigned char*) s;
+    while (n > 0) {
+		*p++ = (unsigned char) c;
+		--n;
+    }
+    return s;
+}
+
 void mem_init(void)
 {
     mem_block     *node;

@@ -404,7 +404,7 @@ void * memcpy (void *dest, const void *src, int n)
 	return dest;
 }
 
-int my_memcmp(uint8_t *str1,uint8_t *str2,int len){
+int memcmp(uint8_t *str1,uint8_t *str2,int len){
 	while(len--)
 	{
 	while(*str1==*str2)
@@ -421,6 +421,17 @@ int my_memcmp(uint8_t *str1,uint8_t *str2,int len){
 		return 1;
 	if(*str1<*str2)
 		return -1;
+}
+
+void* memset(void* s, int c, size_t n)
+{
+assert(str != NULL);    
+unsigned char* p = (unsigned char*) s;
+    while (n > 0) {
+    *p++ = (unsigned char) c;
+    --n;
+    }
+    return s;
 }
 
 void cmd_memtest()

@@ -2,7 +2,7 @@
 # ---- iCE40 HX8K Breakout Board ----
 
 hx8ksim: hx8kdemo_tb.vvp hx8kdemo_fw.hex
-	vvp -N $< +firmware=hx8kdemo_fw.hex -DRBINLWEENCT=1
+	vvp -N $< +firmware=hx8kdemo_fw.hex -DRBINLWEENC2=1
 
 hx8ksynsim: hx8kdemo_syn_tb.vvp hx8kdemo_fw.hex
 	vvp -N $< +firmware=hx8kdemo_fw.hex

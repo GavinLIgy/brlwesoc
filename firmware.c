@@ -495,11 +495,18 @@ static int getrandom(uint8_t* str)
 	}// if RNG is not ready(tmp=0xffff_ffff), wait.
 	
 	int i = 0;
-	for (i = 0; i < 4; i++)	{
-		str[i]=tmp/0x01000000;
-		tmp = tmp << 8;
-	}//for uint32_t hex to uint8_t
-	
+	int j = 0;
+	for (j = 0; j < BRLWE_N/4; j++){
+		while (tmp == 0xffffffff) {
+			tmp = reg_rng_data;
+		}// if RNG is not ready(tmp=0xffff_ffff), wait.
+		
+		for (i = 0; i < 4; i++)	{
+			str[i]=tmp/0x01000000;
+			tmp = tmp << 8;
+		}//for uint32_t hex to uint8_t
+	}
+
 	return 1;
 }
 
@@ -969,9 +976,10 @@ void main()
 	print("\nRNG generation:\r\n");
 	setseed32(test_1);
 	debug_rdcycle();
-	while( getrandom(test_5) != 1 ){  /* wait */  };
-	BRLWE_init_hex(&m, test_5, 0);
+	//while( getrandom(test_5) != 1 ){  /* wait */  };
+	getrandom(test_2);
 	debug_rdcycle();
+	BRLWE_init_hex(&m, test_2, 0);
 	print("random number = \n");
 	phex(m.polynomial);
 	

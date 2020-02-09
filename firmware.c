@@ -24,6 +24,11 @@
 #include "brlwe.h"
 #include "brlwe.c"
 
+#include "alloc.h"
+#include "alloc.c"
+
+#define alloc_printf  printf
+
 #ifdef ICEBREAKER
 #  define MEM_TOTAL 0x20000 /* 128 KB */
 #elif HX8KDEMO
@@ -52,7 +57,7 @@ extern uint32_t sram;
 	//test bench for configure2(N = 256, Q = 256)
 		#define BRLWE_N 256
 		#define BRLWE_Q 256
-	//uint8_t test_1[BRLWE_N] = { \
+	static const uint8_t test_1[BRLWE_N] = { \
 		(uint8_t)43,(uint8_t)98,(uint8_t)100,(uint8_t)95,(uint8_t)218,(uint8_t)37,(uint8_t)156,(uint8_t)50\
 		,(uint8_t)45,(uint8_t)89,(uint8_t)128,(uint8_t)74,(uint8_t)14,(uint8_t)182,(uint8_t)53,(uint8_t)216\
 		,(uint8_t)235,(uint8_t)220,(uint8_t)90,(uint8_t)98,(uint8_t)41,(uint8_t)129,(uint8_t)116,(uint8_t)44\
@@ -286,9 +291,13 @@ static void phex(uint8_t* str)
 	int i, j;
 	for (i = 0, j = 1; i < BRLWE_N; ++i, ++j) {
 		print_hex(str[i],2);//updated, original:printf("%.2x", str[i]);
+		
 		if (j == 16) {
 			print("\r\n");
 			j = 0;
+		}
+		else if (j == 4){
+			print(" ");
 		}
 	}
 
@@ -492,12 +501,9 @@ int memcmp(uint8_t *str1,uint8_t *str2,int len){
 	{
 	while(*str1==*str2)
 	{
-		if(*str1=='\0')
-			return 0;
-	
-			str1++;
-			str2++;
-	
+		if(*str1=='\0') return 0;
+		str1++;
+		str2++;
 	}
 	}
 	if(*str1>*str2)
@@ -564,6 +570,113 @@ void cmd_memtest()
 	}
 
 	print(" passed\n");
+}
+
+
+/*
+********************************************************************************
+*                                   内存打印函数                     
+*
+* 描述    : 打印内存系统中每一个内存块的信息
+*
+* 参数  : 无
+*
+* 返回  : 无
+********************************************************************************
+*/
+void mem_print(void)
+{
+    unsigned int i = 0;
+    mem_block     *head_node, *tmp_node;
+ 
+    if(mem_init_flag < 0)
+    {
+        alloc_printf("未初始化,先初始化.\r\n");
+        mem_init();
+    }
+    head_node = tmp_node = (mem_block *)HEAD_NODE;
+    alloc_printf("\r\n#############################\r\n");
+    while(1)
+    {
+        alloc_printf("\r\nNO.%d:\r\n",i++);
+        alloc_printf("blk_ptr:0x%08x\r\n",tmp_node);
+        alloc_printf("mem_ptr:0x%08x\r\n",tmp_node->mem_ptr);
+        alloc_printf("nxt_ptr:0x%08x\r\n",tmp_node->nxt_ptr);
+        alloc_printf("mem_size:%d\r\n",tmp_node->mem_size);
+        alloc_printf("mem_sta:%d\r\n",tmp_node->mem_sta);
+ 
+        tmp_node = tmp_node->nxt_ptr;
+        if(tmp_node == head_node)
+        {
+            break;
+        }
+    }
+    alloc_printf("\r\n#############################\r\n");
+}
+ 
+void buff_print(unsigned char *buf,unsigned int len)
+{
+    unsigned int i;
+ 
+    alloc_printf("\r\n");
+    for(i=0;i<len;i++)
+    {
+        if(i%16 == 0 && i != 0)
+        {
+            alloc_printf("\r\n");
+        }
+        alloc_printf("0x%02x,",buf[i]);
+        //alloc_printf("%c",buf[i]);
+    }
+    alloc_printf("\r\n");
+}
+ 
+void *m_malloc(unsigned nbytes)
+{
+    return malloc(nbytes);
+}
+ 
+void m_free(void *ap)
+{
+    free(ap);
+}
+ 
+typedef char (*array)[4];
+/*
+********************************************************************************
+*                                   内存分配函数测试                     
+*
+* 描述    : 测试内存分配系统中每一个函数的功能
+*
+* 参数  : 无
+*
+* 返回  : 无
+********************************************************************************
+*/
+void alloc_test(void)
+{  
+    array ptr = NULL;
+    unsigned int i,j;
+ 
+    alloc_printf("Ptr1:%d\r\n",sizeof(ptr));
+    ptr = m_malloc(16);
+    if(ptr == NULL)
+    {
+        alloc_printf("malloc failed.\r\n");
+        return;
+    }
+    mem_print();
+    
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            ptr[i][j] = i;
+        }
+    }
+    m_free(ptr);
+    mem_print();
+    buff_print((unsigned char *)ptr, 16);
 }
 
 /*------------rng component------------------*/
@@ -961,10 +1074,15 @@ void main()
 
 	//reg_leds = 127;//=0x7f=8'b0111_1111
 	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
-
+	
+	//test: memory allocate testing
+	alloc_test();
+	
+	/*
 	uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };
 	uint8_t test_5[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
+	
 	
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials a, m, n;
@@ -977,18 +1095,20 @@ void main()
 	phex(m.polynomial);
 	//print("test3 = \n");
 	//phex(n.polynomial);
-/*
+
 	//test: RNG generation
 	print("\nRNG generation:\r\n");
-	setseed32(test_1);
+	setseed32(test_3);
 	debug_rdcycle();
 	//while( getrandom(test_5) != 1 ){   };
+	uint8_t test_6[BRLWE_N];
 	getrandom(test_2);
 	debug_rdcycle();
 	BRLWE_init_hex(&m, test_2, 0);
 	print("random number = \n");
 	phex(m.polynomial);
-*/	
+	*/
+	
 	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");

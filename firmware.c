@@ -967,27 +967,27 @@ void main()
 	
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials a, m, n;
-	//print("\nPolynomial initialization step:\r\n");
+	print("\nPolynomial initialization step:\r\n");
 	BRLWE_init_hex(&a, test_1, 0);
-	//BRLWE_init_hex(&m, test_2, 0);	
+	BRLWE_init_hex(&m, test_2, 0);	
 	print("test1(Seed) = \n");
 	phex(a.polynomial);
-	//print("test2 = \n");
-	//phex(m.polynomial);
+	print("test2 = \n");
+	phex(m.polynomial);
 	//print("test3 = \n");
 	//phex(n.polynomial);
-
+/*
 	//test: RNG generation
 	print("\nRNG generation:\r\n");
 	setseed32(test_1);
 	debug_rdcycle();
-	//while( getrandom(test_5) != 1 ){  /* wait */  };
+	//while( getrandom(test_5) != 1 ){   };
 	getrandom(test_2);
 	debug_rdcycle();
 	BRLWE_init_hex(&m, test_2, 0);
 	print("random number = \n");
 	phex(m.polynomial);
-	
+*/	
 	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");

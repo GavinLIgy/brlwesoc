@@ -424,12 +424,11 @@ int memcmp(uint8_t *str1,uint8_t *str2,int len){
 }
 
 void* memset(void* s, int c, size_t n)
-{
-assert(str != NULL);    
+{    
 unsigned char* p = (unsigned char*) s;
     while (n > 0) {
-    *p++ = (unsigned char) c;
-    --n;
+		*p++ = (unsigned char) c;
+		--n;
     }
     return s;
 }

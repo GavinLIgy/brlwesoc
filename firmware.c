@@ -395,7 +395,7 @@ uint32_t xorshift32(uint32_t *state)
 	return x;
 }
 
-void * memcpy (void *dest, const void *src, int n)
+void * my_memcpy (void *dest, const void *src, int n)
 {
 	// print("**MEMCPY**\n");
 	char *a = dest;
@@ -404,7 +404,7 @@ void * memcpy (void *dest, const void *src, int n)
 	return dest;
 }
 
-int memcmp(uint8_t *str1,uint8_t *str2,int len){
+int my_memcmp(uint8_t *str1,uint8_t *str2,int len){
 	while(len--)
 	{
 	while(*str1==*str2)

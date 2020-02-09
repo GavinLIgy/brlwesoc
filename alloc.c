@@ -7,7 +7,7 @@
 *
 *                                MEMORY ALLOC
 *
-* File    : mem_alloc.c
+* File    : alloc.c
 * By      : Recahrd.Zhang
 * Version : V1.00
 *
@@ -16,7 +16,7 @@
 ********************************************************************************
 */
 //#include <string.h>
-#include "mem_alloc.h"
+#include "alloc.h"
 //#include "debug.h"
  
 #define MEM_ALLOC        1

@@ -11,7 +11,7 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 /* Includes:                                                                 */
 /*****************************************************************************/
 #include <stdint.h>
-#include <string.h>
+//#include <string.h>
 #include <stdlib.h>
 #include "brlwe.h"
 

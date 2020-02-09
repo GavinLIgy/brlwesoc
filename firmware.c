@@ -395,7 +395,7 @@ uint32_t xorshift32(uint32_t *state)
 	return x;
 }
 
-void * my_memcpy (void *dest, const void *src, int n)
+void * memcpy (void *dest, const void *src, int n)
 {
 	// print("**MEMCPY**\n");
 	char *a = dest;

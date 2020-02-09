@@ -19,9 +19,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
 #include <stdlib.h>
-//#include <string.h>
 
 #include "brlwe.h"
 #include "brlwe.c"
@@ -873,13 +871,11 @@ void main()
 	reg_uart_clkdiv = 104;
 	print("Booting..\n");
 
-	reg_leds = 63;//=0x3f=8'b0011_1111
+	//reg_leds = 63;//=0x3f=8'b0011_1111
 	set_flash_qspi_flag();
 
-	reg_leds = 127;//=0x7f=8'b0111_1111
+	//reg_leds = 127;//=0x7f=8'b0111_1111
 	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
-
-	//testbench of each functions
 
 	#if defined(RBINLWEENC1) && (RBINLWEENC1 == 1)
 		#define BRLWE_N 256 // n = 256 : polynomials length
@@ -958,7 +954,6 @@ void main()
 	//test bench for configure test(N = 4, Q = 256)
 	#define BRLWE_N 4
 	#define BRLWE_Q 256
-
 	uint8_t test_1[4] = { (uint8_t)30, (uint8_t)20, (uint8_t)150 , (uint8_t)80 };
 	uint8_t test_2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 };
 #else

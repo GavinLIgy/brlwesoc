@@ -45,6 +45,91 @@ extern uint32_t sram;
 
 // --------------------------------------------------------
 
+	#if defined(RBINLWEENC1) && (RBINLWEENC1 == 1)
+		#define BRLWE_N 256 // n = 256 : polynomials length
+		#define BRLWE_Q 128 // q = 128 : log2(q) = coeffidences data length; causing 1 bit of each byte wasted when q = 128
+	#elif defined(RBINLWEENC2) && (RBINLWEENC2 == 1)
+	//test bench for configure2(N = 256, Q = 256)
+		#define BRLWE_N 256
+		#define BRLWE_Q 256
+	//uint8_t test_1[BRLWE_N] = { \
+		(uint8_t)43,(uint8_t)98,(uint8_t)100,(uint8_t)95,(uint8_t)218,(uint8_t)37,(uint8_t)156,(uint8_t)50\
+		,(uint8_t)45,(uint8_t)89,(uint8_t)128,(uint8_t)74,(uint8_t)14,(uint8_t)182,(uint8_t)53,(uint8_t)216\
+		,(uint8_t)235,(uint8_t)220,(uint8_t)90,(uint8_t)98,(uint8_t)41,(uint8_t)129,(uint8_t)116,(uint8_t)44\
+		,(uint8_t)105,(uint8_t)116,(uint8_t)127,(uint8_t)124,(uint8_t)75,(uint8_t)53,(uint8_t)70,(uint8_t)171\
+		,(uint8_t)178,(uint8_t)155,(uint8_t)53,(uint8_t)123,(uint8_t)148,(uint8_t)39,(uint8_t)228,(uint8_t)233\
+		,(uint8_t)20,(uint8_t)75,(uint8_t)82,(uint8_t)238,(uint8_t)91,(uint8_t)155,(uint8_t)80,(uint8_t)108\
+		,(uint8_t)69,(uint8_t)39,(uint8_t)82,(uint8_t)90,(uint8_t)226,(uint8_t)200,(uint8_t)181,(uint8_t)154\
+		,(uint8_t)21,(uint8_t)29,(uint8_t)195,(uint8_t)42,(uint8_t)18,(uint8_t)81,(uint8_t)113,(uint8_t)22\
+		,(uint8_t)146,(uint8_t)211,(uint8_t)71,(uint8_t)194,(uint8_t)136,(uint8_t)140,(uint8_t)48,(uint8_t)165\
+		,(uint8_t)111,(uint8_t)46,(uint8_t)167,(uint8_t)11,(uint8_t)26,(uint8_t)39,(uint8_t)121,(uint8_t)134\
+		,(uint8_t)27,(uint8_t)198,(uint8_t)36,(uint8_t)37,(uint8_t)230,(uint8_t)44,(uint8_t)117,(uint8_t)1\
+		,(uint8_t)156,(uint8_t)165,(uint8_t)147,(uint8_t)226,(uint8_t)15,(uint8_t)200,(uint8_t)2,(uint8_t)53\
+		,(uint8_t)94,(uint8_t)123,(uint8_t)224,(uint8_t)103,(uint8_t)0,(uint8_t)29,(uint8_t)57,(uint8_t)23\
+		,(uint8_t)88,(uint8_t)168,(uint8_t)58,(uint8_t)189,(uint8_t)134,(uint8_t)244,(uint8_t)146,(uint8_t)81\
+		,(uint8_t)49,(uint8_t)239,(uint8_t)243,(uint8_t)6,(uint8_t)110,(uint8_t)31,(uint8_t)225,(uint8_t)51\
+		,(uint8_t)17,(uint8_t)13,(uint8_t)221,(uint8_t)1,(uint8_t)197,(uint8_t)253,(uint8_t)68,(uint8_t)26\
+		,(uint8_t)69,(uint8_t)171,(uint8_t)80,(uint8_t)40,(uint8_t)174,(uint8_t)130,(uint8_t)203,(uint8_t)74\
+		,(uint8_t)208,(uint8_t)234,(uint8_t)103,(uint8_t)142,(uint8_t)141,(uint8_t)120,(uint8_t)173,(uint8_t)189\
+		,(uint8_t)92,(uint8_t)28,(uint8_t)14,(uint8_t)31,(uint8_t)78,(uint8_t)157,(uint8_t)99,(uint8_t)154\
+		,(uint8_t)64,(uint8_t)111,(uint8_t)38,(uint8_t)11,(uint8_t)122,(uint8_t)130,(uint8_t)245,(uint8_t)177\
+		,(uint8_t)89,(uint8_t)203,(uint8_t)133,(uint8_t)255,(uint8_t)76,(uint8_t)131,(uint8_t)216,(uint8_t)218\
+		,(uint8_t)81,(uint8_t)92,(uint8_t)183,(uint8_t)254,(uint8_t)89,(uint8_t)234,(uint8_t)244,(uint8_t)52\
+		,(uint8_t)125,(uint8_t)150,(uint8_t)20,(uint8_t)93,(uint8_t)165,(uint8_t)175,(uint8_t)172,(uint8_t)89\
+		,(uint8_t)123,(uint8_t)50,(uint8_t)207,(uint8_t)107,(uint8_t)224,(uint8_t)12,(uint8_t)250,(uint8_t)138\
+		,(uint8_t)227,(uint8_t)116,(uint8_t)34,(uint8_t)94,(uint8_t)85,(uint8_t)194,(uint8_t)203,(uint8_t)139\
+		,(uint8_t)71,(uint8_t)75,(uint8_t)83,(uint8_t)11,(uint8_t)8,(uint8_t)121,(uint8_t)26,(uint8_t)217\
+		,(uint8_t)98,(uint8_t)241,(uint8_t)140,(uint8_t)114,(uint8_t)101,(uint8_t)221,(uint8_t)127,(uint8_t)180\
+		,(uint8_t)169,(uint8_t)250,(uint8_t)189,(uint8_t)21,(uint8_t)166,(uint8_t)240,(uint8_t)227,(uint8_t)73\
+		,(uint8_t)40,(uint8_t)118,(uint8_t)128,(uint8_t)80,(uint8_t)181,(uint8_t)199,(uint8_t)187,(uint8_t)245\
+		,(uint8_t)120,(uint8_t)224,(uint8_t)61,(uint8_t)153,(uint8_t)71,(uint8_t)166,(uint8_t)56,(uint8_t)248\
+		,(uint8_t)211,(uint8_t)169,(uint8_t)39,(uint8_t)245,(uint8_t)55,(uint8_t)90,(uint8_t)219,(uint8_t)95\
+		,(uint8_t)106,(uint8_t)202,(uint8_t)94,(uint8_t)15,(uint8_t)53,(uint8_t)227,(uint8_t)165,(uint8_t)69};
+	static const uint8_t test_2[BRLWE_N] = { \
+		  (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 \
+		, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0 \
+		, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
+		, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0 \
+		, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
+		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1 \
+		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 \
+		, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1 \
+		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
+		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
+		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1 };
+#elif defined(RBINLWEENCT) && (RBINLWEENCT == 1)
+	//test bench for configure test(N = 4, Q = 256)
+	#define BRLWE_N 4
+	#define BRLWE_Q 256
+	uint8_t test_1[4] = { (uint8_t)30, (uint8_t)20, (uint8_t)150 , (uint8_t)80 };
+	uint8_t test_2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 };
+#else
+	#define BRLWE_N 512
+	#define BRLWE_Q 256
+#endif
+
+//--------------------------------------------------------------------------
 extern uint32_t flashio_worker_begin;
 extern uint32_t flashio_worker_end;
 
@@ -876,90 +961,6 @@ void main()
 
 	//reg_leds = 127;//=0x7f=8'b0111_1111
 	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
-
-	#if defined(RBINLWEENC1) && (RBINLWEENC1 == 1)
-		#define BRLWE_N 256 // n = 256 : polynomials length
-		#define BRLWE_Q 128 // q = 128 : log2(q) = coeffidences data length; causing 1 bit of each byte wasted when q = 128
-	#elif defined(RBINLWEENC2) && (RBINLWEENC2 == 1)
-	//test bench for configure2(N = 256, Q = 256)
-		#define BRLWE_N 256
-		#define BRLWE_Q 256
-	//uint8_t test_1[BRLWE_N] = { \
-		(uint8_t)43,(uint8_t)98,(uint8_t)100,(uint8_t)95,(uint8_t)218,(uint8_t)37,(uint8_t)156,(uint8_t)50\
-		,(uint8_t)45,(uint8_t)89,(uint8_t)128,(uint8_t)74,(uint8_t)14,(uint8_t)182,(uint8_t)53,(uint8_t)216\
-		,(uint8_t)235,(uint8_t)220,(uint8_t)90,(uint8_t)98,(uint8_t)41,(uint8_t)129,(uint8_t)116,(uint8_t)44\
-		,(uint8_t)105,(uint8_t)116,(uint8_t)127,(uint8_t)124,(uint8_t)75,(uint8_t)53,(uint8_t)70,(uint8_t)171\
-		,(uint8_t)178,(uint8_t)155,(uint8_t)53,(uint8_t)123,(uint8_t)148,(uint8_t)39,(uint8_t)228,(uint8_t)233\
-		,(uint8_t)20,(uint8_t)75,(uint8_t)82,(uint8_t)238,(uint8_t)91,(uint8_t)155,(uint8_t)80,(uint8_t)108\
-		,(uint8_t)69,(uint8_t)39,(uint8_t)82,(uint8_t)90,(uint8_t)226,(uint8_t)200,(uint8_t)181,(uint8_t)154\
-		,(uint8_t)21,(uint8_t)29,(uint8_t)195,(uint8_t)42,(uint8_t)18,(uint8_t)81,(uint8_t)113,(uint8_t)22\
-		,(uint8_t)146,(uint8_t)211,(uint8_t)71,(uint8_t)194,(uint8_t)136,(uint8_t)140,(uint8_t)48,(uint8_t)165\
-		,(uint8_t)111,(uint8_t)46,(uint8_t)167,(uint8_t)11,(uint8_t)26,(uint8_t)39,(uint8_t)121,(uint8_t)134\
-		,(uint8_t)27,(uint8_t)198,(uint8_t)36,(uint8_t)37,(uint8_t)230,(uint8_t)44,(uint8_t)117,(uint8_t)1\
-		,(uint8_t)156,(uint8_t)165,(uint8_t)147,(uint8_t)226,(uint8_t)15,(uint8_t)200,(uint8_t)2,(uint8_t)53\
-		,(uint8_t)94,(uint8_t)123,(uint8_t)224,(uint8_t)103,(uint8_t)0,(uint8_t)29,(uint8_t)57,(uint8_t)23\
-		,(uint8_t)88,(uint8_t)168,(uint8_t)58,(uint8_t)189,(uint8_t)134,(uint8_t)244,(uint8_t)146,(uint8_t)81\
-		,(uint8_t)49,(uint8_t)239,(uint8_t)243,(uint8_t)6,(uint8_t)110,(uint8_t)31,(uint8_t)225,(uint8_t)51\
-		,(uint8_t)17,(uint8_t)13,(uint8_t)221,(uint8_t)1,(uint8_t)197,(uint8_t)253,(uint8_t)68,(uint8_t)26\
-		,(uint8_t)69,(uint8_t)171,(uint8_t)80,(uint8_t)40,(uint8_t)174,(uint8_t)130,(uint8_t)203,(uint8_t)74\
-		,(uint8_t)208,(uint8_t)234,(uint8_t)103,(uint8_t)142,(uint8_t)141,(uint8_t)120,(uint8_t)173,(uint8_t)189\
-		,(uint8_t)92,(uint8_t)28,(uint8_t)14,(uint8_t)31,(uint8_t)78,(uint8_t)157,(uint8_t)99,(uint8_t)154\
-		,(uint8_t)64,(uint8_t)111,(uint8_t)38,(uint8_t)11,(uint8_t)122,(uint8_t)130,(uint8_t)245,(uint8_t)177\
-		,(uint8_t)89,(uint8_t)203,(uint8_t)133,(uint8_t)255,(uint8_t)76,(uint8_t)131,(uint8_t)216,(uint8_t)218\
-		,(uint8_t)81,(uint8_t)92,(uint8_t)183,(uint8_t)254,(uint8_t)89,(uint8_t)234,(uint8_t)244,(uint8_t)52\
-		,(uint8_t)125,(uint8_t)150,(uint8_t)20,(uint8_t)93,(uint8_t)165,(uint8_t)175,(uint8_t)172,(uint8_t)89\
-		,(uint8_t)123,(uint8_t)50,(uint8_t)207,(uint8_t)107,(uint8_t)224,(uint8_t)12,(uint8_t)250,(uint8_t)138\
-		,(uint8_t)227,(uint8_t)116,(uint8_t)34,(uint8_t)94,(uint8_t)85,(uint8_t)194,(uint8_t)203,(uint8_t)139\
-		,(uint8_t)71,(uint8_t)75,(uint8_t)83,(uint8_t)11,(uint8_t)8,(uint8_t)121,(uint8_t)26,(uint8_t)217\
-		,(uint8_t)98,(uint8_t)241,(uint8_t)140,(uint8_t)114,(uint8_t)101,(uint8_t)221,(uint8_t)127,(uint8_t)180\
-		,(uint8_t)169,(uint8_t)250,(uint8_t)189,(uint8_t)21,(uint8_t)166,(uint8_t)240,(uint8_t)227,(uint8_t)73\
-		,(uint8_t)40,(uint8_t)118,(uint8_t)128,(uint8_t)80,(uint8_t)181,(uint8_t)199,(uint8_t)187,(uint8_t)245\
-		,(uint8_t)120,(uint8_t)224,(uint8_t)61,(uint8_t)153,(uint8_t)71,(uint8_t)166,(uint8_t)56,(uint8_t)248\
-		,(uint8_t)211,(uint8_t)169,(uint8_t)39,(uint8_t)245,(uint8_t)55,(uint8_t)90,(uint8_t)219,(uint8_t)95\
-		,(uint8_t)106,(uint8_t)202,(uint8_t)94,(uint8_t)15,(uint8_t)53,(uint8_t)227,(uint8_t)165,(uint8_t)69};
-	uint8_t test_2[BRLWE_N] = { \
-		  (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 \
-		, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0 \
-		, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
-		, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0 \
-		, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
-		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1 \
-		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 \
-		, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1 \
-		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
-		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)0 \
-		, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1 };
-#elif defined(RBINLWEENCT) && (RBINLWEENCT == 1)
-	//test bench for configure test(N = 4, Q = 256)
-	#define BRLWE_N 4
-	#define BRLWE_Q 256
-	uint8_t test_1[4] = { (uint8_t)30, (uint8_t)20, (uint8_t)150 , (uint8_t)80 };
-	uint8_t test_2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 };
-#else
-	#define BRLWE_N 512
-	#define BRLWE_Q 256
-#endif
 
 	uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };

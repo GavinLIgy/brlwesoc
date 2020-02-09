@@ -418,8 +418,11 @@ static void setseed32(uint8_t* str)
 
 static void getrandom(uint8_t* str)
 {	
-	uint32_t tmp = 0x00000000;
-	tmp = reg_rng_data;
+	uint32_t tmp = 0xffff_ffff;//impossible value of the RNG output
+	
+	while (tmp == 0xffff_ffff) {
+		tmp = reg_rng_data;
+	}// if RNG is not ready(tmp=0xffff_ffff), wait.
 	
 	int i = 0;
 	for (i = 0; i < 4; i++)	{

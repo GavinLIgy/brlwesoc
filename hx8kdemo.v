@@ -140,8 +140,8 @@ module hx8kdemo (
 
 	assign simplerng_dat_sel = iomem_valid && (iomem_addr == 32'h 0300_1000);
 
-	assign simplerng_dat_we = simplerng_dat_sel ? iomem_wstrb[0] : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; soc can write
-	assign simplerng_dat_re = simplerng_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; soc can read
+	assign simplerng_dat_we = simplerng_dat_sel ? iomem_wstrb[0] : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
+	assign simplerng_dat_re = simplerng_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
 	
 	assign simplerng_dat_di = iomem_wdata; 
 	
@@ -153,7 +153,7 @@ module hx8kdemo (
 			iomem_ready <= 0;
 			if (!iomem_ready && simplerng_dat_sel) begin
 				iomem_ready <= 1;
-				iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do;
+				iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do; //wait = 1, cannot read now
 			end
 		end
 	end

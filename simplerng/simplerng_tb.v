@@ -54,9 +54,9 @@ module tb_simplerng;
 		
 		//read the number
 		@(posedge clk);
-		dat_we=1;
+		dat_re=1;
 		@(posedge clk);
-		dat_we=0;
+		dat_re=0;
 		
 		//working
 		#500		

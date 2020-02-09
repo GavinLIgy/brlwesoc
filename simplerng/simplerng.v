@@ -21,8 +21,8 @@ module simplerng #(parameter NUM_BITS = 32)
 	input 			resetn,
 	input 			enable,
 
-	input         		dat_we,
-	input         		dat_re,
+	input         		dat_we,//we = 1; processor write 
+	input         		dat_re,//re = 1; processor read
 	input  [NUM_BITS-1:0] 	dat_di,
 	output [NUM_BITS-1:0] 	dat_do,
 	output 			dat_wait       
@@ -33,12 +33,12 @@ module simplerng #(parameter NUM_BITS = 32)
 
 	wire wir_dat_wait;
 	
-	assign dat_wait = wir_dat_wait | ~(resetn & enable);
+	assign dat_wait = wir_dat_wait | ~(resetn & enable);//wait = 1, cannot read now
 
 	lfsr #(.NUM_BITS(NUM_BITS)) dut(	
 		.i_Clk(		clk		),
 		.i_Enable(	enable		),
-		.i_Seed_DV( !(resetn)|dat_re	),
+		.i_Seed_DV( !(resetn)|dat_we	),
 		.i_Seed_Data(	dat_di		),
 		.o_LFSR_Data(	dat_do		),
 		.o_LFSR_Done(	wir_dat_wait	));

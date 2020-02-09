@@ -214,10 +214,80 @@ static void phex(uint8_t* str)
 
 void print_dec(uint32_t v)
 {
-	if (v >= 1000) {
-		print(">=1000");
+	if (v >= 10000000000) {
+		print(">=10Billion");
 		return;
 	}
+	
+	if (v >= 9000000000) { putchar('9'); v -= 9000000000; }
+	else if (v >= 8000000000) { putchar('8'); v -= 8000000000; }
+	else if (v >= 7000000000) { putchar('7'); v -= 7000000000; }
+	else if (v >= 6000000000) { putchar('6'); v -= 6000000000; }
+	else if (v >= 5000000000) { putchar('5'); v -= 5000000000; }
+	else if (v >= 4000000000) { putchar('4'); v -= 4000000000; }
+	else if (v >= 3000000000) { putchar('3'); v -= 3000000000; }
+	else if (v >= 2000000000) { putchar('2'); v -= 2000000000; }
+	else if (v >= 1000000000) { putchar('1'); v -= 1000000000; }
+	
+	if (v >= 900000000) { putchar('9'); v -= 900000000; }
+	else if (v >= 800000000) { putchar('8'); v -= 800000000; }
+	else if (v >= 700000000) { putchar('7'); v -= 700000000; }
+	else if (v >= 600000000) { putchar('6'); v -= 600000000; }
+	else if (v >= 500000000) { putchar('5'); v -= 500000000; }
+	else if (v >= 400000000) { putchar('4'); v -= 400000000; }
+	else if (v >= 300000000) { putchar('3'); v -= 300000000; }
+	else if (v >= 200000000) { putchar('2'); v -= 200000000; }
+	else if (v >= 100000000) { putchar('1'); v -= 100000000; }
+	
+	if (v >= 90000000) { putchar('9'); v -= 90000000; }
+	else if (v >= 80000000) { putchar('8'); v -= 80000000; }
+	else if (v >= 70000000) { putchar('7'); v -= 70000000; }
+	else if (v >= 60000000) { putchar('6'); v -= 60000000; }
+	else if (v >= 50000000) { putchar('5'); v -= 50000000; }
+	else if (v >= 40000000) { putchar('4'); v -= 40000000; }
+	else if (v >= 30000000) { putchar('3'); v -= 30000000; }
+	else if (v >= 20000000) { putchar('2'); v -= 20000000; }
+	else if (v >= 10000000) { putchar('1'); v -= 10000000; }	
+	
+	if (v >= 9000000) { putchar('9'); v -= 9000000; }
+	else if (v >= 8000000) { putchar('8'); v -= 8000000; }
+	else if (v >= 7000000) { putchar('7'); v -= 7000000; }
+	else if (v >= 6000000) { putchar('6'); v -= 6000000; }
+	else if (v >= 5000000) { putchar('5'); v -= 5000000; }
+	else if (v >= 4000000) { putchar('4'); v -= 4000000; }
+	else if (v >= 3000000) { putchar('3'); v -= 3000000; }
+	else if (v >= 2000000) { putchar('2'); v -= 2000000; }
+	else if (v >= 1000000) { putchar('1'); v -= 1000000; }
+	
+	if (v >= 900000) { putchar('9'); v -= 900000; }
+	else if (v >= 800000) { putchar('8'); v -= 800000; }
+	else if (v >= 700000) { putchar('7'); v -= 700000; }
+	else if (v >= 600000) { putchar('6'); v -= 600000; }
+	else if (v >= 500000) { putchar('5'); v -= 500000; }
+	else if (v >= 400000) { putchar('4'); v -= 400000; }
+	else if (v >= 300000) { putchar('3'); v -= 300000; }
+	else if (v >= 200000) { putchar('2'); v -= 200000; }
+	else if (v >= 100000) { putchar('1'); v -= 100000; }
+	
+	if (v >= 90000) { putchar('9'); v -= 90000; }
+	else if (v >= 80000) { putchar('8'); v -= 80000; }
+	else if (v >= 70000) { putchar('7'); v -= 70000; }
+	else if (v >= 60000) { putchar('6'); v -= 60000; }
+	else if (v >= 50000) { putchar('5'); v -= 50000; }
+	else if (v >= 40000) { putchar('4'); v -= 40000; }
+	else if (v >= 30000) { putchar('3'); v -= 30000; }
+	else if (v >= 20000) { putchar('2'); v -= 20000; }
+	else if (v >= 10000) { putchar('1'); v -= 10000; }
+	
+	if (v >= 9000) { putchar('9'); v -= 9000; }
+	else if (v >= 8000) { putchar('8'); v -= 8000; }
+	else if (v >= 7000) { putchar('7'); v -= 7000; }
+	else if (v >= 6000) { putchar('6'); v -= 6000; }
+	else if (v >= 5000) { putchar('5'); v -= 5000; }
+	else if (v >= 4000) { putchar('4'); v -= 4000; }
+	else if (v >= 3000) { putchar('3'); v -= 3000; }
+	else if (v >= 2000) { putchar('2'); v -= 2000; }
+	else if (v >= 1000) { putchar('1'); v -= 1000; }
 
 	if (v >= 900) { putchar('9'); v -= 900; }
 	else if (v >= 800) { putchar('8'); v -= 800; }
@@ -437,17 +507,22 @@ static void debug_rdcycle()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
 	uint32_t tmp = cycles_begin;
-	uint8_t str[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	
+	print("Cycle now in dec is : ");
+	print_dec(tmp);
+	print("\r\n");
+	
+	/*
+	uint8_t str[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	int i = 0;
 	for (i = 0; i < 4; i++)	{
 		str[i]=tmp/0x01000000;
 		tmp = tmp << 8;
 	}//for uint32_t hex to uint8_t
-	
 	print("Cycle now in hex is : 0x");
 	phex(str);
-	print("\r\n");
+	print("\r\n");*/
+	
 }
 
 // --------------------------------------------------------

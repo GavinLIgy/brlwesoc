@@ -13,9 +13,9 @@
 *
 ********************************************************************************
 */
-#include <string.h>
-#include "mem_alloc.h"
-#include "debug.h"
+//#include <string.h>
+#include "alloc.h"
+//#include "debug.h"
  
 #define MEM_ALLOC        1
 #if defined (MEM_ALLOC)&&MEM_ALLOC

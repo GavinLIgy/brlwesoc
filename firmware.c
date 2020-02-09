@@ -486,7 +486,7 @@ static void setseed32(uint8_t* str)
 	reg_rng_data = tmp;
 }
 
-static void getrandom(uint8_t* str)
+static int getrandom(uint8_t* str)
 {	
 	uint32_t tmp = 0xffffffff;//impossible value of the RNG output
 	
@@ -499,6 +499,8 @@ static void getrandom(uint8_t* str)
 		str[i]=tmp/0x01000000;
 		tmp = tmp << 8;
 	}//for uint32_t hex to uint8_t
+	
+	return 1;
 }
 
 static void debug_rdcycle()
@@ -965,10 +967,9 @@ void main()
 
 	//test: RNG generation
 	print("\nRNG generation:\r\n");
-	//debug_rdcycle();
 	setseed32(test_1);
 	debug_rdcycle();
-	getrandom(test_5);
+	while( getrandom(test_5) != 1 ){  /* wait */  };
 	BRLWE_init_hex(&m, test_5, 0);
 	debug_rdcycle();
 	print("random number = \n");

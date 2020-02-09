@@ -891,7 +891,7 @@ void main()
 	//test: RNG generation
 	print("\nRNG generation:\r\n");
 	//debug_rdcycle();
-	//setseed32(test_1);
+	setseed32(test_1);
 	debug_rdcycle();
 	getrandom(test_5);
 	BRLWE_init_hex(&m, test_5, 0);

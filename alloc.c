@@ -124,7 +124,7 @@ void mem_init(void)
 *          失败        返回NULL
 ********************************************************************************
 */
-static void *malloc(unsigned nbytes)
+void *malloc(unsigned nbytes)
 {
     unsigned int    suit_size = 0xFFFFFFFFUL;
     mem_block     *head_node=NULL, *tmp_node=NULL, *suit_node=NULL;
@@ -186,7 +186,8 @@ static void *malloc(unsigned nbytes)
     }
     else
     {
-        alloc_printf("%s,size err!\r\n",__FUNCTION__);
+        alloc_printf("%s,size err!\r\n");
+		alloc_printf(__FUNCTION__);
     }
     
     return NULL;
@@ -203,7 +204,7 @@ static void *malloc(unsigned nbytes)
 * 返回  : 无
 ********************************************************************************
 */
-static void free(void *ap)
+void free(void *ap)
 {
     mem_block     *head_node, *tmp_node, *nxt_node;
     

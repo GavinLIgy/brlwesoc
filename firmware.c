@@ -556,19 +556,31 @@ void mem_print(void)
  
     if(mem_init_flag < 0)
     {
-        alloc_printf("未初始化,先初始化.\r\n");
+        print("未初始化,先初始化.\r\n");
         mem_init();
     }
     head_node = tmp_node = (mem_block *)HEAD_NODE;
-    alloc_printf("\r\n#############################\r\n");
+    print("\r\n#############################\r\n");
     while(1)
     {
-        alloc_printf("\r\nNO.%d:\r\n",i++);
-        alloc_printf("blk_ptr:0x%08x\r\n",tmp_node);
-        alloc_printf("mem_ptr:0x%08x\r\n",tmp_node->mem_ptr);
-        alloc_printf("nxt_ptr:0x%08x\r\n",tmp_node->nxt_ptr);
-        alloc_printf("mem_size:%d\r\n",tmp_node->mem_size);
-        alloc_printf("mem_sta:%d\r\n",tmp_node->mem_sta);
+        print("\r\nNO.",i++);
+		print_dec(i++);
+		print(":\r\n",i++);
+        print("blk_ptr:0x");
+        print_hex(tmp_node,8);
+        print("\r\n");
+        print("mem_ptr:0x");
+		print_hex(tmp_node->mem_ptr,8);
+		print("\r\n");
+        print("nxt_ptr:0x");
+		print_hex(tmp_node->nxt_ptr,8);
+		print("\r\n");
+        print("mem_size:");
+		print_dec(tmp_node->mem_size);
+		print("\r\n");
+        print("mem_sta:");
+		print_dec(tmp_node->mem_sta);
+		print("\r\n");
  
         tmp_node = tmp_node->nxt_ptr;
         if(tmp_node == head_node)
@@ -576,7 +588,7 @@ void mem_print(void)
             break;
         }
     }
-    alloc_printf("\r\n#############################\r\n");
+    print("\r\n#############################\r\n");
 }
  
 void buff_print(unsigned char *buf,unsigned int len)

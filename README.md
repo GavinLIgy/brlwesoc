@@ -1,8 +1,11 @@
 # brlwesoc - A light-weighted PQC security SoC running on Lattice HX8K FPGA
 
-This is a project aims to implement a PQC algorithm - Binary Ring LWE algorithm on a light-weighted SoC platform - Lattice HX8K FPGA. This Soc would be expected to be implemented in IoT security scenario. 
+## Introduction for the project:
 
-The SoC is based on PicoSoC (https://github.com/cliffordwolf/picorv32/tree/master/picosoc). 
+This is a project aims to implement a PQC algorithm - Binary Ring LWE algorithm on a light-weighted SoC platform - Lattice HX8K FPGA. 
+This Soc would be expected to be implemented in IoT security scenario. 
+
+The SoC is based on [PicoSoC](https://github.com/cliffordwolf/picorv32/tree/master/picosoc). 
 
 ## Description For the SoC:
 
@@ -32,8 +35,10 @@ and upload them to a connected iCEBreaker Board.
 | [LFSR/lfsr.v](lfsr.v)             | LFSR RNG module connected to SoC                                |
 | [start.s](start.s)                | Assembler source for firmware.hex/firmware.bin                  |
 | [firmware.c](firmware.c)          | C source for firmware.hex/firmware.bin                          |
-| [brlwe.c](brlwe.c)          	    | C library for firmware.c                                        |
-| [brlwe.h](brlwe.h)          	    | C library for firmware.c                                        |
+| [brlwe.c](brlwe.c)          	    | C library for Binary Ring Linearing-With-Error Algorithm        |
+| [brlwe.h](brlwe.h)          	    | C library for Binary Ring Linearing-With-Error Algorithm        |
+| [alloc.c](alloc.c)          	    | C library for Memory Allocation Function                        |
+| [alloc.h](alloc.h)          	    | C library for Memory Allocation Function                        |
 | [sections.lds](sections.lds)      | Linker script for firmware.hex/firmware.bin                     |
 | [hx8kdemo.v](hx8kdemo.v)          | FPGA-based example implementation on iCE40-HX8K Breakout Board  |
 | [hx8kdemo.pcf](hx8kdemo.pcf)      | Pin constraints for implementation on iCE40-HX8K Breakout Board |
@@ -53,9 +58,7 @@ and upload them to a connected iCEBreaker Board.
 | 0x02000000 .. 0x02000003 | SPI Flash Controller Config Register    |
 | 0x02000004 .. 0x02000007 | UART Clock Divider Register             |
 | 0x02000008 .. 0x0200000B | UART Send/Recv Data Register            |
-| 0x03000000 .. 0xFFFFFFFF | Memory mapped user peripherals          |
-
-Peripherals:
+| 0x03000000 .. 0xFFFFFFFF | Memory mapped user peripherals, which:  |
 | 0x03001000 .. 0x03001003 | RNG Data Register                       |
 
 Reading from the addresses in the internal SRAM region beyond the end of the
@@ -69,6 +72,10 @@ divided by the baud rate.
 
 The example design (hx8kdemo.v) has the 8 LEDs on the iCE40-HX8K Breakout Board
 mapped to the low byte of the 32 bit word at address 0x03000000.
+
+The Random number generator core implemented is 32-bit LFSR RNG (included in ./LFSR/lfsr.v). User can also change the source of the random number to external RNG(To be implemented later).
+
+./simplerng/simplerng.v provides a interface between the RNG module and iomemory bus line of the SOC.  
 
 ### SPI Flash Controller Config Register:
 
@@ -117,4 +124,5 @@ the FPGA IO pins T9 and T8 (near the center of J3).
 ## Description For the brlwe algorithm:
 
 The Binary Ring Learning-With-Error (brlwe) is an light-weighted Post-Quantum-Cryptography algorithm proposed by Micciancio and Peikert.
+
 

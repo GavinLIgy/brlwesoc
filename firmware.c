@@ -310,7 +310,7 @@ void print_dec(uint32_t v)
 		print(">=10Billion");
 		return;
 	}
-	
+	/*
 	if (v >= 9000000000) { putchar('9'); v -= 9000000000; }
 	else if (v >= 8000000000) { putchar('8'); v -= 8000000000; }
 	else if (v >= 7000000000) { putchar('7'); v -= 7000000000; }
@@ -330,7 +330,7 @@ void print_dec(uint32_t v)
 	else if (v >= 300000000) { putchar('3'); v -= 300000000; }
 	else if (v >= 200000000) { putchar('2'); v -= 200000000; }
 	else if (v >= 100000000) { putchar('1'); v -= 100000000; }
-	
+	*/
 	if (v >= 90000000) { putchar('9'); v -= 90000000; }
 	else if (v >= 80000000) { putchar('8'); v -= 80000000; }
 	else if (v >= 70000000) { putchar('7'); v -= 70000000; }

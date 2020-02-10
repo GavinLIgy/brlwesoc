@@ -563,9 +563,9 @@ void mem_print(void)
     print("\r\n#############################\r\n");
     while(1)
     {
-        print("\r\nNO.",i++);
+        print("\r\nNO.");
 		print_dec(i++);
-		print(":\r\n",i++);
+		print(":\r\n");
         print("blk_ptr:0x");
         print_hex(tmp_node,8);
         print("\r\n");
@@ -595,17 +595,19 @@ void buff_print(unsigned char *buf,unsigned int len)
 {
     unsigned int i;
  
-    alloc_printf("\r\n");
+    print("\r\n");
     for(i=0;i<len;i++)
     {
         if(i%16 == 0 && i != 0)
         {
-            alloc_printf("\r\n");
+            print("\r\n");
         }
-        alloc_printf("0x%02x,",buf[i]);
-        //alloc_printf("%c",buf[i]);
+        print("0x");
+		print_hex(buf[i],2);
+		print(",");
+        //print("%c",buf[i]);
     }
-    alloc_printf("\r\n");
+    print("\r\n");
 }
  /*
 void *m_malloc(unsigned nbytes)
@@ -635,11 +637,13 @@ void alloc_test(void)
     array ptr = NULL;
     unsigned int i,j;
  
-    alloc_printf("Ptr1:%d\r\n",sizeof(ptr));
+    print("Ptr1:");
+	print_dec("sizeof(ptr));
+	print("\r\n");
     ptr = m_malloc(16);
     if(ptr == NULL)
     {
-        alloc_printf("malloc failed.\r\n");
+        print("malloc failed.\r\n");
         return;
     }
     mem_print();

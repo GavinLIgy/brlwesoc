@@ -638,7 +638,7 @@ void alloc_test(void)
     unsigned int i,j;
  
     print("Ptr1:");
-	print_dec("sizeof(ptr));
+	print_dec(sizeof(ptr));
 	print("\r\n");
     ptr = m_malloc(16);
     if(ptr == NULL)

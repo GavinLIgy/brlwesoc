@@ -19,7 +19,7 @@
  
 #define MEM_ALLOC        1
 #if defined (MEM_ALLOC)&&MEM_ALLOC
-#define alloc_printf         printf
+#define alloc_printf         print
 #else
 #define alloc_printf(argv, ...)
 #endif
@@ -259,7 +259,7 @@ AGAIN:
         tmp_node = nxt_node;
     }
 }
- 
+
 void *m_malloc(unsigned nbytes)
 {
     return malloc(nbytes);

@@ -27,7 +27,7 @@
 #include "alloc.h"
 #include "alloc.c"
 
-#define alloc_printf  printf
+#define alloc_printf  print
 
 #ifdef ICEBREAKER
 #  define MEM_TOTAL 0x20000 /* 128 KB */
@@ -595,7 +595,7 @@ void buff_print(unsigned char *buf,unsigned int len)
     }
     alloc_printf("\r\n");
 }
- 
+ /*
 void *m_malloc(unsigned nbytes)
 {
     return malloc(nbytes);
@@ -604,7 +604,7 @@ void *m_malloc(unsigned nbytes)
 void m_free(void *ap)
 {
     free(ap);
-}
+}*/
  
 typedef char (*array)[4];
 /*

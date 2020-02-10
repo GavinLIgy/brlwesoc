@@ -57,7 +57,7 @@ extern uint32_t sram;
 	//test bench for configure2(N = 256, Q = 256)
 		#define BRLWE_N 256
 		#define BRLWE_Q 256
-	static const uint8_t test_1[BRLWE_N] = { \
+	//static const uint8_t test_1[BRLWE_N] = { \
 		(uint8_t)43,(uint8_t)98,(uint8_t)100,(uint8_t)95,(uint8_t)218,(uint8_t)37,(uint8_t)156,(uint8_t)50\
 		,(uint8_t)45,(uint8_t)89,(uint8_t)128,(uint8_t)74,(uint8_t)14,(uint8_t)182,(uint8_t)53,(uint8_t)216\
 		,(uint8_t)235,(uint8_t)220,(uint8_t)90,(uint8_t)98,(uint8_t)41,(uint8_t)129,(uint8_t)116,(uint8_t)44\
@@ -90,7 +90,7 @@ extern uint32_t sram;
 		,(uint8_t)120,(uint8_t)224,(uint8_t)61,(uint8_t)153,(uint8_t)71,(uint8_t)166,(uint8_t)56,(uint8_t)248\
 		,(uint8_t)211,(uint8_t)169,(uint8_t)39,(uint8_t)245,(uint8_t)55,(uint8_t)90,(uint8_t)219,(uint8_t)95\
 		,(uint8_t)106,(uint8_t)202,(uint8_t)94,(uint8_t)15,(uint8_t)53,(uint8_t)227,(uint8_t)165,(uint8_t)69};
-	static const uint8_t test_2[BRLWE_N] = { \
+	//static const uint8_t test_2[BRLWE_N] = { \
 		  (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)1 \
 		, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 \
 		, (uint8_t)0, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)1, (uint8_t)0 \

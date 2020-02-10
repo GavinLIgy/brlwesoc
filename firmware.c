@@ -634,7 +634,8 @@ typedef char (*array)[4];
 */
 void alloc_test(void)
 {  
-    array ptr = NULL;
+    /*
+	array ptr = NULL;
     unsigned int i,j;
  
     print("Ptr1:");
@@ -648,7 +649,7 @@ void alloc_test(void)
     }
     mem_print();
     
-    /*for(i=0;i<4;i++)
+    for(i=0;i<4;i++)
     {
         for(j=0;j<4;j++)
         {

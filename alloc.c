@@ -24,7 +24,7 @@
 #define alloc_printf(argv, ...)
 #endif
  
-#define MEM_SIZE         2*1024             /*内存池的大小 2 KBytes*/
+#define MEM_SIZE         0x200             /*内存池的大小 2 KBytes*/
  
 static    char mem[MEM_SIZE];                   /*定义用来内存分配的数组*/
  

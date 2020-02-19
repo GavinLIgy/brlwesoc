@@ -110,6 +110,7 @@ void mem_init(void)
     node->mem_sta        =    UNUSED;
     
     mem_init_flag = 1;
+	alloc_printf("初始化完成.\r\n");
 }
  
 /*

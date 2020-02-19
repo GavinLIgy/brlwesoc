@@ -679,22 +679,24 @@ static int getrandom(uint8_t* str)
 {	
 	uint32_t tmp = 0xffffffff;//impossible value of the RNG output
 	
-	while (tmp == 0xffffffff) {
-		tmp = reg_rng_data;
-	}// if RNG is not ready(tmp=0xffff_ffff), wait.
-	
-	int i = 0;
-	int j = 0;
-	for (j = 0; j < BRLWE_N/4; j++){
 		while (tmp == 0xffffffff) {
 			tmp = reg_rng_data;
 		}// if RNG is not ready(tmp=0xffff_ffff), wait.
 		
-		for (i = 0; i < 4; i++)	{
-			str[i]=tmp/0x01000000;
-			tmp = tmp << 8;
-		}//for uint32_t hex to uint8_t
-	}
+		int i = 0;
+		int j = 0;
+		for (j = 0; j < BRLWE_N/4; j++){
+			while (tmp == 0xffffffff) {
+				tmp = reg_rng_data;
+			}// if RNG is not ready(tmp=0xffff_ffff), wait.
+			
+			for (i = 0; i < 4; i++)	{
+				str[i]=tmp/0x01000000;
+				tmp = tmp << 8;
+			}//for uint32_t hex to uint8_t
+			
+			tmp = 0xffffffff;
+		}
 
 	return 1;
 }
@@ -1065,37 +1067,36 @@ void main()
 	debug_rdcycle();*/
 	
 
-	/*
+	
 	uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
+	/*
 	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };
 	uint8_t test_5[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	*/
 	
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials a, m, n;
-	print("\nPolynomial initialization step:\r\n");
+	//print("\nPolynomial initialization step:\r\n");
 	//BRLWE_init_hex(&a, test_1, 0);
-	BRLWE_init_hex(&m, test_2, 0);	
+	//BRLWE_init_hex(&m, test_2, 0);	
 	//print("test1 = \n");
 	//phex(a.polynomial);
-	print("test2 = \n");
-	phex(m.polynomial);
+	//print("test2 = \n");
+	//phex(m.polynomial);
 	//print("test3 = \n");
 	//phex(n.polynomial);
 
-	/*
+	
 	//test: RNG generation
 	print("\nRNG generation:\r\n");
 	setseed32(test_3);
-	debug_rdcycle();
-	//while( getrandom(test_5) != 1 ){   };
-	uint8_t test_6[BRLWE_N];
+
 	getrandom(test_2);
-	debug_rdcycle();
 	BRLWE_init_hex(&m, test_2, 0);
-	print("random number = \n");
+	debug_rdcycle();
+	print("Random number = \n");
 	phex(m.polynomial);
-	*/
+	
 	
 	/*
 	//test: Math-operation subfunctions

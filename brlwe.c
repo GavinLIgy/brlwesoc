@@ -41,11 +41,11 @@ void BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly) {
 void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev) {
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
-			poly->polynomial[i] = (uint8_t)str[BRLWE_N - 1 - i];
+			poly->polynomial[i] = (uint8_t)(str[BRLWE_N - 1 - i] % BRLWE_Q);
 	}
 	else {
 		for (int i = 0; i < BRLWE_N; i++)
-			poly->polynomial[i] = (uint8_t)str[i];
+			poly->polynomial[i] = (uint8_t)(str[i]% BRLWE_Q);
 	}; 
 	return;
 };

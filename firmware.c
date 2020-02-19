@@ -1054,24 +1054,24 @@ void main()
 	reg_uart_clkdiv = 104;
 	print("Booting..\n");
 
-	//reg_leds = 63;//=0x3f=8'b0011_1111
+	reg_leds = 63;//=0x3f=8'b0011_1111
 	set_flash_qspi_flag();
 
-	//reg_leds = 127;//=0x7f=8'b0111_1111
-	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
+	reg_leds = 127;//=0x7f=8'b0111_1111
+	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
 	cmd_memtest();
-	print("\rmem print to ");
+	//print("\rmem print to ");
 	//extern uint32_t _heap_start;
 	//print_hex(&_heap_start,8);
-	print_hex(mem,8);
-	print_dec(sizeof(mem));
-	//mem_init();
-	//mem_print();
-	//debug_rdcycle();
-	//alloc_test();
-	//debug_rdcycle();
+	//print_hex(mem,8);
+	//print_dec(sizeof(mem));
+	mem_init();
+	mem_print();
+	debug_rdcycle();
+	alloc_test();
+	debug_rdcycle();
 	
 	
 	

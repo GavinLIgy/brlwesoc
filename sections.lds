@@ -6,6 +6,12 @@
 #  error "Set -DICEBREAKER or -DHX8KDEMO when compiling firmware.c"
 #endif
 
+/* Highest address of the user mode stack */
+_estack = 0x00000000 + MEM_TOTAL;    /* end of RAM */
+/* Generate a link error if heap and stack don't fit into RAM */
+_Min_Heap_Size = 0x50;      /* required amount of heap  */
+_Min_Stack_Size = 0x50; /* required amount of stack */
+
 MEMORY
 {
     FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
@@ -63,9 +69,22 @@ SECTIONS {
     } >FLASH
 
     /* this is to define the start of the heap, and make sure we have a minimum size */
-    .heap :
+    /*
+	.heap :
     {
         . = ALIGN(4);
         _heap_start = .;    /* define a global symbol at heap start */
     } >RAM
+	*/
+	
+	  /* User_heap_stack section, used to check that there is enough RAM left */
+	  ._user_heap_stack :
+	  {
+		. = ALIGN(4);
+		PROVIDE ( end = . );
+		PROVIDE ( _end = . );
+		. = . + _Min_Heap_Size;
+		. = . + _Min_Stack_Size;
+		. = ALIGN(4);
+	 } >FLASH
 }

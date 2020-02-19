@@ -1062,9 +1062,11 @@ void main()
 	
 	//test: memory allocate testing
 	cmd_memtest();
-	print("\r_heap_start print to ");
-	extern uint32_t _heap_start;
-	print_hex(&_heap_start,8);
+	print("\rmem print to ");
+	//extern uint32_t _heap_start;
+	//print_hex(&_heap_start,8);
+	print_hex(mem,8);
+	print_dec(sizeof(mem));
 	//mem_init();
 	//mem_print();
 	//debug_rdcycle();

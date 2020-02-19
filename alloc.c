@@ -24,7 +24,7 @@
 #define alloc_printf(argv, ...)
 #endif
  
-#define MEM_SIZE         0x100             /*内存池的大小*/
+#define MEM_SIZE         0x1000             /*内存池的大小*/
  
 static    char mem[MEM_SIZE];                   /*定义用来内存分配的数组*/
  
@@ -101,7 +101,7 @@ void mem_init(void)
 {
     mem_block     *node;
     
-    memset(mem,    0x00UL,    sizeof(mem));
+    memset(mem,    0x00000000,    sizeof(mem));
     
     node = (mem_block     *)HEAD_NODE;
     node->mem_ptr         =     MEM_START;

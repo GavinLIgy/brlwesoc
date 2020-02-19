@@ -1063,6 +1063,7 @@ void main()
 	//test: memory allocate testing
 	cmd_memtest();
 	mem_init();
+	mem_print();
 	debug_rdcycle();
 	alloc_test();
 	debug_rdcycle();

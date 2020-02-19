@@ -296,7 +296,7 @@ static void phex(uint8_t* str)
 			print("\r\n");
 			j = 0;
 		}
-		else if (j == 4){
+		else if (j%4==0 && j!=0){
 			print(" ");
 		}
 	}

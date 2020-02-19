@@ -1090,9 +1090,10 @@ void main()
 	//test: RNG generation
 	print("\nRNG generation:\r\n");
 	setseed32(test_3);
-
-	getrandom(test_2);
-	BRLWE_init_hex(&m, test_2, 0);
+	
+	uint8_t test_4[BRLWE_N];
+	getrandom(test_4);
+	BRLWE_init_hex(&m, test_4, 0);
 	debug_rdcycle();
 	print("Random number = \n");
 	phex(m.polynomial);

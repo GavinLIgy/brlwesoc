@@ -634,7 +634,7 @@ typedef char (*array)[4];
 */
 void alloc_test(void)
 {  
-    /*
+    
 	array ptr = NULL;
     unsigned int i,j;
  
@@ -658,7 +658,7 @@ void alloc_test(void)
     }
     m_free(ptr);
     mem_print();
-    buff_print((unsigned char *)ptr, 16);*/
+    buff_print((unsigned char *)ptr, 16);
 }
 
 /*------------rng component------------------*/

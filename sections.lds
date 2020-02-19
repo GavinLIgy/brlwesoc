@@ -60,7 +60,7 @@ SECTIONS {
 
         . = ALIGN(4);
         _ebss = .;         /* define a global symbol at bss end; used by startup code */
-    } >RAM
+    } >FLASH
 
     /* this is to define the start of the heap, and make sure we have a minimum size */
     .heap :

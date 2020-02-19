@@ -8,8 +8,7 @@
 
 MEMORY
 {
-    FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x200000 /* entire flash, 4 MiB */
-	HEAP (arwx)		: ORIGIN = 0x00300000, LENGTH = 0x200000
+    FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
     RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = MEM_TOTAL
 }
 
@@ -68,5 +67,5 @@ SECTIONS {
     {
         . = ALIGN(4);
         _heap_start = .;    /* define a global symbol at heap start */
-    } >HEAP
+    } >RAM
 }

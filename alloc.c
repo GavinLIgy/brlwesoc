@@ -163,6 +163,7 @@ void *malloc(unsigned nbytes)
             break;
         }
     }
+	alloc_printf("malloc mark 1.\r\n");
  
     if(nbytes <= suit_node->mem_size && (nbytes + BLK_SIZE) >= suit_node->mem_size)
     {

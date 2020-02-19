@@ -641,12 +641,13 @@ void alloc_test(void)
     print("Ptr1:");
 	print_dec(sizeof(ptr));
 	print("\r\n");
-    ptr = m_malloc(16);
+    ptr = m_malloc(4);
     if(ptr == NULL)
     {
         print("malloc failed.\r\n");
         return;
     }
+	alloc_printf("malloc mark 2.\r\n");
     mem_print();
     
     for(i=0;i<4;i++)

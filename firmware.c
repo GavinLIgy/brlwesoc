@@ -1061,12 +1061,14 @@ void main()
 	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
-	//cmd_memtest();
-	mem_init();
-	mem_print();
-	debug_rdcycle();
-	alloc_test();
-	debug_rdcycle();
+	cmd_memtest();
+	print("\r_heap_start print to ");
+	print_hex(_heap_start,8);
+	//mem_init();
+	//mem_print();
+	//debug_rdcycle();
+	//alloc_test();
+	//debug_rdcycle();
 	
 	
 	

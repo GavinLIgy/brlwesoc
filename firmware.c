@@ -1061,7 +1061,7 @@ void main()
 	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
-	cmd_memtest();
+	//cmd_memtest();
 	mem_init();
 	mem_print();
 	debug_rdcycle();

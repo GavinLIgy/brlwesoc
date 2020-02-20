@@ -1068,7 +1068,7 @@ void main()
 	//print_hex(mem,8);
 	//print_dec(sizeof(mem));
 	mem_init();
-	mem_print();
+	//mem_print();
 	debug_rdcycle();
 	alloc_test();
 	debug_rdcycle();

@@ -647,7 +647,6 @@ void alloc_test(void)
         print("malloc failed.\r\n");
         return;
     }
-	alloc_printf("malloc mark 2.\r\n");
     mem_print();
     
     for(i=0;i<4;i++)
@@ -657,8 +656,11 @@ void alloc_test(void)
             ptr[i][j] = i;
         }
     }
-    m_free(ptr);
+    
     mem_print();
+    buff_print((unsigned char *)ptr, 16);
+	m_free(ptr);
+	mem_print();
     buff_print((unsigned char *)ptr, 16);
 }
 

@@ -1137,13 +1137,20 @@ void main()
 	
 	uint8_t* test_4 = NULL;
     test_4 = m_malloc(BRLWE_N);
-	
+	mem_print();
+    buff_print((unsigned char *)test_4, BRLWE_N);
+	print("\nMemory allocation completed.\r\n");
 	getrandom_binary(test_4);
 	BRLWE_init_hex(&n, test_4, 0);
-	debug_rdcycle();
+	print("\nRNG completed.\r\n");
+	mem_print();
+    buff_print((unsigned char *)test_4, BRLWE_N);
 	print("Random number = \n");
 	phex(n.polynomial);
 	m_free(test_4);
+	print("\nMemory after free().\r\n");
+	mem_print();
+    buff_print((unsigned char *)test_4, BRLWE_N);
 	
 	/*
 	//test: Math-operation subfunctions

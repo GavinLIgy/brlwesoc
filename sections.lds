@@ -7,7 +7,7 @@
 #endif
 
 /* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0x100;      /* required amount of heap  */
+_Min_Heap_Size = 0x1000;      /* required amount of heap  */
 
 MEMORY
 {
@@ -74,7 +74,7 @@ SECTIONS {
 		. = . + _Min_Heap_Size;
 		_heap_end = .;
 		. = ALIGN(4);		/* define a global symbol at heap start */
-    } >RAM
+    } >FLASH
 	
 	
 	/* User_heap section*/

@@ -194,8 +194,7 @@ void *malloc(unsigned nbytes)
     }
     else
     {
-        alloc_printf("%s,size err!\r\n");
-		alloc_printf(__FUNCTION__);
+        alloc_printf("size err!\r\n");
     }
     
     return NULL;

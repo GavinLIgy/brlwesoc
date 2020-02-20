@@ -276,19 +276,6 @@ void print(const char *p)
 		putchar(*(p++));
 }
 
-static void print_Hex(unsigned int hex)
-{
-	int i = 8;
-	putchar('0');
-	putchar('x');
-	while (i--) {
-		unsigned char c = (hex & 0xF0000000) >> 28;
-		putchar(c < 0xa ? c + '0' : c - 0xa + 'a');
-		hex <<= 4;
-	}
-	putchar('\r');
-}
-
 void print_hex(uint8_t v, int digits)
 {
 	for (int i = 7; i >= 0; i--) {
@@ -1138,18 +1125,19 @@ void main()
 	mem_init();
 	mem_print();
 	alloc_test();
+	print("##################################");
 	print("MEM_SIZE = ");
-	print_Hex(MEM_SIZE);
+	print_dec(MEM_SIZE);
 	print("MEM_START (& _heap_start)= ");
-	print_Hex(MEM_START);
+	print_dec(MEM_START);
 	print("MEM_END (& _heap_end) = ");
-	print_Hex(MEM_END);
+	print_dec(MEM_END);
 	print("BLK_SIZE = ");
-	print_Hex(BLK_SIZE);
+	print_dec(BLK_SIZE);
 	print("HEAD_NODE = ");
-	print_Hex(HEAD_NODE);
+	print_dec(HEAD_NODE);
 	print("(& _heap_end - BLK_SIZE) = ");
-	print_Hex(& _heap_end - BLK_SIZE);
+	print_dec(& _heap_end - BLK_SIZE);
 	
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };

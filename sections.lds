@@ -78,6 +78,7 @@ SECTIONS {
 	
 	
 	/* User_heap section*/
+	/*
 	._user_heap :
 	{
 		. = ALIGN(4);
@@ -85,4 +86,5 @@ SECTIONS {
 		. = . + _Min_Heap_Size;
 		. = ALIGN(4);
 	} >FLASH
+	*/
 }

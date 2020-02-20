@@ -677,9 +677,13 @@ void alloc_test(void)
             ptr2[i][j] = i;
         }
     }
+	
+	
+	m_free(ptr);
 	m_free(ptr2);
 	mem_print();
-    buff_print((unsigned char *)ptr2, 16);
+    buff_print((unsigned char *)ptr, 16);
+	buff_print((unsigned char *)ptr2, 16);
 }
 
 /*

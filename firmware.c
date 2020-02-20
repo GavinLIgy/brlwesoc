@@ -1110,7 +1110,7 @@ void main()
 	BRLWE_init_hex(&n, test_4, 0);
 	debug_rdcycle();
 	print("Random number = \n");
-	phex(m.polynomial);
+	phex(n.polynomial);
 	
 	/*
 	//test: Math-operation subfunctions

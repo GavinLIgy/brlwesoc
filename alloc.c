@@ -24,13 +24,18 @@
 #define alloc_printf(argv, ...)
 #endif
  
-#define MEM_SIZE         0x1000             /*内存池的大小*/
+#define MEM_SIZE         0x100             /*内存池的大小*/
  
-static    char mem[MEM_SIZE];                   /*定义用来内存分配的数组*/
+extern uint32_t _heap_start, _heap_end;
+
+#define MEM_START     & _heap_start              	  	/*定义内存池的首地址*/
+#define MEM_END       & _heap_end	        /*定义内存池的尾地址*/
+  
+//static    char mem[MEM_SIZE];                   /*定义用来内存分配的数组*/
  
-#define MEM_START     mem              	  	/*定义内存池的首地址*/
-#define MEM_END       (mem + MEM_SIZE)	        /*定义内存池的尾地址*/
- 
+//#define MEM_START     mem              	  	/*定义内存池的首地址*/
+//#define MEM_END       (mem + MEM_SIZE)	        /*定义内存池的尾地址*/
+
 enum USE_STA{                            /*定义内存块的使用状态(UNUSED 未使用)，(USED 已使用)*/
     UNUSED = 0,
     USED   = 1

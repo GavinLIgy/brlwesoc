@@ -1138,7 +1138,7 @@ void main()
 	struct BRLWE_Ring_polynomials n;
 	
 	uint8_t* test_4 = NULL;
-    test_4 = m_malloc(16);
+    test_4 = m_malloc(100);
 	print("Size of memery control block");
 	print_dec(BLK_SIZE);
 	mem_print();

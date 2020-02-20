@@ -7,7 +7,7 @@
 #endif
 
 /* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0x134;      /* required amount of heap  */
+_Min_Heap_Size = 0x130;      /* required amount of heap  */
 
 MEMORY
 {

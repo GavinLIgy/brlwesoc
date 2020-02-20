@@ -1138,12 +1138,12 @@ void main()
 	struct BRLWE_Ring_polynomials n;
 	
 	uint8_t* test_4 = NULL;
-    test_4 = m_malloc(160);
+    test_4 = m_malloc(256);
 	print("Size of memery control block: ");
 	print_dec(BLK_SIZE);
 	print("\r\n");
 	mem_print();
-    buff_print((unsigned char *)test_4, 160);
+    buff_print((unsigned char *)test_4, 256);
 	print("\nMemory allocation completed.\r\n");
 	
 	/*getrandom_binary(test_4);

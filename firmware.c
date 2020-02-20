@@ -1124,9 +1124,19 @@ void main()
 	//print_dec(sizeof(mem));
 	mem_init();
 	mem_print();
-	debug_rdcycle();
 	alloc_test();
-	debug_rdcycle();
+	print("MEM_SIZE = 0x");
+	print_hex(MEM_SIZE,8);
+	print("MEM_START = 0x");
+	print_hex(MEM_START,8);
+	print("MEM_END = 0x");
+	print_hex(MEM_END,8);
+	print("BLK_SIZE = 0x");
+	print_hex(BLK_SIZE,8);
+	print("HEAD_NODE = 0x");
+	print_hex(HEAD_NODE,8);
+	print("(& _heap_end - BLK_SIZE) = 0x");
+	print_hex((& _heap_end - BLK_SIZE),8);
 	
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };

@@ -1138,10 +1138,12 @@ void main()
 	struct BRLWE_Ring_polynomials n;
 	
 	uint8_t* test_4 = NULL;
-    test_4 = m_malloc(BRLWE_N);
+    test_4 = m_malloc(16);
+	print("Size of memery control block");
+	print_dec(BLK_SIZE);
 	mem_print();
-    buff_print((unsigned char *)test_4, BRLWE_N);
-	print("\nMemory allocation completed.\r\n");
+    buff_print((unsigned char *)test_4, 16);
+	/*print("\nMemory allocation completed.\r\n");
 	getrandom_binary(test_4);
 	BRLWE_init_hex(&n, test_4, 0);
 	print("\nRNG completed.\r\n");
@@ -1153,7 +1155,7 @@ void main()
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
-	
+	*/
 	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");

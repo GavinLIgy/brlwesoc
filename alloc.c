@@ -28,8 +28,8 @@
  
 static    char mem[MEM_SIZE];                   /*定义用来内存分配的数组*/
  
-#define MEM_START     &mem[0]                /*定义内存池的首地址*/
-#define MEM_END       &mem[MEM_SIZE]        /*定义内存池的尾地址*/
+#define MEM_START     mem              	  	/*定义内存池的首地址*/
+#define MEM_END       (mem + MEM_SIZE)	        /*定义内存池的尾地址*/
  
 enum USE_STA{                            /*定义内存块的使用状态(UNUSED 未使用)，(USED 已使用)*/
     UNUSED = 0,

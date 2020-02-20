@@ -649,8 +649,6 @@ void alloc_test(void)
     }
     mem_print();
     
-	print("I am at point 1.\r\n");
-	
     for(i=0;i<4;i++)
     {
         for(j=0;j<4;j++)
@@ -658,13 +656,31 @@ void alloc_test(void)
             ptr[i][j] = i;
         }
     }
-    print("I am at point 2.\r\n");
+	
+	array ptr2 = NULL;
+    unsigned int i,j;
+ 
+    print("Ptr2:");
+	print_dec(sizeof(ptr2));
+	print("\r\n");
+    ptr2 = m_malloc(16);
+    if(ptr2 == NULL)
+    {
+        print("malloc failed.\r\n");
+        return;
+    }
     mem_print();
-    buff_print((unsigned char *)ptr, 16);
-	m_free(ptr);
-	print("I am at point 3.\r\n");
+    
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            ptr2[i][j] = i;
+        }
+    }
+	m_free(ptr2);
 	mem_print();
-    buff_print((unsigned char *)ptr, 16);
+    buff_print((unsigned char *)ptr2, 16);
 }
 
 /*
@@ -1096,7 +1112,7 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
-	/*
+	
 	cmd_memtest();
 	//print("\rmem print to ");
 	//extern uint32_t _heap_start;
@@ -1108,7 +1124,7 @@ void main()
 	debug_rdcycle();
 	alloc_test();
 	debug_rdcycle();
-	*/
+	
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
@@ -1132,6 +1148,7 @@ void main()
 
 	
 	//test: RNG generation
+	/*
 	print("\nRNG generation:\r\n");
 	setseed32(test_3);
 	
@@ -1150,7 +1167,6 @@ void main()
 	getrandom_binary(test_4);
 	BRLWE_init_hex(&n, test_4, 0);
 	print("\nRNG completed.\r\n");
-	//mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
 	print("test_4 = ");
 	phex(test_4);
@@ -1160,7 +1176,7 @@ void main()
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
-	
+	*/
 	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");

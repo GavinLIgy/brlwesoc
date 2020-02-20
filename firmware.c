@@ -683,10 +683,6 @@ static void setseed32(uint8_t* str)
 static int getrandom(uint8_t* str)
 {	
 	uint32_t tmp = 0xffffffff;//impossible value of the RNG output
-	
-		while (tmp == 0xffffffff) {
-			tmp = reg_rng_data;
-		}// if RNG is not ready(tmp=0xffff_ffff), wait.
 		
 		int i = 0;
 		int j = 0;
@@ -696,7 +692,7 @@ static int getrandom(uint8_t* str)
 			}// if RNG is not ready(tmp=0xffff_ffff), wait.
 			
 			for (i = 0; i < 4; i++)	{
-				str[i]=tmp/0x01000000;
+				str[4*j+i]=tmp/0x01000000;
 				tmp = tmp << 8;
 			}//for uint32_t hex to uint8_t
 			
@@ -1105,7 +1101,7 @@ void main()
 	print("\nRNG generation:\r\n");
 	setseed32(test_3);
 	
-	array test_4 = NULL;
+	uint8_t* test_4 = NULL;
     test_4 = m_malloc(BRLWE_N);
 	
 	getrandom(test_4);

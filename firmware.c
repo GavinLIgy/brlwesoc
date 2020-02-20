@@ -1138,7 +1138,7 @@ void main()
 	struct BRLWE_Ring_polynomials n;
 	
 	uint8_t* test_4 = NULL;
-    test_4 = m_malloc(16);
+    test_4 = m_malloc(BRLWE_N);
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
 	print("\nMemory allocation completed.\r\n");

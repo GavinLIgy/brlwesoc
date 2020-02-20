@@ -24,7 +24,7 @@
 #define alloc_printf(argv, ...)
 #endif
  
-#define MEM_SIZE         0x124             /*内存池的大小*/
+#define MEM_SIZE         0x130             /*内存池的大小*/
  
 extern uint32_t _heap_start, _heap_end;
 

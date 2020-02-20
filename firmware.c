@@ -667,7 +667,18 @@ void alloc_test(void)
     buff_print((unsigned char *)ptr, 16);
 }
 
-/*------------rng component------------------*/
+/*
+********************************************************************************
+*                       Random Number Seed Setting                     
+*
+* Description  	: 测试内存分配系统中每一个函数的功能
+*
+* Parameters  	: uint8_t* str: seed number, format: uint8_t str[4]
+*
+* Return  		: None
+********************************************************************************
+*/
+
 static void setseed32(uint8_t* str)
 {	
 	int i;
@@ -680,6 +691,7 @@ static void setseed32(uint8_t* str)
 	reg_rng_data = tmp;
 }
 
+/*
 static int getrandom(uint8_t* str)
 {	
 	uint32_t tmp = 0xffffffff;//impossible value of the RNG output
@@ -694,6 +706,28 @@ static int getrandom(uint8_t* str)
 			for (i = 0; i < 4; i++)	{
 				str[4*j+i]=tmp/0x01000000;
 				tmp = tmp << 8;
+			}//for uint32_t hex to uint8_t
+			
+			tmp = 0xffffffff;
+		}
+
+	return 1;
+}*/
+
+static int getrandom_binary(uint8_t* str)
+{	
+	uint32_t tmp = 0xffffffff;//impossible value of the RNG output
+		
+		int i = 0;
+		int j = 0;
+		for (j = 0; j < BRLWE_N/8; j++){
+			while (tmp == 0xffffffff) {
+				tmp = reg_rng_data;
+			}// if RNG is not ready(tmp=0xffff_ffff), wait.
+			
+			for (i = 0; i < 8; i++)	{
+				str[8*j+i]=(tmp/0x10000000)%2;
+				tmp = tmp << 4;
 			}//for uint32_t hex to uint8_t
 			
 			tmp = 0xffffffff;
@@ -1104,7 +1138,7 @@ void main()
 	uint8_t* test_4 = NULL;
     test_4 = m_malloc(BRLWE_N);
 	
-	getrandom(test_4);
+	getrandom_binary(test_4);
 	BRLWE_init_hex(&n, test_4, 0);
 	debug_rdcycle();
 	print("Random number = \n");

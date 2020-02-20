@@ -105,8 +105,10 @@ unsigned char* p = (unsigned char*) s;
 void mem_init(void)
 {
     mem_block     *node;
+	
+	memset(MEM_START,    0x00000000,    (MEM_END - MEM_START) );
     
-    memset(mem,    0x00000000,    sizeof(mem));
+    //memset(mem,    0x00000000,    sizeof(mem));
     
     node = (mem_block     *)HEAD_NODE;
     node->mem_ptr         =     MEM_START;

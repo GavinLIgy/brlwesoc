@@ -1143,7 +1143,7 @@ void main()
 	print_dec(BLK_SIZE);
 	print("\r\n");
 	mem_print();
-    buff_print((unsigned uint8_t *)test_4, 160);
+    buff_print((unsigned char *)test_4, 160);
 	print("\nMemory allocation completed.\r\n");
 	
 	/*getrandom_binary(test_4);

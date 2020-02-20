@@ -1119,7 +1119,7 @@ void main()
 	*/
 	
 	//test: Polynomial initialization step
-	struct BRLWE_Ring_polynomials a, m, n;
+	/*struct BRLWE_Ring_polynomials a, m;
 	print("\nPolynomial initialization step:\r\n");
 	BRLWE_init_hex(&a, test_1, 0);
 	BRLWE_init_hex(&m, test_2, 0);	
@@ -1128,15 +1128,17 @@ void main()
 	print("test2 = \n");
 	phex(m.polynomial);
 	//print("test3 = \n");
-	//phex(n.polynomial);
+	//phex(n.polynomial);*/
 
 	
 	//test: RNG generation
 	print("\nRNG generation:\r\n");
 	setseed32(test_3);
 	
+	struct BRLWE_Ring_polynomials n;
+	
 	uint8_t* test_4 = NULL;
-    test_4 = m_malloc(BRLWE_N);
+    test_4 = m_malloc(16);
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
 	print("\nMemory allocation completed.\r\n");

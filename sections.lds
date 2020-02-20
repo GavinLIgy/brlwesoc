@@ -11,7 +11,7 @@ _Min_Heap_Size = 0x1000;      /* required amount of heap  */
 
 MEMORY
 {
-    FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
+    FLASH (xrw)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
     RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = MEM_TOTAL
 }
 

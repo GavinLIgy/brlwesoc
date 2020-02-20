@@ -11,7 +11,7 @@ _Min_Heap_Size = 0x100;      /* required amount of heap  */
 
 MEMORY
 {
-    FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
+    FLASH (xrw)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
     RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = MEM_TOTAL
 }
 
@@ -74,7 +74,7 @@ SECTIONS {
 		. = . + _Min_Heap_Size;
 		_heap_end = .;
 		. = ALIGN(4);		/* define a global symbol at heap start */
-    } >RAM
+    } >FLASH
 	
 	
 	/* User_heap section*/

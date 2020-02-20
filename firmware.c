@@ -1143,21 +1143,24 @@ void main()
 	print_dec(BLK_SIZE);
 	print("\r\n");
 	mem_print();
+	memset(test_4, 0, 256);
     buff_print((unsigned char *)test_4, 256);
 	print("\nMemory allocation completed.\r\n");
 	
-	/*getrandom_binary(test_4);
+	getrandom_binary(test_4);
 	BRLWE_init_hex(&n, test_4, 0);
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
-	print("Random number = \n");
+	print("test_4 = ");
+	phex(test_4);
+	print("n.polynomial = ");
 	phex(n.polynomial);
 	m_free(test_4);
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
-	*/
+	
 	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");

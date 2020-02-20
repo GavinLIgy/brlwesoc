@@ -641,7 +641,7 @@ void alloc_test(void)
     print("Ptr1:");
 	print_dec(sizeof(ptr));
 	print("\r\n");
-    ptr = m_malloc(4);
+    ptr = m_malloc(16);
     if(ptr == NULL)
     {
         print("malloc failed.\r\n");
@@ -649,6 +649,8 @@ void alloc_test(void)
     }
     mem_print();
     
+	print("I am at point 1.\r\n");
+	
     for(i=0;i<4;i++)
     {
         for(j=0;j<4;j++)
@@ -656,10 +658,11 @@ void alloc_test(void)
             ptr[i][j] = i;
         }
     }
-    
+    print("I am at point 2.\r\n");
     mem_print();
     buff_print((unsigned char *)ptr, 16);
 	m_free(ptr);
+	print("I am at point 3.\r\n");
 	mem_print();
     buff_print((unsigned char *)ptr, 16);
 }

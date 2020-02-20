@@ -1125,17 +1125,22 @@ void main()
 	mem_init();
 	mem_print();
 	alloc_test();
-	print("##################################");
+	print("##################################\r\n");
 	print("MEM_SIZE = ");
 	print_dec(MEM_SIZE);
+	print("\r\n");
 	print("MEM_START (& _heap_start)= ");
 	print_dec(MEM_START);
+	print("\r\n");
 	print("MEM_END (& _heap_end) = ");
 	print_dec(MEM_END);
+	print("\r\n");
 	print("BLK_SIZE = ");
 	print_dec(BLK_SIZE);
+	print("\r\n");
 	print("HEAD_NODE = ");
 	print_dec(HEAD_NODE);
+	print("\r\n");
 	print("(& _heap_end - BLK_SIZE) = ");
 	print_dec(& _heap_end - BLK_SIZE);
 	

@@ -26,10 +26,10 @@
  
 #define MEM_SIZE         0x130             /*内存池的大小*/
  
-extern uint32_t _heap_start, _heap_end;
+extern int _heap_start, _heap_end;
 
-#define MEM_START     & _heap_start              	  	/*定义内存池的首地址*/
-#define MEM_END       & _heap_end	        /*定义内存池的尾地址*/
+#define MEM_START     (& _heap_start)              	  	/*定义内存池的首地址*/
+#define MEM_END       (& _heap_end)	        /*定义内存池的尾地址*/
   
 //static    char mem[MEM_SIZE];                   /*定义用来内存分配的数组*/
  

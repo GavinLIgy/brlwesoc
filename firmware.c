@@ -1066,6 +1066,7 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
+	/*
 	cmd_memtest();
 	//print("\rmem print to ");
 	//extern uint32_t _heap_start;
@@ -1077,38 +1078,39 @@ void main()
 	debug_rdcycle();
 	alloc_test();
 	debug_rdcycle();
+	*/
 	
-	
-	
-	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
+	uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	/*
 	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };
 	uint8_t test_5[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	*/
 	
 	//test: Polynomial initialization step
-	//struct BRLWE_Ring_polynomials a, m, n;
-	//print("\nPolynomial initialization step:\r\n");
-	//BRLWE_init_hex(&a, test_1, 0);
-	//BRLWE_init_hex(&m, test_2, 0);	
-	//print("test1 = \n");
-	//phex(a.polynomial);
-	//print("test2 = \n");
-	//phex(m.polynomial);
+	struct BRLWE_Ring_polynomials a, m, n;
+	print("\nPolynomial initialization step:\r\n");
+	BRLWE_init_hex(&a, test_1, 0);
+	BRLWE_init_hex(&m, test_2, 0);	
+	print("test1 = \n");
+	phex(a.polynomial);
+	print("test2 = \n");
+	phex(m.polynomial);
 	//print("test3 = \n");
 	//phex(n.polynomial);
 
 	
 	//test: RNG generation
-	//print("\nRNG generation:\r\n");
-	//setseed32(test_3);
+	print("\nRNG generation:\r\n");
+	setseed32(test_3);
 	
-	//uint8_t test_4[BRLWE_N];
-	//getrandom(test_4);
-	//BRLWE_init_hex(&m, test_4, 0);
-	//debug_rdcycle();
-	//print("Random number = \n");
-	//phex(m.polynomial);
+	array test_4 = NULL;
+    test_4 = m_malloc(BRLWE_N);
+	
+	getrandom(test_4);
+	BRLWE_init_hex(&n, test_4, 0);
+	debug_rdcycle();
+	print("Random number = \n");
+	phex(m.polynomial);
 	
 	/*
 	//test: Math-operation subfunctions

@@ -658,7 +658,6 @@ void alloc_test(void)
     }
 	
 	array ptr2 = NULL;
-    unsigned int i,j;
  
     print("Ptr2:");
 	print_dec(sizeof(ptr2));

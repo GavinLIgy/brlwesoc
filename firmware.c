@@ -1120,13 +1120,13 @@ void main()
 	
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials a, m, n;
-	//print("\nPolynomial initialization step:\r\n");
-	//BRLWE_init_hex(&a, test_1, 0);
-	//BRLWE_init_hex(&m, test_2, 0);	
-	//print("test1 = \n");
-	//phex(a.polynomial);
-	//print("test2 = \n");
-	//phex(m.polynomial);
+	print("\nPolynomial initialization step:\r\n");
+	BRLWE_init_hex(&a, test_1, 0);
+	BRLWE_init_hex(&m, test_2, 0);	
+	print("test1 = \n");
+	phex(a.polynomial);
+	print("test2 = \n");
+	phex(m.polynomial);
 	//print("test3 = \n");
 	//phex(n.polynomial);
 
@@ -1148,7 +1148,7 @@ void main()
 	print("Random number = \n");
 	phex(n.polynomial);
 	m_free(test_4);
-	print("\nMemory after free().\r\n");
+	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
 	

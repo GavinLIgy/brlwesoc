@@ -7,11 +7,11 @@
 #endif
 
 /* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0x150;      /* required amount of heap  */
+_Min_Heap_Size = 0x100;      /* required amount of heap  */
 
 MEMORY
 {
-    FLASH (xr)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
+    FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
     RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = MEM_TOTAL
 }
 

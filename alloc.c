@@ -24,12 +24,12 @@
 #define alloc_printf(argv, ...)
 #endif
  
-#define MEM_SIZE         0x00000130U             /*内存池的大小*/
- 
 extern uint32_t _heap_start, _heap_end;
 
 #define MEM_START     (& _heap_start)              	  	/*定义内存池的首地址*/
 #define MEM_END       (& _heap_end)	        /*定义内存池的尾地址*/
+
+#define MEM_SIZE         (MEM_END - MEM_START)             /*内存池的大小*/
   
 //static    char mem[MEM_SIZE];                   /*定义用来内存分配的数组*/
  
@@ -52,7 +52,7 @@ typedef struct mem_block{                /*定义内存管理块的数据结构*
  
  
 #define BLK_SIZE    ((uint32_t) sizeof(mem_block))    /*内存管理块的大小 = 16*/
-#define HEAD_NODE    (& _heap_end - BLK_SIZE)/*头内存管理块的地址*/
+#define HEAD_NODE    ((& _heap_end) - BLK_SIZE)/*头内存管理块的地址*/
  
 static signed char  mem_init_flag = -1; /*内存分配系统初始化的标志(-1 未初始化),(1 已初始化)*/
  

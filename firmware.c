@@ -1036,14 +1036,14 @@ void main()
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
-	uint8_t test_3[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
+	
 	/*
 	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };
 	uint8_t test_5[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	*/
 	
 	//test: Polynomial initialization step
-	/*struct BRLWE_Ring_polynomials a, m;
+	struct BRLWE_Ring_polynomials a, m;
 	print("\nPolynomial initialization step:\r\n");
 	BRLWE_init_hex(&a, test_1, 0);
 	BRLWE_init_hex(&m, test_2, 0);	
@@ -1052,16 +1052,15 @@ void main()
 	print("test2 = \n");
 	phex(m.polynomial);
 	//print("test3 = \n");
-	//phex(n.polynomial);*/
+	//phex(n.polynomial);
 
 	
 	//test: RNG generation
-	
+	/*
+	uint8_t seed[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	print("\nRNG generation:\r\n");
-	setseed32(test_3);
-	
+	setseed32(seed);
 	struct BRLWE_Ring_polynomials n;
-	
 	uint8_t* test_4 = NULL;
     test_4 = m_malloc(256);
 	print("Size of memery control block: ");
@@ -1084,7 +1083,8 @@ void main()
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
-	/*
+	*/
+	
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
@@ -1094,6 +1094,7 @@ void main()
 	print("test1 * test2 = \n");
 	phex(Simple_Ring_mul(a, m).polynomial);
 
+	/*
 	//test: Key Generation step
 	struct BRLWE_Ring_polynomials pk, sk;
 	struct BRLWE_Ring_polynomials2 key;

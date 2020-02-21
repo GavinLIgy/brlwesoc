@@ -1036,15 +1036,13 @@ void main()
 	alloc_test();
 	
 	
-	struct BRLWE_Ring_polynomials a, m;
-	BRLWE_init_hex(&a, test_1, 0);
-	BRLWE_init_hex(&m, test_2, 0);	
 	print("size of BRLWE_Ring_polynomials:\r\n");
-	print(sizeof(a));
+	print(sizeof(struct BRLWE_Ring_polynomials));
 	print("\r\n");
 	print("size of BRLWE_Ring_polynomials2:\r\n");
 	print(sizeof(struct BRLWE_Ring_polynomials2));
 	print("\r\n");
+	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
 	

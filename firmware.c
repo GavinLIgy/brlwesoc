@@ -306,116 +306,7 @@ static void phex(uint8_t* str)
 	print("\r\n");
 }
 
-void print_dec(uint32_t v)
-{
-	if (v >= 10000000000) {
-		print(">=10Billion");
-		return;
-	}
-	
-	if (v >= 9000000000) { putchar('9'); v -= 9000000000; }
-	else if (v >= 8000000000) { putchar('8'); v -= 8000000000; }
-	else if (v >= 7000000000) { putchar('7'); v -= 7000000000; }
-	else if (v >= 6000000000) { putchar('6'); v -= 6000000000; }
-	else if (v >= 5000000000) { putchar('5'); v -= 5000000000; }
-	else if (v >= 4000000000) { putchar('4'); v -= 4000000000; }
-	else if (v >= 3000000000) { putchar('3'); v -= 3000000000; }
-	else if (v >= 2000000000) { putchar('2'); v -= 2000000000; }
-	else if (v >= 1000000000) { putchar('1'); v -= 1000000000; }
-	
-	if (v >= 900000000) { putchar('9'); v -= 900000000; }
-	else if (v >= 800000000) { putchar('8'); v -= 800000000; }
-	else if (v >= 700000000) { putchar('7'); v -= 700000000; }
-	else if (v >= 600000000) { putchar('6'); v -= 600000000; }
-	else if (v >= 500000000) { putchar('5'); v -= 500000000; }
-	else if (v >= 400000000) { putchar('4'); v -= 400000000; }
-	else if (v >= 300000000) { putchar('3'); v -= 300000000; }
-	else if (v >= 200000000) { putchar('2'); v -= 200000000; }
-	else if (v >= 100000000) { putchar('1'); v -= 100000000; }
-	
-	if (v >= 90000000) { putchar('9'); v -= 90000000; }
-	else if (v >= 80000000) { putchar('8'); v -= 80000000; }
-	else if (v >= 70000000) { putchar('7'); v -= 70000000; }
-	else if (v >= 60000000) { putchar('6'); v -= 60000000; }
-	else if (v >= 50000000) { putchar('5'); v -= 50000000; }
-	else if (v >= 40000000) { putchar('4'); v -= 40000000; }
-	else if (v >= 30000000) { putchar('3'); v -= 30000000; }
-	else if (v >= 20000000) { putchar('2'); v -= 20000000; }
-	else if (v >= 10000000) { putchar('1'); v -= 10000000; }	
-	
-	if (v >= 9000000) { putchar('9'); v -= 9000000; }
-	else if (v >= 8000000) { putchar('8'); v -= 8000000; }
-	else if (v >= 7000000) { putchar('7'); v -= 7000000; }
-	else if (v >= 6000000) { putchar('6'); v -= 6000000; }
-	else if (v >= 5000000) { putchar('5'); v -= 5000000; }
-	else if (v >= 4000000) { putchar('4'); v -= 4000000; }
-	else if (v >= 3000000) { putchar('3'); v -= 3000000; }
-	else if (v >= 2000000) { putchar('2'); v -= 2000000; }
-	else if (v >= 1000000) { putchar('1'); v -= 1000000; }
-	
-	if (v >= 900000) { putchar('9'); v -= 900000; }
-	else if (v >= 800000) { putchar('8'); v -= 800000; }
-	else if (v >= 700000) { putchar('7'); v -= 700000; }
-	else if (v >= 600000) { putchar('6'); v -= 600000; }
-	else if (v >= 500000) { putchar('5'); v -= 500000; }
-	else if (v >= 400000) { putchar('4'); v -= 400000; }
-	else if (v >= 300000) { putchar('3'); v -= 300000; }
-	else if (v >= 200000) { putchar('2'); v -= 200000; }
-	else if (v >= 100000) { putchar('1'); v -= 100000; }
-	
-	if (v >= 90000) { putchar('9'); v -= 90000; }
-	else if (v >= 80000) { putchar('8'); v -= 80000; }
-	else if (v >= 70000) { putchar('7'); v -= 70000; }
-	else if (v >= 60000) { putchar('6'); v -= 60000; }
-	else if (v >= 50000) { putchar('5'); v -= 50000; }
-	else if (v >= 40000) { putchar('4'); v -= 40000; }
-	else if (v >= 30000) { putchar('3'); v -= 30000; }
-	else if (v >= 20000) { putchar('2'); v -= 20000; }
-	else if (v >= 10000) { putchar('1'); v -= 10000; }
-	
-	if (v >= 9000) { putchar('9'); v -= 9000; }
-	else if (v >= 8000) { putchar('8'); v -= 8000; }
-	else if (v >= 7000) { putchar('7'); v -= 7000; }
-	else if (v >= 6000) { putchar('6'); v -= 6000; }
-	else if (v >= 5000) { putchar('5'); v -= 5000; }
-	else if (v >= 4000) { putchar('4'); v -= 4000; }
-	else if (v >= 3000) { putchar('3'); v -= 3000; }
-	else if (v >= 2000) { putchar('2'); v -= 2000; }
-	else if (v >= 1000) { putchar('1'); v -= 1000; }
-
-	if (v >= 900) { putchar('9'); v -= 900; }
-	else if (v >= 800) { putchar('8'); v -= 800; }
-	else if (v >= 700) { putchar('7'); v -= 700; }
-	else if (v >= 600) { putchar('6'); v -= 600; }
-	else if (v >= 500) { putchar('5'); v -= 500; }
-	else if (v >= 400) { putchar('4'); v -= 400; }
-	else if (v >= 300) { putchar('3'); v -= 300; }
-	else if (v >= 200) { putchar('2'); v -= 200; }
-	else if (v >= 100) { putchar('1'); v -= 100; }
-
-	if (v >= 90) { putchar('9'); v -= 90; }
-	else if (v >= 80) { putchar('8'); v -= 80; }
-	else if (v >= 70) { putchar('7'); v -= 70; }
-	else if (v >= 60) { putchar('6'); v -= 60; }
-	else if (v >= 50) { putchar('5'); v -= 50; }
-	else if (v >= 40) { putchar('4'); v -= 40; }
-	else if (v >= 30) { putchar('3'); v -= 30; }
-	else if (v >= 20) { putchar('2'); v -= 20; }
-	else if (v >= 10) { putchar('1'); v -= 10; }
-
-	if (v >= 9) { putchar('9'); v -= 9; }
-	else if (v >= 8) { putchar('8'); v -= 8; }
-	else if (v >= 7) { putchar('7'); v -= 7; }
-	else if (v >= 6) { putchar('6'); v -= 6; }
-	else if (v >= 5) { putchar('5'); v -= 5; }
-	else if (v >= 4) { putchar('4'); v -= 4; }
-	else if (v >= 3) { putchar('3'); v -= 3; }
-	else if (v >= 2) { putchar('2'); v -= 2; }
-	else if (v >= 1) { putchar('1'); v -= 1; }
-	else putchar('0');
-}
-
-static void print_Dec (uint32_t n)
+static void print_dec (uint32_t n)
 {
     if (n >= 10)
     {
@@ -425,7 +316,7 @@ static void print_Dec (uint32_t n)
     putchar((char)(n + '0'));
 }
 
-static void print_Hex(unsigned int hex)
+static void print_Hex_32(unsigned int hex)
 {
 	int i = 8;
 	putchar('0');
@@ -535,7 +426,7 @@ void cmd_memtest()
 		for (int word = 0; word < MEM_TOTAL / sizeof(int); word += stride) {
 			if (*(base_word + word) != xorshift32(&state)) {
 				print(" ***FAILED WORD*** at ");
-				print_hex(4 * word, 4);
+				print_Hex_32(4 * word);
 				print("\n");
 				return;
 			}
@@ -552,7 +443,7 @@ void cmd_memtest()
 	for (int byte = 0; byte < 128; byte++) {
 		if (*(base_byte + byte) != (uint8_t)byte) {
 			print(" ***FAILED BYTE*** at ");
-			print_hex(byte, 4);
+			print_Hex_32(byte);
 			print("\n");
 			return;
 		}
@@ -590,14 +481,14 @@ void mem_print(void)
         print("\r\nNO.");
 		print_dec(i++);
 		print(":\r\n");
-        print("blk_ptr:0x");
-        print_hex(tmp_node,8);
+        print("blk_ptr:");
+        print_Hex_32(tmp_node);
         print("\r\n");
-        print("mem_ptr:0x");
-		print_hex(tmp_node->mem_ptr,8);
+        print("mem_ptr:");
+		print_Hex_32(tmp_node->mem_ptr);
 		print("\r\n");
-        print("nxt_ptr:0x");
-		print_hex(tmp_node->nxt_ptr,8);
+        print("nxt_ptr:");
+		print_Hex_32(tmp_node->nxt_ptr);
 		print("\r\n");
         print("mem_size:");
 		print_dec(tmp_node->mem_size);
@@ -827,8 +718,7 @@ uint8_t cmd_read_flash_regs_print(uint32_t addr, const char *name)
 	uint8_t buffer[6] = { 0x65, addr >> 16, addr >> 8, addr, 0, 0 };
 	flashio(buffer, 6, 0);
 
-	print("0x");
-	print_hex(addr, 6);
+	print_Hex_32(addr);
 	print(" ");
 	print(name);
 	print(" 0x");
@@ -953,15 +843,15 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
 	if (verbose)
 	{
 		print("Cycles: 0x");
-		print_hex(cycles_end - cycles_begin, 8);
+		print_Hex_32(cycles_end - cycles_begin);
 		putchar('\n');
 
 		print("Instns: 0x");
-		print_hex(instns_end - instns_begin, 8);
+		print_Hex_32(instns_end - instns_begin);
 		putchar('\n');
 
 		print("Chksum: 0x");
-		print_hex(x32, 8);
+		print_Hex_32(x32);
 		putchar('\n');
 	}
 
@@ -981,7 +871,7 @@ void cmd_benchmark_all()
 	print("default        ");
 	reg_spictrl = (reg_spictrl & ~0x00700000) | 0x00000000;
 	print(": ");
-	print_hex(cmd_benchmark(false, &instns), 8);
+	print_Hex_32(cmd_benchmark(false, &instns));
 	putchar('\n');
 
 	for (int i = 8; i > 0; i--)
@@ -994,7 +884,7 @@ void cmd_benchmark_all()
 		reg_spictrl = (reg_spictrl & ~0x00700000) | 0x00400000;
 
 		print(": ");
-		print_hex(cmd_benchmark(false, &instns), 8);
+		print_Hex_32(cmd_benchmark(false, &instns));
 		putchar('\n');
 	}
 
@@ -1008,7 +898,7 @@ void cmd_benchmark_all()
 		reg_spictrl = (reg_spictrl & ~0x00700000) | 0x00500000;
 
 		print(": ");
-		print_hex(cmd_benchmark(false, &instns), 8);
+		print_Hex_32(cmd_benchmark(false, &instns));
 		putchar('\n');
 	}
 
@@ -1022,7 +912,7 @@ void cmd_benchmark_all()
 		reg_spictrl = (reg_spictrl & ~0x00700000) | 0x00200000;
 
 		print(": ");
-		print_hex(cmd_benchmark(false, &instns), 8);
+		print_Hex_32(cmd_benchmark(false, &instns));
 		putchar('\n');
 	}
 
@@ -1036,7 +926,7 @@ void cmd_benchmark_all()
 		reg_spictrl = (reg_spictrl & ~0x00700000) | 0x00300000;
 
 		print(": ");
-		print_hex(cmd_benchmark(false, &instns), 8);
+		print_Hex_32(cmd_benchmark(false, &instns));
 		putchar('\n');
 	}
 
@@ -1050,7 +940,7 @@ void cmd_benchmark_all()
 		reg_spictrl = (reg_spictrl & ~0x00700000) | 0x00600000;
 
 		print(": ");
-		print_hex(cmd_benchmark(false, &instns), 8);
+		print_Hex_32(cmd_benchmark(false, &instns));
 		putchar('\n');
 	}
 
@@ -1064,12 +954,12 @@ void cmd_benchmark_all()
 		reg_spictrl = (reg_spictrl & ~0x00700000) | 0x00700000;
 
 		print(": ");
-		print_hex(cmd_benchmark(false, &instns), 8);
+		print_Hex_32(cmd_benchmark(false, &instns));
 		putchar('\n');
 	}
 
 	print("instns         : ");
-	print_hex(instns, 8);
+	print_Hex_32(instns);
 	putchar('\n');
 }
 #endif
@@ -1081,37 +971,37 @@ void cmd_benchmark_all()
 
 	print("default   ");
 	set_flash_mode_spi();
-	print_hex(cmd_benchmark(false, &instns), 8);
+	print_Hex_32(cmd_benchmark(false, &instns));
 	putchar('\n');
 
 	print("dual      ");
 	set_flash_mode_dual();
-	print_hex(cmd_benchmark(false, &instns), 8);
+	print_Hex_32(cmd_benchmark(false, &instns));
 	putchar('\n');
 
 	// print("dual-crm  ");
 	// enable_flash_crm();
-	// print_hex(cmd_benchmark(false, &instns), 8);
+	// print_Hex_32(cmd_benchmark(false, &instns));
 	// putchar('\n');
 
 	print("quad      ");
 	set_flash_mode_quad();
-	print_hex(cmd_benchmark(false, &instns), 8);
+	print_Hex_32(cmd_benchmark(false, &instns));
 	putchar('\n');
 
 	print("quad-crm  ");
 	enable_flash_crm();
-	print_hex(cmd_benchmark(false, &instns), 8);
+	print_Hex_32(cmd_benchmark(false, &instns));
 	putchar('\n');
 
 	print("qddr      ");
 	set_flash_mode_qddr();
-	print_hex(cmd_benchmark(false, &instns), 8);
+	print_Hex_32(cmd_benchmark(false, &instns));
 	putchar('\n');
 
 	print("qddr-crm  ");
 	enable_flash_crm();
-	print_hex(cmd_benchmark(false, &instns), 8);
+	print_Hex_32(cmd_benchmark(false, &instns));
 	putchar('\n');
 
 }
@@ -1139,28 +1029,13 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
+	print_Hex_32(130290);
 	
-	print("\rFunction of print_Dec: ");
-	print_Dec(130290);
-	print("\r\n");
-	print("\rFunction of print_dec: ");
-	print_dec(130290);
-	print("\r\n");
-	print("\rFunction of print_Hex: ");
-	print_Hex(130290);
-	print("\r\n");
-	print("\rFunction of print_hex: ");
-	print_hex(130290,8);
-	print("\r\n");
-	
-	
-	
-	/*
 	cmd_memtest();
 	//print("\rmem print to ");
 	//extern uint32_t _heap_start;
-	//print_hex(&_heap_start,8);
-	//print_hex(mem,8);
+	//print_Hex_32(&_heap_start);
+	//print_Hex_32(mem);
 	//print_dec(sizeof(mem));
 	mem_init();
 	mem_print();
@@ -1185,19 +1060,19 @@ void main()
 	print_dec(sizeof(mem_block));
 	print("\r\n");
 	print("MEM_SIZE = ");
-	print_dec(MEM_SIZE);
+	print_Hex_32(MEM_SIZE);
 	print("\r\n");
 	print("MEM_START (& _heap_start)= ");
-	print_dec(MEM_START);
+	print_Hex_32(MEM_START);
 	print("\r\n");
 	print("& _heap_start= ");
-	print_dec(& _heap_start);
+	print_Hex_32(& _heap_start);
 	print("\r\n");
 	print("BLK_SIZE = ");
-	print_dec(BLK_SIZE);
+	print_Hex_32(BLK_SIZE);
 	print("\r\n");
 	print("HEAD_NODE = ");
-	print_dec(HEAD_NODE);
+	print_Hex_32(HEAD_NODE);
 	print("\r\n");
 	*/
 	

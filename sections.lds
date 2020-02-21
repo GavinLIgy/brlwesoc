@@ -1,13 +1,12 @@
 #ifdef ICEBREAKER
 #  define MEM_TOTAL 0x20000 /* 128 KB */
+#  define _Heap_Size = 0;      /* required amount of heap  */
 #elif HX8KDEMO
 #  define MEM_TOTAL 0x200 /* 2 KB */
+#  define _Heap_Size = 0x130;      /* required amount of heap  */
 #else
 #  error "Set -DICEBREAKER or -DHX8KDEMO when compiling firmware.c"
 #endif
-
-/* Generate a link error if heap and stack don't fit into RAM */
-_Heap_Size = 0x130;      /* required amount of heap  */
 
 MEMORY
 {

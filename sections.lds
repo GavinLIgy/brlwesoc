@@ -7,12 +7,13 @@
 #endif
 
 /* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0x130;      /* required amount of heap  */
+_Heap_Size = 0x130;      /* required amount of heap  */
 
 MEMORY
 {
     FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
-    RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = MEM_TOTAL
+    RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = 0x000000D0
+	HEAP_RAM (xrw)       : ORIGIN = 0x000000D0, LENGTH = _Heap_Size
 }
 
 SECTIONS {
@@ -70,11 +71,8 @@ SECTIONS {
 	.heap :
     {
         . = ALIGN(4);
-        _heap_start = .;
-		. = . + _Min_Heap_Size;
-		_heap_end = .;
-		. = ALIGN(4);		/* define a global symbol at heap start */
-    } >RAM
+        _heap_start = .;		
+    } >HEAP_RAM
 	
 	
 	/* User_heap section*/

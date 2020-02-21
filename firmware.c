@@ -1144,6 +1144,9 @@ void main()
 	print("sizeof(MEM_SIZE) = ");
 	print_dec(sizeof(MEM_SIZE));
 	print("\r\n");
+	print("sizeof(mem_block) = ");
+	print_dec(sizeof(mem_block));
+	print("\r\n");
 	print("MEM_SIZE = ");
 	print_dec(MEM_SIZE);
 	print("\r\n");

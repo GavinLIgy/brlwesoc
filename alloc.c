@@ -24,9 +24,9 @@
 #define alloc_printf(argv, ...)
 #endif
  
-#define MEM_SIZE         0x130             /*内存池的大小*/
+#define MEM_SIZE         0x00000130U             /*内存池的大小*/
  
-extern int _heap_start, _heap_end;
+extern uint32_t _heap_start, _heap_end;
 
 #define MEM_START     (& _heap_start)              	  	/*定义内存池的首地址*/
 #define MEM_END       (& _heap_end)	        /*定义内存池的尾地址*/
@@ -45,13 +45,13 @@ enum USE_STA{                            /*定义内存块的使用状态(UNUSED
 typedef struct mem_block{                /*定义内存管理块的数据结构*/
     void             *mem_ptr;            /*当前内存块的内存地址*/
     struct mem_block     *nxt_ptr;        /*下一个内存管理块的地址*/
-    unsigned int         mem_size;        /*当前内存块的大小*/
+    uint32_t         	mem_size;        /*当前内存块的大小*/
     enum USE_STA        mem_sta;        /*当前内存块的状态*/
 }mem_block;
 #pragma pack()
  
  
-#define BLK_SIZE    sizeof(mem_block)    /*内存管理块的大小 = 16*/
+#define BLK_SIZE    ((uint32_t) sizeof(mem_block))    /*内存管理块的大小 = 16*/
 #define HEAD_NODE    (& _heap_end - BLK_SIZE)/*头内存管理块的地址*/
  
 static signed char  mem_init_flag = -1; /*内存分配系统初始化的标志(-1 未初始化),(1 已初始化)*/

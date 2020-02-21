@@ -38,14 +38,14 @@
 #endif
 
 #pragma pack(1)
-struct BRLWE_Ring_polynomials
+typedef struct BRLWE_Ring_polynomials
 {
 	uint8_t polynomial[BRLWE_N];
 };
 #pragma pack()
 
 #pragma pack(1)
-struct BRLWE_Ring_polynomials2
+typedef struct BRLWE_Ring_polynomials2
 {
 	struct BRLWE_Ring_polynomials c1;
 	struct BRLWE_Ring_polynomials c2;

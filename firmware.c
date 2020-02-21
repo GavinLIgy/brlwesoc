@@ -37,21 +37,6 @@
 #  error "Set -DICEBREAKER or -DHX8KDEMO when compiling firmware.c"
 #endif
 
-#pragma pack(1)
-typedef struct BRLWE_Ring_polynomials
-{
-	uint8_t polynomial[BRLWE_N];
-};
-#pragma pack()
-
-#pragma pack(1)
-typedef struct BRLWE_Ring_polynomials2
-{
-	struct BRLWE_Ring_polynomials c1;
-	struct BRLWE_Ring_polynomials c2;
-};
-#pragma pack()
-
  // a pointer to this is a null pointer, but the compiler does not
  // know that because "sram" is a linker symbol from sections.lds.
 extern uint32_t sram;

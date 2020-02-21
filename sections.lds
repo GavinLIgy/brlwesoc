@@ -12,8 +12,8 @@ _Heap_Size = 0x130;      /* required amount of heap  */
 MEMORY
 {
     FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
-    RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = 0x000000D0
-	HEAP_RAM (xrw)       : ORIGIN = 0x000000D0, LENGTH = _Heap_Size
+    RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = MEM_TOTAL - _Heap_Size /* MEM_TOTAL - _Heap_Size = 0x0000 00D0 */
+	HEAP_RAM (xrw)       : ORIGIN = MEM_TOTAL - _Heap_Size , LENGTH = _Heap_Size
 }
 
 SECTIONS {

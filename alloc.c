@@ -24,10 +24,10 @@
 #define alloc_printf(argv, ...)
 #endif
  
-extern uint32_t _heap_start, _heap_end;
+extern uint32_t _heap_start;
 
 #define MEM_START     (& _heap_start)              	  	/*定义内存池的首地址*/
-#define MEM_END       (& _heap_end)	        /*定义内存池的尾地址*/
+#define MEM_END       0x00000200	        			/*定义内存池的尾地址*/
 
 #define MEM_SIZE         (MEM_END - MEM_START)             /*内存池的大小*/
   

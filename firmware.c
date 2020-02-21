@@ -1126,6 +1126,18 @@ void main()
 	mem_print();
 	alloc_test();
 	print("##################################\r\n");
+	print("sizeof(int) = ");
+	print_dec(sizeof(int));
+	print("\r\n");
+	print("sizeof(char) = ");
+	print_dec(sizeof(char));
+	print("\r\n");
+	print("sizeof(uint8_t) = ");
+	print_dec(sizeof(uint8_t));
+	print("\r\n");
+	print("sizeof(uint32_t) = ");
+	print_dec(sizeof(uint32_t));
+	print("\r\n");
 	print("MEM_SIZE = ");
 	print_dec(MEM_SIZE);
 	print("\r\n");

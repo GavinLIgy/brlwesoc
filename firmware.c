@@ -41,7 +41,7 @@
  // know that because "sram" is a linker symbol from sections.lds.
 extern uint32_t sram;
 
-typedef  int  uint32_t;
+//typedef  int  uint32_t;
 
 #define reg_spictrl (*(volatile uint32_t*)0x02000000)
 #define reg_uart_clkdiv (*(volatile uint32_t*)0x02000004)

@@ -1029,51 +1029,10 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
-	print_Hex_32(130290);
 	
 	cmd_memtest();
-	//print("\rmem print to ");
-	//extern uint32_t _heap_start;
-	//print_Hex_32(&_heap_start);
-	//print_Hex_32(mem);
-	//print_dec(sizeof(mem));
 	mem_init();
 	mem_print();
-	alloc_test();
-	print("##################################\r\n");
-	print("sizeof(int) = ");
-	print_dec(sizeof(int));
-	print("\r\n");
-	print("sizeof(char) = ");
-	print_dec(sizeof(char));
-	print("\r\n");
-	print("sizeof(uint8_t) = ");
-	print_dec(sizeof(uint8_t));
-	print("\r\n");
-	print("sizeof(uint32_t) = ");
-	print_dec(sizeof(uint32_t));
-	print("\r\n");
-	print("sizeof(MEM_SIZE) = ");
-	print_dec(sizeof(MEM_SIZE));
-	print("\r\n");
-	print("sizeof(mem_block) = ");
-	print_dec(sizeof(mem_block));
-	print("\r\n");
-	print("MEM_SIZE = ");
-	print_Hex_32(MEM_SIZE);
-	print("\r\n");
-	print("MEM_START (& _heap_start)= ");
-	print_Hex_32(MEM_START);
-	print("\r\n");
-	print("& _heap_start= ");
-	print_Hex_32(& _heap_start);
-	print("\r\n");
-	print("BLK_SIZE = ");
-	print_Hex_32(BLK_SIZE);
-	print("\r\n");
-	print("HEAD_NODE = ");
-	print_Hex_32(HEAD_NODE);
-	print("\r\n");
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
@@ -1097,7 +1056,7 @@ void main()
 
 	
 	//test: RNG generation
-	/*
+	
 	print("\nRNG generation:\r\n");
 	setseed32(test_3);
 	
@@ -1125,7 +1084,6 @@ void main()
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
-	*/
 	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");

@@ -1150,7 +1150,7 @@ void main()
 	print_Hex(130290);
 	print("\r\n");
 	print("\rFunction of print_hex: ");
-	print_hex(130290);
+	print_hex(130290,8);
 	print("\r\n");
 	
 	

@@ -1034,6 +1034,7 @@ void main()
 	mem_init();
 	mem_print();
 	alloc_test();
+	
 	/*
 	struct BRLWE_Ring_polynomials a, m;
 	BRLWE_init_hex(&a, test_1, 0);

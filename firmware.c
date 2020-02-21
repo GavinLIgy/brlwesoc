@@ -310,7 +310,7 @@ static void print_dec (uint32_t n)
 {
     if (n >= 10)
     {
-        print_Dec(n / 10); 
+        print_dec(n / 10); 
         n %= 10;
     }
     putchar((char)(n + '0'));
@@ -1074,7 +1074,6 @@ void main()
 	print("HEAD_NODE = ");
 	print_Hex_32(HEAD_NODE);
 	print("\r\n");
-	*/
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	

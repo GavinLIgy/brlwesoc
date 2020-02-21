@@ -22,16 +22,20 @@
 #define BRLWE_Q 256
 #endif
 
+#pragma pack(1)
 struct BRLWE_Ring_polynomials
 {
 	uint8_t polynomial[BRLWE_N];
 };
+#pragma pack()
 
+#pragma pack(1)
 struct BRLWE_Ring_polynomials2
 {
 	struct BRLWE_Ring_polynomials c1;
 	struct BRLWE_Ring_polynomials c2;
 };
+#pragma pack()
 
 void BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly);//initialize a polynomial by sampling on uniform distribution with binary coefficients 
 void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev);//initialize a polynomial by input hex in form of string.

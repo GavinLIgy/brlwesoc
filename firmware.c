@@ -1034,7 +1034,12 @@ void main()
 	mem_init();
 	mem_print();
 	alloc_test();
-	
+	print("size of BRLWE_Ring_polynomials:\r\n");
+	print(sizeof(BRLWE_Ring_polynomials));
+	print("\r\n");
+	print("size of BRLWE_Ring_polynomials:\r\n");
+	print(sizeof(BRLWE_Ring_polynomials));
+	print("\r\n");
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
 	

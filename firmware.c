@@ -1138,9 +1138,6 @@ void main()
 	print("sizeof(uint32_t) = ");
 	print_dec(sizeof(uint32_t));
 	print("\r\n");
-	print("sizeof(& _heap_end) = ");
-	print_dec(sizeof(& _heap_end));
-	print("\r\n");
 	print("sizeof(MEM_SIZE) = ");
 	print_dec(sizeof(MEM_SIZE));
 	print("\r\n");
@@ -1156,17 +1153,12 @@ void main()
 	print("& _heap_start= ");
 	print_dec(& _heap_start);
 	print("\r\n");
-	print("& _heap_end = ");
-	print_dec(& _heap_end);
-	print("\r\n");
 	print("BLK_SIZE = ");
 	print_dec(BLK_SIZE);
 	print("\r\n");
 	print("HEAD_NODE = ");
 	print_dec(HEAD_NODE);
 	print("\r\n");
-	print("(& _heap_end - BLK_SIZE) = ");
-	print_dec(& _heap_end - BLK_SIZE);
 	
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };

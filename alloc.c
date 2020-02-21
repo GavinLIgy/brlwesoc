@@ -52,7 +52,7 @@ typedef struct mem_block{                /*定义内存管理块的数据结构*
  
  
 #define BLK_SIZE    ((uint32_t) sizeof(mem_block))    /*内存管理块的大小 = 16*/
-#define HEAD_NODE    ((& _heap_end) - BLK_SIZE)/*头内存管理块的地址*/
+#define HEAD_NODE    (MEM_END - BLK_SIZE)/*头内存管理块的地址*/
  
 static signed char  mem_init_flag = -1; /*内存分配系统初始化的标志(-1 未初始化),(1 已初始化)*/
  

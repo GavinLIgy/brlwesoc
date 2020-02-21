@@ -1035,7 +1035,7 @@ void main()
 	mem_print();
 	alloc_test();
 	
-	/*
+	
 	struct BRLWE_Ring_polynomials a, m;
 	BRLWE_init_hex(&a, test_1, 0);
 	BRLWE_init_hex(&m, test_2, 0);	
@@ -1046,7 +1046,7 @@ void main()
 	print(sizeof(struct BRLWE_Ring_polynomials2));
 	print("\r\n");
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
-	*/
+	
 	
 	/*
 	uint8_t test_4[4] = { (uint8_t)40, (uint8_t)80, (uint8_t)100 , (uint8_t)10 };

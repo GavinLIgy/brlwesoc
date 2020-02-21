@@ -10,9 +10,10 @@ _Heap_Size = 0x130;      /* required amount of heap  */
 
 MEMORY
 {
-    FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x400000 /* entire flash, 4 MiB */
+    FLASH (rx)      : ORIGIN = 0x00100000, LENGTH = 0x200000 /* entire flash, 4 MiB */
     RAM (xrw)       : ORIGIN = 0x00000000, LENGTH = MEM_TOTAL - _Heap_Size /* MEM_TOTAL - _Heap_Size = 0x0000 00D0 */
 	HEAP_RAM (xrw)       : ORIGIN = MEM_TOTAL - _Heap_Size , LENGTH = _Heap_Size
+	HEAP_FLASH (xrw)       : ORIGIN = 0x00300000 - _Heap_Size , LENGTH = 0x200000
 }
 
 SECTIONS {
@@ -71,7 +72,7 @@ SECTIONS {
     {
         . = ALIGN(4);
         _heap_start = .;		
-    } >HEAP_RAM
+    } >HEAP_FLASH
 	
 	
 	/* User_heap section*/

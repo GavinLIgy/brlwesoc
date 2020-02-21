@@ -1033,6 +1033,7 @@ void main()
 	cmd_memtest();
 	mem_init();
 	mem_print();
+	alloc_test();
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
@@ -1056,7 +1057,7 @@ void main()
 
 	
 	//test: RNG generation
-	
+	/*
 	uint8_t seed[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	print("\nRNG generation:\r\n");
 	setseed32(seed);
@@ -1083,10 +1084,10 @@ void main()
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
+	*/
 	
-	
-	/*
 	//test: Math-operation subfunctions
+	/*
 	print("\nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
 	phex(Ring_add(a, m).polynomial);
@@ -1094,8 +1095,10 @@ void main()
 	phex(Ring_sub(a, m).polynomial);
 	print("test1 * test2 = \n");
 	phex(Simple_Ring_mul(a, m).polynomial);
+	*/
 
 	//test: Key Generation step
+	/*
 	struct BRLWE_Ring_polynomials pk, sk;
 	struct BRLWE_Ring_polynomials2 key;
 	print("\nKey Generation:\n");
@@ -1106,8 +1109,10 @@ void main()
 	phex(key.c1.polynomial);
 	print("secret key = \n");
 	phex(key.c2.polynomial);
+	*/
 	
 	//test: Encryption step
+	/*
 	print("\nEncryption:\n");
 	print("a = \n");
 	phex(a.polynomial);
@@ -1122,8 +1127,10 @@ void main()
 	print("secret message = \n");
 	phex(c.c1.polynomial);
 	phex(c.c2.polynomial);
+	*/
 	
 	//test: Decryption step
+	/*
 	print("\nDecryption:\n");
 	print("a = \n");
 	phex(a.polynomial);

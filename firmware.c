@@ -41,6 +41,8 @@
  // know that because "sram" is a linker symbol from sections.lds.
 extern uint32_t sram;
 
+typedef  int  uint32_t;
+
 #define reg_spictrl (*(volatile uint32_t*)0x02000000)
 #define reg_uart_clkdiv (*(volatile uint32_t*)0x02000004)
 #define reg_uart_data (*(volatile uint32_t*)0x02000008)
@@ -411,6 +413,28 @@ void print_dec(uint32_t v)
 	else if (v >= 2) { putchar('2'); v -= 2; }
 	else if (v >= 1) { putchar('1'); v -= 1; }
 	else putchar('0');
+}
+
+static void print_Dec (uint32_t n)
+{
+    if (n >= 10)
+    {
+        print_Dec(n / 10); 
+        n %= 10;
+    }
+    putchar((char)(n + '0'));
+}
+
+static void print_Hex(unsigned int hex)
+{
+	int i = 8;
+	putchar('0');
+	putchar('x');
+	while (i--) {
+		unsigned char c = (hex & 0xF0000000) >> 28;
+		putchar(c < 0xa ? c + '0' : c - 0xa + 'a');
+		hex <<= 4;
+	}
 }
 
 char getchar_prompt(char *prompt)
@@ -1116,6 +1140,22 @@ void main()
 	
 	//test: memory allocate testing
 	
+	print("\rFunction of print_Dec: ");
+	print_Dec(130290);
+	print("\r\n");
+	print("\rFunction of print_dec: ");
+	print_dec(130290);
+	print("\r\n");
+	print("\rFunction of print_Hex: ");
+	print_Hex(130290);
+	print("\r\n");
+	print("\rFunction of print_hex: ");
+	print_hex(130290);
+	print("\r\n");
+	
+	
+	
+	/*
 	cmd_memtest();
 	//print("\rmem print to ");
 	//extern uint32_t _heap_start;
@@ -1159,7 +1199,7 @@ void main()
 	print("HEAD_NODE = ");
 	print_dec(HEAD_NODE);
 	print("\r\n");
-	
+	*/
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	

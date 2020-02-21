@@ -1043,7 +1043,7 @@ void main()
 	*/
 	
 	//test: Polynomial initialization step
-	struct BRLWE_Ring_polynomials a, m;
+	/*struct BRLWE_Ring_polynomials a, m;
 	print("\nPolynomial initialization step:\r\n");
 	BRLWE_init_hex(&a, test_1, 0);
 	BRLWE_init_hex(&m, test_2, 0);	
@@ -1052,11 +1052,11 @@ void main()
 	print("test2 = \n");
 	phex(m.polynomial);
 	//print("test3 = \n");
-	//phex(n.polynomial);
+	//phex(n.polynomial);*/
 
 	
 	//test: RNG generation
-	/*
+	
 	uint8_t seed[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
 	print("\nRNG generation:\r\n");
 	setseed32(seed);
@@ -1083,8 +1083,9 @@ void main()
 	print("\nRNG completed.\r\n");
 	mem_print();
     buff_print((unsigned char *)test_4, BRLWE_N);
-	*/
 	
+	
+	/*
 	//test: Math-operation subfunctions
 	print("\nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
@@ -1094,7 +1095,6 @@ void main()
 	print("test1 * test2 = \n");
 	phex(Simple_Ring_mul(a, m).polynomial);
 
-	/*
 	//test: Key Generation step
 	struct BRLWE_Ring_polynomials pk, sk;
 	struct BRLWE_Ring_polynomials2 key;

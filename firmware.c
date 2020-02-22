@@ -1043,9 +1043,14 @@ void main()
 	print_dec(sizeof(struct BRLWE_Ring_polynomials2));
 	print("\r\n");
 	*/
-	
+	print("cmd_read_flash_regs():\r\n");
 	cmd_read_flash_regs();
-	
+	print("cmd_read_flash_id() :\r\n");
+	cmd_read_flash_id();
+	print("cmd_print_spi_state():\r\n");
+	cmd_print_spi_state();
+	print("cmd_benchmark_all():\r\n");
+	cmd_benchmark_all();
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
 	

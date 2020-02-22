@@ -1022,14 +1022,11 @@ void main()
 	reg_uart_clkdiv = 104;
 	print("Booting..\n");
 
-	//reg_leds = 63;//=0x3f=8'b0011_1111
+	reg_leds = 63;//=0x3f=8'b0011_1111
 	set_flash_qspi_flag();
-	print("After set_flash_qspi_flag() :");
-	debug_rdcycle();
-	print("\r\n");
 	
-	//reg_leds = 127;//=0x7f=8'b0111_1111
-	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
+	reg_leds = 127;//=0x7f=8'b0111_1111
+	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
 	/*
@@ -1048,10 +1045,6 @@ void main()
 	*/
 	
 	cmd_benchmark_all();
-	print("After cmd_benchmark_all() :");
-	debug_rdcycle();
-	print("\r\n");
-	
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	

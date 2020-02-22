@@ -7,10 +7,10 @@ hx8ksim: hx8kdemo_tb.vvp hx8kdemo_fw.hex
 hx8ksynsim: hx8kdemo_syn_tb.vvp hx8kdemo_fw.hex
 	vvp -N $< +firmware=hx8kdemo_fw.hex
 
-hx8kdemo.blif: hx8kdemo.v spimemio.v simpleuart.v picosoc.v ../picorv32.v ./LFSR/lfsr.v ./simplerng/simplerng.v
+hx8kdemo.blif: hx8kdemo.v spimemio.v simpleuart.v picosoc.v ../picorv32.v ./LFSR/lfsr.v ./simplerng/simplerng.v user_ram.v
 	yosys -ql hx8kdemo.log -p 'synth_ice40 -top hx8kdemo -blif hx8kdemo.blif' $^
 
-hx8kdemo_tb.vvp: hx8kdemo_tb.v hx8kdemo.v spimemio.v simpleuart.v picosoc.v ../picorv32.v spiflash.v ./LFSR/lfsr.v ./simplerng/simplerng.v
+hx8kdemo_tb.vvp: hx8kdemo_tb.v hx8kdemo.v spimemio.v simpleuart.v picosoc.v ../picorv32.v spiflash.v ./LFSR/lfsr.v ./simplerng/simplerng.v user_ram.v
 	iverilog -s testbench -o $@ $^ `yosys-config --datdir/ice40/cells_sim.v`
 
 hx8kdemo_syn_tb.vvp: hx8kdemo_tb.v hx8kdemo_syn.v spiflash.v 

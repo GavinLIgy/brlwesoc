@@ -127,9 +127,10 @@ module hx8kdemo (
 					if (iomem_wstrb[2]) gpio[23:16] <= iomem_wdata[23:16];
 					if (iomem_wstrb[3]) gpio[31:24] <= iomem_wdata[31:24];
 				end
-				else if (iomem_addr == 32'h 0300_1000)begin
+				else if (iomem_addr == 32'h 0300_1000) begin
 					iomem_ready <= 1;
 					iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do; //wait = 1, cannot read now
+				end
 				else if (iomem_addr[31:8] == 24'h 0300_10)begin
 					iomem_ready <= 1;
 					iomem_rdata <= simplerng_dat_re ? user_ram_do : 32'hffff_ffff; //wait = 1, cannot read now

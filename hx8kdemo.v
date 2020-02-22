@@ -74,6 +74,8 @@ module hx8kdemo (
 	reg [31:0] gpio;
 	assign leds = gpio;
 	
+	//Module SimpleRNG interface
+	
 	wire        simplerng_enable;
 	wire        simplerng_dat_we;
 	wire 	    simplerng_dat_re;
@@ -91,6 +93,23 @@ module hx8kdemo (
 	assign simplerng_dat_re = simplerng_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
 	
 	assign simplerng_dat_di = iomem_wdata; 
+	
+	//User RAM Memory interface
+	
+	wire        user_ram_we;
+	wire 	    user_ram_re;
+	wire [31:0] user_ram_di;
+	wire [31:0] user_ram_do;
+	wire        user_ram_wait;
+	
+	wire        user_ram_dat_sel;//data selector
+
+	assign user_ram_dat_sel = iomem_valid && (iomem_addr[31:8] == 24'h 0300_10);
+
+	assign user_ram_we = user_ram_dat_sel ? iomem_wstrb[0] : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
+	assign user_ram_re = user_ram_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
+	
+	assign user_ram_di = iomem_wdata; 
 
 	always @(posedge clk) begin	
 		if (!resetn) begin
@@ -111,6 +130,9 @@ module hx8kdemo (
 				else if (iomem_addr == 32'h 0300_1000)begin
 					iomem_ready <= 1;
 					iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do; //wait = 1, cannot read now
+				else if (iomem_addr[31:8] == 24'h 0300_10)begin
+					iomem_ready <= 1;
+					iomem_rdata <= simplerng_dat_re ? user_ram_do : 32'hffff_ffff; //wait = 1, cannot read now
 				end
 			end
 		end
@@ -163,6 +185,15 @@ module hx8kdemo (
 		.dat_di(	simplerng_dat_di	),
 		.dat_do(	simplerng_dat_do	),
 		.dat_wait(	simplerng_dat_wait	));	
+
+	user_ram #(.ADDR_BIT(8)) m_ram(
+		.clk_i(		clk					),
+		.rst_i(		resetn				),
+        .wr_en_i(	user_ram_we 		),
+		.rd_en_i(	user_ram_re			),
+		.addr_i(	iomem_addr[7:0]		),
+		.di_i(		user_ram_di 		),
+		.do_o(		user_ram_do			));
 
 
 	assign debug_ser_tx = ser_tx;

@@ -1028,14 +1028,15 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	print("Booting..\n");
-	user_ram_start = 0x13112008;
-	print("Value in user_ram_start is: \r\n");
+	uint32_t tmp = 0x13112008;
+	user_ram_start = tmp;
+	print(" \r\n Value in user_ram_start is:");
 	print_Hex_32(user_ram_start);
-	print("Value of & user_ram_start is: \r\n");
+	print(" \r\n Value of & user_ram_start is:");
 	print_Hex_32(& user_ram_start);
-	print("Value of & user_ram_start + 1 is: \r\n");
+	print(" \r\n Value of & user_ram_start + 1 is:");
 	print_Hex_32(& user_ram_start + 1);
-	print("Value of * (& user_ram_start + 1)  is: \r\n");
+	print(" \r\n Value of * (& user_ram_start + 1)  is:");
 	print_Hex_32(* (& user_ram_start + 1) );
 	
 	//test: memory allocate testing

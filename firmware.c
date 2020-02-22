@@ -1022,14 +1022,17 @@ void main()
 	reg_uart_clkdiv = 104;
 	print("Booting..\n");
 
-	reg_leds = 63;//=0x3f=8'b0011_1111
+	\\reg_leds = 63;//=0x3f=8'b0011_1111
 	set_flash_qspi_flag();
-
-	reg_leds = 127;//=0x7f=8'b0111_1111
-	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
+	print("After set_flash_qspi_flag() :");
+	debug_rdcycle();
+	print("\r\n");
+	
+	\\reg_leds = 127;//=0x7f=8'b0111_1111
+	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	//test: memory allocate testing
-	
+	/*
 	cmd_memtest();
 	mem_init();
 	mem_print();
@@ -1042,8 +1045,12 @@ void main()
 	print("size of BRLWE_Ring_polynomials2:\r\n");
 	print_dec(sizeof(struct BRLWE_Ring_polynomials2));
 	print("\r\n");
+	*/
 	
-	cmd_benchmark_all()
+	cmd_benchmark_all();
+	print("After cmd_benchmark_all() :");
+	debug_rdcycle();
+	print("\r\n");
 	
 	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };

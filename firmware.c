@@ -47,7 +47,7 @@ extern uint32_t sram;
 #define reg_leds (*(volatile uint32_t*)0x03000000)
 
 #define reg_rng_data (*(volatile uint32_t*)0x03001000)
-#define user_ram_start (*(volatile uint32_t*)0x03001000)
+#define user_ram_start (*(volatile uint32_t*)0x03002000)
 
 // --------------------------------------------------------
 
@@ -1030,6 +1030,12 @@ void main()
 	user_ram_start = 0x13112008;
 	print("Value in user_ram_start is: \r\n");
 	print_Hex_32(user_ram_start);
+	print("Value of & user_ram_start is: \r\n");
+	print_Hex_32(& user_ram_start);
+	print("Value of & user_ram_start + 1 is: \r\n");
+	print_Hex_32(& user_ram_start + 1);
+	print("Value of * (& user_ram_start + 1)  is: \r\n");
+	print_Hex_32(* (& user_ram_start + 1) );
 	
 	//test: memory allocate testing
 	/*

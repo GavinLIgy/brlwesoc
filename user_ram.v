@@ -28,9 +28,9 @@ module user_ram#(
             data <= bram[addr_i];
        end
        else begin
-        data <= 32'bz;      //读写均无效时，为高阻态。若不加此句，时序会出现问题
+        data <= 32'b1;      //读写均无效时，为1
        end
     end
 
-    assign do_o = rd_en_i? data : 32'bz; //三态门实现
+    assign do_o = rd_en_i? data : 32'b1;
 endmodule

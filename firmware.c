@@ -1043,6 +1043,9 @@ void main()
 	print_dec(sizeof(struct BRLWE_Ring_polynomials2));
 	print("\r\n");
 	
+	cmd_benchmark_all()
+	
+	
 	//uint8_t test_3[4] = { (uint8_t)130, (uint8_t)140, (uint8_t)210 , (uint8_t)156 };
 	
 	

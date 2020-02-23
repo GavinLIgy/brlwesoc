@@ -1036,12 +1036,11 @@ void main()
 	print("Value in user_ram_start is:");
 	print_Hex_32(user_ram_start);
 	print("\n");
-	/*print("Value of & user_ram_start + 1 is:");
+	print("Value of & user_ram_start + 1 is:");
 	print_Hex_32(& user_ram_start + 1);
 	print("\n");
 	print("Value of * (& user_ram_start + 1)  is:");
 	print_Hex_32(* (& user_ram_start + 1) );
-	*/
 	//test: memory allocate testing
 	/*
 	cmd_memtest();

@@ -139,7 +139,7 @@ module hx8kdemo (
 				end
 				else if (iomem_addr >= 32'h 0300_2000)begin
 					iomem_ready <= 1;
-					iomem_rdata <= simplerng_dat_re ? user_ram_do : 32'h1311_2077; //wait = 1, cannot read now
+					iomem_rdata <= user_ram_re ? user_ram_do : 32'h1311_2077; //wait = 1, cannot read now
 				end
 			end
 		end

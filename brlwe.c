@@ -91,22 +91,23 @@ struct BRLWE_Ring_polynomials* BRLWE_init() {
 		poly->polynomial[i] = (uint8_t)0x00;
 	return poly;
 };
-/*
+/* 
 //Main Function 1: Key Generation
 //a is a global parameter shared by Alice and Bob
 // r1 and r2 are randomly selected binary polynomials, r2 is secret key
 // p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
-struct BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials a){
-	struct BRLWE_Ring_polynomials r1, r2;
-	struct BRLWE_Ring_polynomials2 key;
-	uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };
-	uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };
-	BRLWE_init_hex(&r1, _r1, 0);
-	BRLWE_init_hex(&r2, _r2, 0);
-	/*BRLWE_init_bin_sampling(&r1);
-	BRLWE_init_bin_sampling(r2);*/
-	key.c2=r2;//sk
-	key.c1=Ring_sub(r1, Simple_Ring_mul(a, r2));//pk
+struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials* a){
+	struct BRLWE_Ring_polynomials* r1 = NULL;
+	struct BRLWE_Ring_polynomials* r2 = NULL;
+	struct BRLWE_Ring_polynomials2* key = NULL;
+	//uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };//p random
+	//uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
+	/*BRLWE_init_hex(&r1, _r1, 0);
+	BRLWE_init_hex(&r2, _r2, 0);*/
+	r1 = BRLWE_init_bin_sampling();
+	r2 = BRLWE_init_bin_sampling();
+	key->c2=r2;//sk
+	key->c1=Ring_sub(r1, Simple_Ring_mul(*a, *r2));//pk
 	return key;
 };
 
@@ -206,10 +207,6 @@ uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave){
 };
 */
 
-*/
-
-
-
 //return value = a + b;
 struct BRLWE_Ring_polynomials Ring_add(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b) {
 	int i = 0;
@@ -255,5 +252,5 @@ void passpoly (struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomi
 	for (int i = 0; i < BRLWE_N; i++){
 		a.polynomial[i] = b.polynomial[i];
 	}
-	return;
+	return; */
 };

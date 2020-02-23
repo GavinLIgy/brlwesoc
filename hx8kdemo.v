@@ -198,7 +198,7 @@ module hx8kdemo (
 		.rst_i(		resetn				),
         .wr_en_i(	user_ram_we 		),
 		.rd_en_i(	user_ram_re			),
-		.addr_i(	(iomem_addr[8:0] / 4)[7:0]	),
+		.addr_i(	iomem_addr[7:0]		),
 		.di_i(		user_ram_di 		),
 		.do_o(		user_ram_do			));
 

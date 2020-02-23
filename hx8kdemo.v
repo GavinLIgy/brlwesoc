@@ -214,7 +214,7 @@ module hx8kdemo (
 		.clk(clk),
 		.wen((iomem_valid && !iomem_ready && (iomem_addr - 32'h 0300_2000) < 4*256) ? mem_wstrb : 4'b0),
 		.addr(iomem_addr[23:2]),
-		.wdata(mem_wdata),
+		.wdata(iomem_wdata),
 		.rdata(ram_rdata)
 	);
 

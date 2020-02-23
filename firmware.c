@@ -1030,13 +1030,16 @@ void main()
 	print("Booting..\n");
 	uint8_t tmp = 0x08;
 	user_ram_start = tmp;
-	print(" \r\n Value in user_ram_start is:");
+	print("Value in user_ram_start is:");
 	print_Hex_32(user_ram_start);
-	print(" \r\n Value of & user_ram_start is:");
+	print("\n");
+	print("Value of & user_ram_start is:");
 	print_Hex_32(& user_ram_start);
-	print(" \r\n Value of & user_ram_start + 1 is:");
+	print("\n");
+	print("Value of & user_ram_start + 1 is:");
 	print_Hex_32(& user_ram_start + 1);
-	print(" \r\n Value of * (& user_ram_start + 1)  is:");
+	print("\n");
+	print("Value of * (& user_ram_start + 1)  is:");
 	print_Hex_32(* (& user_ram_start + 1) );
 	
 	//test: memory allocate testing

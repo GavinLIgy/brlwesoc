@@ -1028,8 +1028,8 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	print("Booting..\n");
-	uint8_t tmp = 0x08;
-	user_ram_start = tmp;
+	uint32_t tmp = 0x13112008;
+	user_ram_start = （uint32_t）tmp;
 	print("Value of & user_ram_start is:");
 	print_Hex_32(& user_ram_start);
 	print("\n");

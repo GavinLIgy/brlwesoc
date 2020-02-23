@@ -91,7 +91,7 @@ struct BRLWE_Ring_polynomials* BRLWE_init() {
 		poly->polynomial[i] = (uint8_t)0x00;
 	return poly;
 };
-
+/*
 //Main Function 1: Key Generation
 //a is a global parameter shared by Alice and Bob
 // r1 and r2 are randomly selected binary polynomials, r2 is secret key
@@ -205,6 +205,10 @@ uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave){
 	return m;
 };
 */
+
+*/
+
+
 
 //return value = a + b;
 struct BRLWE_Ring_polynomials Ring_add(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b) {

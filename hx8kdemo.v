@@ -99,6 +99,10 @@ module hx8kdemo (
 	
 	//User RAM Memory interface
 	
+	reg ram_ready;
+	wire [31:0] ram_rdata;
+	
+	/*
 	wire        user_ram_we;
 	wire 	    user_ram_re;
 	wire [31:0] user_ram_di;
@@ -115,7 +119,7 @@ module hx8kdemo (
 	assign user_ram_di[ 7: 0] = iomem_wstrb[0] ? iomem_wdata[ 7: 0] : 8'b 0;
 	assign user_ram_di[15: 8] = iomem_wstrb[1] ? iomem_wdata[15: 8] : 8'b 0;
 	assign user_ram_di[23:16] = iomem_wstrb[2] ? iomem_wdata[23:16] : 8'b 0;
-	assign user_ram_di[31:24] = iomem_wstrb[3] ? iomem_wdata[31:24] : 8'b 0;
+	assign user_ram_di[31:24] = iomem_wstrb[3] ? iomem_wdata[31:24] : 8'b 0;*/
 	
 	always @(posedge clk) begin	
 		if (!resetn) begin
@@ -138,8 +142,10 @@ module hx8kdemo (
 					iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do; //wait = 1, cannot read now
 				end
 				else if (iomem_addr >= 32'h 0300_2000)begin
-					iomem_ready <= 1;
-					iomem_rdata <= user_ram_re ? user_ram_do : 32'h1311_2077; //wait = 1, cannot read now
+					/*iomem_ready <= 1;
+					iomem_rdata <= user_ram_re ? user_ram_do : 32'h1311_2077; //wait = 1, cannot read now*/
+					iomem_ready <= ram_ready;
+					iomem_rdata <= ram_ready ? ram_rdata : 32'h1311_2077;
 				end
 			end
 		end
@@ -192,7 +198,7 @@ module hx8kdemo (
 		.dat_di(	simplerng_dat_di	),
 		.dat_do(	simplerng_dat_do	),
 		.dat_wait(	simplerng_dat_wait	));	
-
+	/*
 	user_ram #(.ADDR_BIT(8)) m_ram(
 		.clk_i(		clk					),
 		.rst_i(		resetn				),
@@ -201,7 +207,16 @@ module hx8kdemo (
 		.addr_i(	iomem_addr[7:0]		),
 		.di_i(		user_ram_di 		),
 		.do_o(		user_ram_do			));
-
+	*/
+	picosoc_mem #(
+		.WORDS(256)
+	) user_memory (
+		.clk(clk),
+		.wen((iomem_valid && !iomem_ready && (iomem_addr - 32'h 0300_2000) < 4*256) ? mem_wstrb : 4'b0),
+		.addr(iomem_addr[23:2]),
+		.wdata(mem_wdata),
+		.rdata(ram_rdata)
+	);
 
 	assign debug_ser_tx = ser_tx;
 	assign debug_ser_rx = ser_rx;

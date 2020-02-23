@@ -210,7 +210,7 @@ module hx8kdemo (
 	*/
 	
 	always @(posedge clk)
-		ram_ready <= iomem_valid && !iomem_ready && (iomem_addr - 32'h 0300_2000) < 4*256);
+		ram_ready <= iomem_valid && !iomem_ready && ((iomem_addr - 32'h 0300_2000) < 4*256);
 		
 	picosoc_mem #(
 		.WORDS(256)

@@ -89,10 +89,15 @@ module hx8kdemo (
 
 	assign simplerng_dat_sel = iomem_valid && (iomem_addr == 32'h 0300_1000);
 
-	assign simplerng_dat_we = simplerng_dat_sel ? iomem_wstrb[0] : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
-	assign simplerng_dat_re = simplerng_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
+	assign simplerng_dat_we = simplerng_dat_sel ? (|iomem_wstrb) : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
+	assign simplerng_dat_re = simplerng_dat_sel && (~|iomem_wstrb) ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
 	
-	assign simplerng_dat_di = iomem_wdata; 
+	if (simplerng_dat_we) begin
+		if (iomem_wstrb[0]) assign simplerng_dat_di[ 7: 0] = iomem_wdata[ 7: 0];
+		if (iomem_wstrb[1]) assign simplerng_dat_di[15: 8] = iomem_wdata[15: 8];
+		if (iomem_wstrb[2]) assign simplerng_dat_di[23:16] = iomem_wdata[23:16];
+		if (iomem_wstrb[3]) assign simplerng_dat_di[31:24] = iomem_wdata[31:24];
+	end
 	
 	//User RAM Memory interface
 	
@@ -109,7 +114,12 @@ module hx8kdemo (
 	assign user_ram_we = user_ram_dat_sel ? (|iomem_wstrb) : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
 	assign user_ram_re = user_ram_dat_sel && (~|iomem_wstrb) ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
 	
-	assign user_ram_di = iomem_wdata; 
+	if (user_ram_we) begin
+		if (iomem_wstrb[0]) assign user_ram_di[ 7: 0] = iomem_wdata[ 7: 0];
+		if (iomem_wstrb[1]) assign user_ram_di[15: 8] = iomem_wdata[15: 8];
+		if (iomem_wstrb[2]) assign user_ram_di[23:16] = iomem_wdata[23:16];
+		if (iomem_wstrb[3]) assign user_ram_di[31:24] = iomem_wdata[31:24];
+	end
 
 	always @(posedge clk) begin	
 		if (!resetn) begin

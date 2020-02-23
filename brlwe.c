@@ -13,20 +13,48 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 #include <stdint.h>
 #include <stdlib.h>
 #include "brlwe.h"
+#include "alloc.h"
+#include "alloc.c"
 
 /*****************************************************************************/
-/* Private variables:                                                        */
+/* Definition:                                                        */
 /*****************************************************************************/
-
-
+#define RNG_seed	 setseed32
+#define RNG_rand	 getrandom_binary
+//static void setseed32(uint32_t seed);
+//static void getrandom_binary(uint8_t* str);
 /*****************************************************************************/
 /* Private functions:                                                        */
 /*****************************************************************************/
 
 //initialize a polynomial by sampling a uniform distribution with binary coefficients 
-void BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly) {
+struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling() {
+	int i = 0;
+	int j = 0;
+	uint32_t r = 0;//random number buffer
 	
-	/*time_t t;
+	uint32_t cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	RNG_seed(cycles_now);
+	
+	struct BRLWE_Ring_polynomials* poly = NULL;
+	poly = m_malloc(BRLWE_N);
+	
+	uint8_t* str = NULL;
+	str = m_malloc(4);
+	for (i = 0; i < BRLWE_N/4 ; i++) {
+		RNG_rand(str);
+		for (j = 0; j < 4 ; j++){
+			poly->polynomial[4*i+j] = (uint8_t)str[j];
+		};
+	};
+	m_free(str);
+	
+	return poly;
+	
+	/*
+	//C program on PC
+	time_t t;
 	int i = 0;
 	int r = 0;
 	srand((unsigned)time(&t));
@@ -37,9 +65,12 @@ void BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly) {
 };
 
 //initialize a polynomial by input hex in form of string.
-//pre-requirement: length(str) = n, rev = {0,1}^1
+//pre-requirement: length(str) = BRLWE_N, rev = {0,1}^1
 //rev = 1: str[n] = poly[0]; else: str[0] = poly[0]
-void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev) {
+struct BRLWE_Ring_polynomials* BRLWE_init_hex(uint8_t* str, int rev) {
+	struct BRLWE_Ring_polynomials* poly = NULL;
+	poly = m_malloc(BRLWE_N);
+	
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
 			poly->polynomial[i] = (uint8_t)(str[BRLWE_N - 1 - i] % BRLWE_Q);
@@ -48,17 +79,20 @@ void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev) 
 		for (int i = 0; i < BRLWE_N; i++)
 			poly->polynomial[i] = (uint8_t)(str[i]% BRLWE_Q);
 	}; 
-	return;
+	return poly;
 };
 
 //initialize a polynomial with all 0.
-void BRLWE_init(struct BRLWE_Ring_polynomials* poly) {
+struct BRLWE_Ring_polynomials* BRLWE_init() {
+	struct BRLWE_Ring_polynomials* poly = NULL;
+	poly = m_malloc(BRLWE_N);
+	
 	for (int i = 0; i < BRLWE_N; i++)
 		poly->polynomial[i] = (uint8_t)0x00;
-	return;
+	return poly;
 };
 
-//Main Function 1: Key Generati
+//Main Function 1: Key Generation
 //a is a global parameter shared by Alice and Bob
 // r1 and r2 are randomly selected binary polynomials, r2 is secret key
 // p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen

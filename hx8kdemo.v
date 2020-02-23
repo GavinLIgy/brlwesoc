@@ -105,25 +105,6 @@ module hx8kdemo (
 	
 	assign ram_addr = ram_ready ? iomem_addr - 32'h 0300_2000 : 32'h 0 ;
 	
-	/*
-	wire        user_ram_we;
-	wire 	    user_ram_re;
-	wire [31:0] user_ram_di;
-	wire [31:0] user_ram_do;
-	wire        user_ram_wait;
-	
-	wire        user_ram_dat_sel;//data selector
-
-	assign user_ram_dat_sel = iomem_valid && (iomem_addr >= 32'h 0300_2000);
-
-	assign user_ram_we = user_ram_dat_sel ? (|iomem_wstrb) : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
-	assign user_ram_re = user_ram_dat_sel && (~|iomem_wstrb) ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
-	
-	assign user_ram_di[ 7: 0] = iomem_wstrb[0] ? iomem_wdata[ 7: 0] : 8'b 0;
-	assign user_ram_di[15: 8] = iomem_wstrb[1] ? iomem_wdata[15: 8] : 8'b 0;
-	assign user_ram_di[23:16] = iomem_wstrb[2] ? iomem_wdata[23:16] : 8'b 0;
-	assign user_ram_di[31:24] = iomem_wstrb[3] ? iomem_wdata[31:24] : 8'b 0;*/
-	
 	always @(posedge clk) begin	
 		if (!resetn) begin
 			gpio <= 0;
@@ -201,16 +182,6 @@ module hx8kdemo (
 		.dat_di(	simplerng_dat_di	),
 		.dat_do(	simplerng_dat_do	),
 		.dat_wait(	simplerng_dat_wait	));	
-	/*
-	user_ram #(.ADDR_BIT(8)) m_ram(
-		.clk_i(		clk					),
-		.rst_i(		resetn				),
-        .wr_en_i(	user_ram_we 		),
-		.rd_en_i(	user_ram_re			),
-		.addr_i(	iomem_addr[7:0]		),
-		.di_i(		user_ram_di 		),
-		.do_o(		user_ram_do			));
-	*/
 	
 	always @(posedge clk)
 		ram_ready <= iomem_valid && !iomem_ready && (iomem_addr >= 32'h 0300_2000) && ((iomem_addr - 32'h 0300_2000) < 4*256);

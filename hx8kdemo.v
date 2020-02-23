@@ -208,11 +208,15 @@ module hx8kdemo (
 		.di_i(		user_ram_di 		),
 		.do_o(		user_ram_do			));
 	*/
+	
+	always @(posedge clk)
+		ram_ready <= iomem_valid && !iomem_ready && (iomem_addr - 32'h 0300_2000) < 4*256);
+		
 	picosoc_mem #(
 		.WORDS(256)
 	) user_memory (
 		.clk(clk),
-		.wen((iomem_valid && !iomem_ready && (iomem_addr - 32'h 0300_2000) < 4*256) ? mem_wstrb : 4'b0),
+		.wen((iomem_valid && !iomem_ready && (iomem_addr - 32'h 0300_2000) < 4*256) ? iomem_wstrb : 4'b0),
 		.addr(iomem_addr[23:2]),
 		.wdata(iomem_wdata),
 		.rdata(ram_rdata)

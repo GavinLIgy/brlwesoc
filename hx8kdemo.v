@@ -92,13 +92,6 @@ module hx8kdemo (
 	assign simplerng_dat_we = simplerng_dat_sel ? (|iomem_wstrb) : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
 	assign simplerng_dat_re = simplerng_dat_sel && (~|iomem_wstrb) ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
 	
-	if (simplerng_dat_we) begin
-		if (iomem_wstrb[0]) assign simplerng_dat_di[ 7: 0] = iomem_wdata[ 7: 0];
-		if (iomem_wstrb[1]) assign simplerng_dat_di[15: 8] = iomem_wdata[15: 8];
-		if (iomem_wstrb[2]) assign simplerng_dat_di[23:16] = iomem_wdata[23:16];
-		if (iomem_wstrb[3]) assign simplerng_dat_di[31:24] = iomem_wdata[31:24];
-	end
-	
 	//User RAM Memory interface
 	
 	wire        user_ram_we;
@@ -109,17 +102,10 @@ module hx8kdemo (
 	
 	wire        user_ram_dat_sel;//data selector
 
-	assign user_ram_dat_sel = iomem_valid && (iomem_addr[31:8] == 24'h 0300_20);
+	assign user_ram_dat_sel = iomem_valid && (iomem_addr >= 24'h 0300_2000);
 
 	assign user_ram_we = user_ram_dat_sel ? (|iomem_wstrb) : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
 	assign user_ram_re = user_ram_dat_sel && (~|iomem_wstrb) ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
-	
-	if (user_ram_we) begin
-		if (iomem_wstrb[0]) assign user_ram_di[ 7: 0] = iomem_wdata[ 7: 0];
-		if (iomem_wstrb[1]) assign user_ram_di[15: 8] = iomem_wdata[15: 8];
-		if (iomem_wstrb[2]) assign user_ram_di[23:16] = iomem_wdata[23:16];
-		if (iomem_wstrb[3]) assign user_ram_di[31:24] = iomem_wdata[31:24];
-	end
 
 	always @(posedge clk) begin	
 		if (!resetn) begin
@@ -140,10 +126,18 @@ module hx8kdemo (
 				else if (iomem_addr == 32'h 0300_1000) begin
 					iomem_ready <= 1;
 					iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do; //wait = 1, cannot read now
+					if (iomem_wstrb[0]) assign simplerng_dat_di[ 7: 0] = iomem_wdata[ 7: 0];
+					if (iomem_wstrb[1]) assign simplerng_dat_di[15: 8] = iomem_wdata[15: 8];
+					if (iomem_wstrb[2]) assign simplerng_dat_di[23:16] = iomem_wdata[23:16];
+					if (iomem_wstrb[3]) assign simplerng_dat_di[31:24] = iomem_wdata[31:24];
 				end
-				else if (iomem_addr[31:8] == 24'h 0300_20)begin
+				else if (iomem_addr >= 24'h 0300_2000)begin
 					iomem_ready <= 1;
 					iomem_rdata <= simplerng_dat_re ? user_ram_do : 32'h1311_2077; //wait = 1, cannot read now
+					if (iomem_wstrb[0]) assign user_ram_di[ 7: 0] = iomem_wdata[ 7: 0];
+					if (iomem_wstrb[1]) assign user_ram_di[15: 8] = iomem_wdata[15: 8];
+					if (iomem_wstrb[2]) assign user_ram_di[23:16] = iomem_wdata[23:16];
+					if (iomem_wstrb[3]) assign user_ram_di[31:24] = iomem_wdata[31:24];
 				end
 			end
 		end

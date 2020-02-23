@@ -634,18 +634,17 @@ void main()
 
 	//test: Polynomial initialization step
 	struct BRLWE_Ring_polynomials* a = NULL;
+	a = m_malloc(BRLWE_N);
 	print("\nPolynomial initialization step:\r\n");
-	a = BRLWE_init_hex(test_1, 0);
+	a = BRLWE_init_hex(a, test_1, 0);
 	print("BRLWE_init_hex(test_1, 0) = ");
 	phex(a->polynomial);
 	print("\n");
-	m_free(a);
-	a = BRLWE_init_bin_sampling();
+	a = BRLWE_init_bin_sampling(a);
 	print("BRLWE_init_bin_sampling() = ");
 	phex(a->polynomial);
 	print("\n");
-	m_free(a);
-	a = BRLWE_init();
+	a = BRLWE_init(a);
 	print("BRLWE_init() = ");
 	phex(a->polynomial);
 	print("\n");

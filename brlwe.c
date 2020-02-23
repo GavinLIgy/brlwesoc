@@ -28,7 +28,7 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 /*****************************************************************************/
 
 //initialize a polynomial by sampling a uniform distribution with binary coefficients 
-struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling() {
+struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly) {
 	int i = 0;
 	int j = 0;
 	uint32_t r = 0;//random number buffer
@@ -36,9 +36,6 @@ struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling() {
 	uint32_t cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	RNG_seed(cycles_now);
-	
-	struct BRLWE_Ring_polynomials* poly = NULL;
-	poly = m_malloc(BRLWE_N);
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);
@@ -67,10 +64,7 @@ struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling() {
 //initialize a polynomial by input hex in form of string.
 //pre-requirement: length(str) = BRLWE_N, rev = {0,1}^1
 //rev = 1: str[n] = poly[0]; else: str[0] = poly[0]
-struct BRLWE_Ring_polynomials* BRLWE_init_hex(uint8_t* str, int rev) {
-	struct BRLWE_Ring_polynomials* poly = NULL;
-	poly = m_malloc(BRLWE_N);
-	
+struct BRLWE_Ring_polynomials * BRLWE_init_hex(struct BRLWE_Ring_polynomials * poly, uint8_t* str, int rev) {
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
 			poly->polynomial[i] = (uint8_t)(str[BRLWE_N - 1 - i] % BRLWE_Q);
@@ -83,10 +77,7 @@ struct BRLWE_Ring_polynomials* BRLWE_init_hex(uint8_t* str, int rev) {
 };
 
 //initialize a polynomial with all 0.
-struct BRLWE_Ring_polynomials* BRLWE_init() {
-	struct BRLWE_Ring_polynomials* poly = NULL;
-	poly = m_malloc(BRLWE_N);
-	
+struct BRLWE_Ring_polynomials * BRLWE_init(struct BRLWE_Ring_polynomials * poly) {
 	for (int i = 0; i < BRLWE_N; i++)
 		poly->polynomial[i] = (uint8_t)0x00;
 	return poly;
@@ -253,4 +244,4 @@ struct BRLWE_Ring_polynomials* BRLWE_init() {
 		// a.polynomial[i] = b.polynomial[i];
 	// }
 	// return;
-};
+//};

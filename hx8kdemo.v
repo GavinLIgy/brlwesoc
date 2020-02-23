@@ -106,8 +106,8 @@ module hx8kdemo (
 
 	assign user_ram_dat_sel = iomem_valid && (iomem_addr[31:8] == 24'h 0300_20);
 
-	assign user_ram_we = user_ram_dat_sel ? iomem_wstrb[0] : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
-	assign user_ram_re = user_ram_dat_sel && !iomem_wstrb ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
+	assign user_ram_we = user_ram_dat_sel ? (|iomem_wstrb) : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
+	assign user_ram_re = user_ram_dat_sel && (~|iomem_wstrb) ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
 	
 	assign user_ram_di = iomem_wdata; 
 

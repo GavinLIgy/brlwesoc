@@ -27,6 +27,9 @@ module user_ram#(
        end
        else if (rd_en_i) begin
             data <= bram[addr_i];
+			@(posedge clk_i);
+			@(posedge clk_i);
+			@(posedge clk_i);
        end
        else begin
 			data <= 32'h16110400;      //读写均无效时，为1

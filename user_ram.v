@@ -29,9 +29,9 @@ module user_ram#(
             data <= bram[addr_i];
        end
        else begin
-			data <= 32'b0;      //读写均无效时，为1
+			data <= 32'h16110400;      //读写均无效时，为1
        end
     end
 
-    assign do_o = rd_en_i? data : 32'b0;
+    assign do_o = rd_en_i? data : 32'h16110400;
 endmodule

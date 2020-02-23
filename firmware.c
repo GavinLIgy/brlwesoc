@@ -1025,7 +1025,7 @@ void main()
 	set_flash_qspi_flag();
 	
 	reg_leds = 127;//=0x7f=8'b0111_1111
-	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
+	//while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
 	print("Booting..\n");
 	uint32_t tmp = 0x13112008;

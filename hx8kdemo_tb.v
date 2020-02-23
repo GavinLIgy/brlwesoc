@@ -31,7 +31,7 @@ module testbench;
 		$dumpvars(0, testbench);
 		$dumpflush;
 
-		repeat (50) begin
+		repeat (10) begin
 			repeat (50000) @(posedge clk);
 			//$display("+50000 cycles");
 		end

@@ -637,17 +637,17 @@ void main()
 	print("\nPolynomial initialization step:\r\n");
 	a = BRLWE_init_hex(test_1, 0);
 	print("BRLWE_init_hex(test_1, 0) = ");
-	phex(a.polynomial);
+	phex(a->polynomial);
 	print("\n");
 	m_free(a);
 	a = BRLWE_init_bin_sampling();
 	print("BRLWE_init_bin_sampling() = ");
-	phex(a.polynomial);
+	phex(a->polynomial);
 	print("\n");
 	m_free(a);
 	a = BRLWE_init();
 	print("BRLWE_init() = ");
-	phex(a.polynomial);
+	phex(a->polynomial);
 	print("\n");
 	m_free(a);
 	

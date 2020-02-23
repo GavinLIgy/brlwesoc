@@ -21,8 +21,8 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 /*****************************************************************************/
 #define RNG_seed	 setseed32
 #define RNG_rand	 getrandom_binary
-//static void setseed32(uint32_t seed);
-//static void getrandom_binary(uint8_t* str);
+//void setseed32(uint32_t seed);
+//void getrandom_binary(uint8_t* str);
 /*****************************************************************************/
 /* Private functions:                                                        */
 /*****************************************************************************/

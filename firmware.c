@@ -510,7 +510,7 @@ void alloc_test(void)
 ********************************************************************************
 */
 
-static void setseed32(uint32_t seed)
+void setseed32(uint32_t seed)
 {	
 	/*int i;
 	uint32_t tmp = 0x00000000;
@@ -523,7 +523,7 @@ static void setseed32(uint32_t seed)
 }
 
 /*
-static int getrandom(uint8_t* str)
+int getrandom(uint8_t* str)
 {	
 	uint32_t tmp = 0xffffffff;//impossible value of the RNG output
 		
@@ -545,7 +545,7 @@ static int getrandom(uint8_t* str)
 	return 1;
 }*/
 
-static void getrandom_binary(uint8_t* str)
+void getrandom_binary(uint8_t* str)
 {	//sizeof(str) = 4 (another form of unit32_t)
 	uint32_t tmp = 0xffffffff;//impossible value of the RNG output
 	int i = 0;
@@ -572,7 +572,7 @@ static void getrandom_binary(uint8_t* str)
 	*/
 }
 
-static void debug_rdcycle()
+void debug_rdcycle()
 {
 	uint32_t cycles_begin;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));

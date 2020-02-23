@@ -101,6 +101,9 @@ module hx8kdemo (
 	
 	reg ram_ready;
 	wire [31:0] ram_rdata;
+	wire [31:0] ram_addr;
+	
+	assign ram_addr = ram_ready ? iomem_addr - 32'h 0300_2000 : 32'h 0 ;
 	
 	/*
 	wire        user_ram_we;
@@ -141,7 +144,7 @@ module hx8kdemo (
 					iomem_ready <= 1;
 					iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do; //wait = 1, cannot read now
 				end
-				else if (iomem_addr >= 32'h 0300_2000)begin
+				else if (iomem_addr >= 32'h 0300_2000 && ((iomem_addr - 32'h 0300_2000) < 4*256))begin
 					/*iomem_ready <= 1;
 					iomem_rdata <= user_ram_re ? user_ram_do : 32'h1311_2077; //wait = 1, cannot read now*/
 					iomem_ready <= ram_ready;
@@ -210,14 +213,14 @@ module hx8kdemo (
 	*/
 	
 	always @(posedge clk)
-		ram_ready <= iomem_valid && !iomem_ready && ((iomem_addr - 32'h 0300_2000) < 4*256);
+		ram_ready <= iomem_valid && !iomem_ready && (iomem_addr >= 32'h 0300_2000) && ((iomem_addr - 32'h 0300_2000) < 4*256);
 		
 	picosoc_mem #(
 		.WORDS(256)
 	) user_memory (
 		.clk(clk),
-		.wen((iomem_valid && !iomem_ready && (iomem_addr - 32'h 0300_2000) < 4*256) ? iomem_wstrb : 4'b0),
-		.addr((iomem_addr - 32'h 0300_2000)[23:2]),
+		.wen((iomem_valid && !iomem_ready && (iomem_addr >= 32'h 0300_2000) && (iomem_addr - 32'h 0300_2000) < 4*256) ? iomem_wstrb : 4'b0),
+		.addr(ram_addr[23:2]),
 		.wdata(iomem_wdata),
 		.rdata(ram_rdata)
 	);

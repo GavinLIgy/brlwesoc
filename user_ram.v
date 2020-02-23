@@ -7,7 +7,7 @@ module user_ram#(
     input                   rd_en_i,
     input [ADDR_BIT-1:0]    addr_i,
     input [31:0]            di_i,
-	output [31:0]           do_o,
+	output [31:0]           do_o
 );
 
     reg [31:0]       bram[2^(ADDR_BIT) - 1:0];    

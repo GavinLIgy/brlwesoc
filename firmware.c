@@ -1037,7 +1037,7 @@ void main()
 	print_Hex_32(user_ram_start);
 	print("\n");
 	uint32_t tmp2 = 0x77777777;
-	* (& user_ram_start + 1) (uint32_t) tmp;
+	* (& user_ram_start + 1) = (uint32_t) tmp2;
 	print("Value of & user_ram_start + 1 is:");
 	print_Hex_32(& user_ram_start + 1);
 	print("\n");

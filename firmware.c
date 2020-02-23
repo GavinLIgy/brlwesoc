@@ -1027,22 +1027,6 @@ void main()
 	reg_leds = 127;//=0x7f=8'b0111_1111
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */  };	
 	
-	print("Booting..\n");
-	uint32_t tmp = 0x13112008;
-	user_ram_start = (uint32_t) tmp;
-	print("Value of & user_ram_start is:");
-	print_Hex_32(& user_ram_start);
-	print("\n");
-	print("Value in user_ram_start is:");
-	print_Hex_32(user_ram_start);
-	print("\n");
-	uint32_t tmp2 = 0x77777777;
-	* (& user_ram_start + 1) = (uint32_t) tmp2;
-	print("Value of & user_ram_start + 1 is:");
-	print_Hex_32(& user_ram_start + 1);
-	print("\n");
-	print("Value of * (& user_ram_start + 1)  is:");
-	print_Hex_32(* (& user_ram_start + 1) );
 	//test: memory allocate testing
 	/*
 	cmd_memtest();

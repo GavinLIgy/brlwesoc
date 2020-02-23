@@ -37,9 +37,9 @@ struct BRLWE_Ring_polynomials2
 };
 
 #pragma pack()
-void BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly);//initialize a polynomial by sampling on uniform distribution with binary coefficients 
-void BRLWE_init_hex(struct BRLWE_Ring_polynomials* poly, uint8_t* str, int rev);//initialize a polynomial by input hex in form of string.
-void BRLWE_init(struct BRLWE_Ring_polynomials* poly);//initialize a polynomial with all 0.
+struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly);//initialize a polynomial by sampling on uniform distribution with binary coefficients 
+struct BRLWE_Ring_polynomials * BRLWE_init_hex(struct BRLWE_Ring_polynomials * poly, uint8_t* str, int rev);//initialize a polynomial by input hex in form of string.
+struct BRLWE_Ring_polynomials * BRLWE_init(struct BRLWE_Ring_polynomials * poly);//initialize a polynomial with all 0.
 struct BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials a);
 struct BRLWE_Ring_polynomials2 BRLWE_Encry(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* p, uint8_t* m);
 uint8_t* BRLWE_Decry(struct BRLWE_Ring_polynomials2* c, struct BRLWE_Ring_polynomials* r2);

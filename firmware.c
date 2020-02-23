@@ -46,7 +46,7 @@ extern uint32_t sram;
 #define reg_uart_data (*(volatile uint32_t*)0x02000008)
 #define reg_leds (*(volatile uint32_t*)0x03000000)
 
-//#define reg_rng_data (*(volatile uint32_t*)0x03001000)
+#define reg_rng_data (*(volatile uint32_t*)0x03001000)
 
 // --------------------------------------------------------
 

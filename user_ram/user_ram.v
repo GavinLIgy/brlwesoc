@@ -33,5 +33,5 @@ module user_ram#(
        end
     end
 
-    assign do_o = rd_en_i? data : 32'h16110400;
+    assign do_o = data;
 endmodule

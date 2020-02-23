@@ -107,7 +107,7 @@ module hx8kdemo (
 	
 	wire        user_ram_dat_sel;//data selector
 
-	assign user_ram_dat_sel = iomem_valid && (iomem_addr >= 24'h 0300_2000);
+	assign user_ram_dat_sel = iomem_valid && (iomem_addr >= 32'h 0300_2000);
 
 	assign user_ram_we = user_ram_dat_sel ? (|iomem_wstrb) : 1'b 0;	//(sel && wstrb[0]) = 1 ==> we = 1; processor write
 	assign user_ram_re = user_ram_dat_sel && (~|iomem_wstrb) ;		//(sel && wstrb = 4'b 0000) = 1 ==> re = 1; processor read
@@ -137,7 +137,7 @@ module hx8kdemo (
 					iomem_ready <= 1;
 					iomem_rdata <= (simplerng_dat_wait | ~(simplerng_dat_re) ) ? 32'hffff_ffff : simplerng_dat_do; //wait = 1, cannot read now
 				end
-				else if (iomem_addr >= 24'h 0300_2000)begin
+				else if (iomem_addr >= 32'h 0300_2000)begin
 					iomem_ready <= 1;
 					iomem_rdata <= simplerng_dat_re ? user_ram_do : 32'h1311_2077; //wait = 1, cannot read now
 				end

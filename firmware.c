@@ -695,9 +695,9 @@ void main()
 	print("test1 + test2 = \n");
 	phex(Ring_add(a, m, n)->polynomial);
 	print("test1 - test2 = \n");
-	phex(Ring_add(a, m, n)->polynomial);
+	phex(Ring_sub(a, m, n)->polynomial);
 	print("test1 * test2 = \n");
-	phex(Ring_add(a, m, n)->polynomial);
+	phex(Simple_Ring_mul(a, m, n)->polynomial);
 	
 	mem_print();
 	m_free(a);

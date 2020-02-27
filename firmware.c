@@ -699,6 +699,7 @@ void main()
 	print("test1 * test2 = \n");
 	phex(Ring_add(a, m, n)->polynomial);
 	
+	mem_print();
 	m_free(a);
 	m_free(m);
 	m_free(n);

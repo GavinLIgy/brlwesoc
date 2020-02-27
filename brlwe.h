@@ -49,8 +49,8 @@ uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave);
 void passpoly (struct BRLWE_Ring_polynomials a, struct BRLWE_Ring_polynomials b);
 
 
-struct BRLWE_Ring_polynomials Ring_add(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b);
-struct BRLWE_Ring_polynomials Ring_sub(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b);
-struct BRLWE_Ring_polynomials Simple_Ring_mul(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b);
+struct BRLWE_Ring_polynomials* Ring_add(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans);
+struct BRLWE_Ring_polynomials* Ring_sub(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans);
+struct BRLWE_Ring_polynomials* Simple_Ring_mul(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans);
 
 #endif

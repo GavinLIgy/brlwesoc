@@ -87,18 +87,22 @@ struct BRLWE_Ring_polynomials * BRLWE_init(struct BRLWE_Ring_polynomials * poly)
 // //a is a global parameter shared by Alice and Bob
 // // r1 and r2 are randomly selected binary polynomials, r2 is secret key
 // // p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
-// struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials* a){
+// struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials* a, struct BRLWE_Ring_polynomials2* key){
 	// struct BRLWE_Ring_polynomials* r1 = NULL;
-	// struct BRLWE_Ring_polynomials* r2 = NULL;
-	// struct BRLWE_Ring_polynomials2* key = NULL;
+	// struct BRLWE_Ring_polynomials* r2 = key->c2;//sk
+	// r1 = m_malloc(BRLWE_N);
+	
+	// r1 = BRLWE_init_bin_sampling(r1);
+	// r2 = BRLWE_init_bin_sampling(r2);
+	
 	// //uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };//p random
 	// //uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
 	// /*BRLWE_init_hex(&r1, _r1, 0);
 	// BRLWE_init_hex(&r2, _r2, 0);*/
-	// r1 = BRLWE_init_bin_sampling();
-	// r2 = BRLWE_init_bin_sampling();
-	// key->c2=r2;//sk
+
 	// key->c1=Ring_sub(r1, Simple_Ring_mul(*a, *r2));//pk
+	
+	// m_free(r1);
 	// return key;
 // };
 
@@ -182,66 +186,62 @@ struct BRLWE_Ring_polynomials * BRLWE_init(struct BRLWE_Ring_polynomials * poly)
 	// return m;
 // };
 
-// /*
-// //Decode function 1: Johannes
-// //Decode polynomial m_wave into string m
-// uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave){
-	// uint8_t* m = (uint8_t *)malloc(sizeof(uint8_t) * BRLWE_N);
-	// int i = 0;
-	// for (i = 0; i < BRLWE_N; i++) {
-		// if (abs(m_wave.polynomial[i] - i - round((BRLWE_N - 3) / 2)) <= (BRLWE_Q / 4) )
-			// m[i] = (uint8_t)0;
-		// else
-			// m[i] = (uint8_t)1;
-	// };
-	// return m;
-// };
-// */
+/*
+//Decode function 1: Johannes
+//Decode polynomial m_wave into string m
+uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave){
+	uint8_t* m = (uint8_t *)malloc(sizeof(uint8_t) * BRLWE_N);
+	int i = 0;
+	for (i = 0; i < BRLWE_N; i++) {
+		if (abs(m_wave.polynomial[i] - i - round((BRLWE_N - 3) / 2)) <= (BRLWE_Q / 4) )
+			m[i] = (uint8_t)0;
+		else
+			m[i] = (uint8_t)1;
+	};
+	return m;
+};
+*/
 
-// //return value = a + b;
-// struct BRLWE_Ring_polynomials Ring_add(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b) {
-	// int i = 0;
-	// struct BRLWE_Ring_polynomials r;
-	// for (int i = 0; i < BRLWE_N; i++) {
-		// r.polynomial[i] = (a.polynomial[i] + b.polynomial[i]) % BRLWE_Q;
-	// };
-	// return r;
-// };
+//return value ans = a + b;
+struct BRLWE_Ring_polynomials* Ring_add(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans) {
+	int i = 0;
+	for (int i = 0; i < BRLWE_N; i++) {
+		ans->polynomial[i] = (a->polynomial[i] + b->polynomial[i]) % BRLWE_Q;
+	};
+	return ans;
+};
 
-// //return value = a - b;
-// struct BRLWE_Ring_polynomials Ring_sub(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b) {
-	// int i = 0;
-	// struct BRLWE_Ring_polynomials r;
-	// for (int i = 0; i < BRLWE_N; i++) {
-		// r.polynomial[i] = (a.polynomial[i] - b.polynomial[i]) % BRLWE_Q;
-	// };
-	// return r;
-// };
+//return value = a - b;
+struct BRLWE_Ring_polynomials* Ring_sub(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans) {
+	int i = 0;
+	for (int i = 0; i < BRLWE_N; i++) {
+		ans->polynomial[i] = (a->polynomial[i] - b->polynomial[i]) % BRLWE_Q;
+	};
+	return ans;
+};
 
-// //return value = a * b; b is with binary coefficiences
-// //i=0 is lsb, i=n-1 is msb
-// struct BRLWE_Ring_polynomials Simple_Ring_mul(const struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b) {
-	// int i = 0;
-	// int j = 0;
-	// struct BRLWE_Ring_polynomials r;
-	// BRLWE_init(&r);
-	// for (int i = 0; i < BRLWE_N; i++) {
-		// if (b.polynomial[i] == 0x01) {
-			// for (int j = 0; j < BRLWE_N; j++) {
-				// if (i + j <= BRLWE_N - 1)
-					// r.polynomial[i + j] = r.polynomial[i + j] + a.polynomial[j];
-				// else
-					// r.polynomial[i + j - BRLWE_N] = r.polynomial[i + j - BRLWE_N] + 256 - a.polynomial[j];
-			// };
-		// };
-	// };
-	// return r;
-// };
+//return value = a * b; b is with binary coefficiences
+//i=0 is lsb, i=n-1 is msb
+struct BRLWE_Ring_polynomials* Simple_Ring_mul(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans) {
+	int i = 0;
+	int j = 0;
+	for (int i = 0; i < BRLWE_N; i++) {
+		if (b->polynomial[i] == 0x01) {
+			for (int j = 0; j < BRLWE_N; j++) {
+				if (i + j <= BRLWE_N - 1)
+					ans->polynomial[i + j] = ans->polynomial[i + j] + a->polynomial[j];
+				else
+					ans->polynomial[i + j - BRLWE_N] = ans->polynomial[i + j - BRLWE_N] + BRLWE_N - a->polynomial[j];
+			};
+		};
+	};
+	return ans;
+};
 
-// //pass b.polynomial to a.polynomial
-// void passpoly (struct BRLWE_Ring_polynomials a, const struct BRLWE_Ring_polynomials b){
-	// for (int i = 0; i < BRLWE_N; i++){
-		// a.polynomial[i] = b.polynomial[i];
-	// }
-	// return;
-//};
+//pass b.polynomial to a.polynomial
+void passpoly (struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b){
+	for (int i = 0; i < BRLWE_N; i++){
+		a->polynomial[i] = b->polynomial[i];
+	}
+	return;
+};

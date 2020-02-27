@@ -46,7 +46,7 @@ uint8_t* BRLWE_Decry(struct BRLWE_Ring_polynomials2* c, struct BRLWE_Ring_polyno
 void BRLWE_Encode(uint8_t* m, struct BRLWE_Ring_polynomials* m_wave);
 uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave);
 //pass b.polynomial to a.polynomial
-void passpoly (struct BRLWE_Ring_polynomials a, struct BRLWE_Ring_polynomials b);
+void passpoly (struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b);
 
 
 struct BRLWE_Ring_polynomials* Ring_add(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans);

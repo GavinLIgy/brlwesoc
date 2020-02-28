@@ -632,8 +632,10 @@ void main()
 	a = m_malloc(BRLWE_N);
 	print("\nPolynomial initialization step:\r\n");
 	a = BRLWE_init_hex(a, test_1, 0);
+	print("test_1 = ");
+	phex(test_1);
 	print("BRLWE_init_hex(test_1, 0) = ");
-	phex(a->polynomial);
+	phex(a);
 	print("\n");
 	
 	/*
@@ -648,11 +650,11 @@ void main()
 	
 	a = BRLWE_init_bin_sampling(a);
 	print("BRLWE_init_bin_sampling() = ");
-	phex(a->polynomial);
+	phex(a);
 	print("\n");
 	a = BRLWE_init(a);
 	print("BRLWE_init() = ");
-	phex(a->polynomial);
+	phex(a);
 	print("\n");
 	mem_print();
 	m_free(a);

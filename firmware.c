@@ -664,11 +664,11 @@ void main()
 	n = m_malloc(BRLWE_N);
 	print("\nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
-	phex(Ring_add(test_1, test_2, n)->polynomial);
+	phex(Ring_add(test_1, test_2, n));
 	print("test1 - test2 = \n");
-	phex(Ring_sub(test_1, test_2, n)->polynomial);
+	phex(Ring_sub(test_1, test_2, n));
 	print("test1 * test2 = \n");
-	phex(Simple_Ring_mul(test_1, test_2, n)->polynomial);
+	phex(Simple_Ring_mul(test_1, test_2, n));
 	
 	mem_print();
 	m_free(n);

@@ -34,7 +34,6 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 	int i = 0;
 	int j = 0;
-	uint32_t r = 0;//random number buffer
 	
 	uint32_t cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -86,30 +85,36 @@ BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly) {
 	return poly;
 };
 
-// //Main Function 1: Key Generation
-// //a is a global parameter shared by Alice and Bob
-// // r1 and r2 are randomly selected binary polynomials, r2 is secret key
-// // p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
-// BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring_polynomials2 key) {
-	// BRLWE_Ring_polynomials r1 = NULL;
-	// BRLWE_Ring_polynomials r2 = &(key[BRLWE_N]);//sk
-	// r1 = m_malloc(BRLWE_N);
+//Main Function 1: Key Generation
+//a is a global parameter shared by Alice and Bob
+// r1 and r2 are randomly selected binary polynomials, r2 is secret key
+// p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
+BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring_polynomials2 key) {
+	BRLWE_Ring_polynomials pk = key;//public key
+	BRLWE_Ring_polynomials sk = key+BRLWE_N;//secret key
 	
-	// if (r1 == NULL) return NULL;// MEM alloc failed
+	sk = BRLWE_init_bin_sampling(sk);
+	passpoly (pk , Simple_Ring_mul(a, sk, pk));
 	
-	// r1 = BRLWE_init_bin_sampling(r1);
-	// r2 = BRLWE_init_bin_sampling(r2);
+	int i = 0;
+	int j = 0;
 	
-	// //uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };//p random
-	// //uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
-	// /*BRLWE_init_hex(&r1, _r1, 0);
-	// BRLWE_init_hex(&r2, _r2, 0);*/
+	uint32_t cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	RNG_seed(cycles_now);
 	
-	// passpoly (&(key->poly1) , Simple_Ring_mul(a, r2, &(key->poly1)));
-	// passpoly (&(key->poly1) , Ring_sub(r1, &(key->poly1), &(key->poly1)) );//pk
-	// m_free(r1);
-	// return key;
-// };
+	uint8_t* str = NULL;
+	str = m_malloc(4);//random number buffer: uint8_t str [4]
+	for (i = 0; i < BRLWE_N/4 ; i++) {
+		RNG_rand(str);
+		for (j = 0; j < 4 ; j++){
+			*(pk+4*i+j) = (uint8_t)str[j] - *(pk+4*i+j);
+		};
+	};
+	m_free(str);
+
+	return key;
+};
 
 // //Main Function 2: Encryption
 // //pre-requirement: length(m) = n, m belongs to {0,1}^n;

@@ -101,10 +101,9 @@ struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomial
 	//uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
 	/*BRLWE_init_hex(&r1, _r1, 0);
 	BRLWE_init_hex(&r2, _r2, 0);*/
-
-	key->poly1 = Simple_Ring_mul(a, r2, &(key->poly1))
-
-	key->poly1 = Ring_sub(r1, &(key->poly1), &(key->poly1));//pk
+	
+	passpoly (&(key->poly1) , Simple_Ring_mul(a, r2, &(key->poly1)));
+	passpoly (&(key->poly1) , Ring_sub(r1, &(key->poly1), &(key->poly1)) );//pk
 	
 	m_free(r1);
 	return key;

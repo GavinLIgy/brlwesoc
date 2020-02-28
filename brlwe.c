@@ -69,14 +69,14 @@ BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 //initialize a polynomial by input hex in form of string.
 //pre-requirement: length(str) = BRLWE_N, rev = {0,1}^1
 //rev = 1: str[n] = poly[0]; else: str[0] = poly[0]
-BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t str, int rev) {
+BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str, int rev) {
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
-			poly[i] = (uint8_t)(str[BRLWE_N - 1 - i] % BRLWE_Q);
+			*(poly+i) = (uint8_t)(str[BRLWE_N - 1 - i] % BRLWE_Q);
 	}
 	else {
 		for (int i = 0; i < BRLWE_N; i++)
-			poly[i] = (uint8_t)(str[i]% BRLWE_Q);
+			*(poly+i) = (uint8_t)(str[i]% BRLWE_Q);
 	}; 
 	return poly;
 };
@@ -195,7 +195,7 @@ BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 };
 
 //return value = a - b;
-BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans); {
+BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++) 
 		ans[i] = (a[i] - b[i]) % BRLWE_Q;

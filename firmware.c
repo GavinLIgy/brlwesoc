@@ -731,6 +731,9 @@ void main()
 	m_free(a);
 	m_free(key);
 	
+	print("mem_print() 3 \n");
+	mem_print();
+	
 	//test: Encryption step
 	/*
 	print("\nEncryption:\n");

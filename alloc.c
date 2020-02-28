@@ -241,7 +241,7 @@ void free(void *ap)
         tmp_node = tmp_node->nxt_ptr;
         if(tmp_node == head_node)
         {
-            alloc_printf("%s,can not found ap!\r\n",__FUNCTION__);
+            alloc_printf("m_free() can not found ap!\r\n");
             return ;
         }
     }

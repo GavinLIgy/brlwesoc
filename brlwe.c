@@ -45,6 +45,8 @@ struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling(struct BRLWE_Ring_polynom
 			poly->polynomial[4*i+j] = (uint8_t)str[j];
 		};
 	};
+	print("mem_print() in BRLWE_init_bin_sampling(): \n");
+	mem_print();
 	m_free(str);
 	
 	return poly;
@@ -104,7 +106,8 @@ struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomial
 	
 	passpoly (&(key->poly1) , Simple_Ring_mul(a, r2, &(key->poly1)));
 	passpoly (&(key->poly1) , Ring_sub(r1, &(key->poly1), &(key->poly1)) );//pk
-	
+	print("mem_print() in BRLWE_Key_Gen(): \n");
+	mem_print();
 	m_free(r1);
 	return key;
 };

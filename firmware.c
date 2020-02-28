@@ -724,6 +724,7 @@ void main()
 	print("secret key = \n");
 	phex(key->poly2.polynomial);
 	
+	print("mem_print() \n");
 	mem_print();
 	m_free(a);
 	m_free(key);

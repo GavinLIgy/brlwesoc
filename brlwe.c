@@ -83,28 +83,32 @@ struct BRLWE_Ring_polynomials * BRLWE_init(struct BRLWE_Ring_polynomials * poly)
 	return poly;
 };
 
-// //Main Function 1: Key Generation
-// //a is a global parameter shared by Alice and Bob
-// // r1 and r2 are randomly selected binary polynomials, r2 is secret key
-// // p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
-// struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials* a, struct BRLWE_Ring_polynomials2* key){
-	// struct BRLWE_Ring_polynomials* r1 = NULL;
-	// struct BRLWE_Ring_polynomials* r2 = key->c2;//sk
-	// r1 = m_malloc(BRLWE_N);
+//Main Function 1: Key Generation
+//a is a global parameter shared by Alice and Bob
+// r1 and r2 are randomly selected binary polynomials, r2 is secret key
+// p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
+struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials* a, struct BRLWE_Ring_polynomials2* key){
+	struct BRLWE_Ring_polynomials* r1 = NULL;
+	struct BRLWE_Ring_polynomials* r2 = &(key->poly2);//sk
+	r1 = m_malloc(BRLWE_N);
 	
-	// r1 = BRLWE_init_bin_sampling(r1);
-	// r2 = BRLWE_init_bin_sampling(r2);
+	if (r1 == NULL) return NULL;// MEM alloc failed
 	
-	// //uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };//p random
-	// //uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
-	// /*BRLWE_init_hex(&r1, _r1, 0);
-	// BRLWE_init_hex(&r2, _r2, 0);*/
+	r1 = BRLWE_init_bin_sampling(r1);
+	r2 = BRLWE_init_bin_sampling(r2);
+	
+	//uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };//p random
+	//uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
+	/*BRLWE_init_hex(&r1, _r1, 0);
+	BRLWE_init_hex(&r2, _r2, 0);*/
 
-	// key->c1=Ring_sub(r1, Simple_Ring_mul(*a, *r2));//pk
+	key->poly1 = Simple_Ring_mul(a, r2, &(key->poly1))
+
+	key->poly1 = Ring_sub(r1, &(key->poly1), &(key->poly1));//pk
 	
-	// m_free(r1);
-	// return key;
-// };
+	m_free(r1);
+	return key;
+};
 
 // //Main Function 2: Encryption
 // //pre-requirement: length(m) = n, m belongs to {0,1}^n;

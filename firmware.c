@@ -633,6 +633,7 @@ void main()
 	*/
 
 	//test: Polynomial initialization step
+	
 	struct BRLWE_Ring_polynomials* a = NULL;
 	a = m_malloc(BRLWE_N);
 	print("\nPolynomial initialization step:\r\n");
@@ -641,12 +642,15 @@ void main()
 	phex(a->polynomial);
 	print("\n");
 	
+	/*
 	struct BRLWE_Ring_polynomials* m = NULL;
 	m = m_malloc(BRLWE_N);
 	m = BRLWE_init_hex(m, test_2, 0);
 	print("BRLWE_init_hex(test_2, 0) = ");
 	phex(m->polynomial);
 	print("\n");
+	*/
+	
 	/*
 	a = BRLWE_init_bin_sampling(a);
 	print("BRLWE_init_bin_sampling() = ");
@@ -689,6 +693,7 @@ void main()
 	*/
 	
 	//test: Math-operation subfunctions
+	/*
 	struct BRLWE_Ring_polynomials* n = NULL;
 	n = m_malloc(BRLWE_N);
 	print("\nMath-operation subfunctions:\r\n");
@@ -703,20 +708,25 @@ void main()
 	m_free(a);
 	m_free(m);
 	m_free(n);
+	*/
 
 	//test: Key Generation step
-	/*
-	struct BRLWE_Ring_polynomials pk, sk;
-	struct BRLWE_Ring_polynomials2 key;
+	
+	//struct BRLWE_Ring_polynomials pk, sk;
+	struct BRLWE_Ring_polynomials2* key = NULL;
+	key = m_malloc(512);
 	print("\nKey Generation:\n");
-	key = BRLWE_Key_Gen(a);
-	pk=key.c1;
-	sk=key.c2;
+	key = BRLWE_Key_Gen(a,key);
+	//pk=key.c1;
+	//sk=key.c2;
 	print("public key = \n");
-	phex(key.c1.polynomial);
+	phex(key->poly1.polynomial);
 	print("secret key = \n");
-	phex(key.c2.polynomial);
-	*/
+	phex(key->poly2.polynomial);
+	
+	mem_print();
+	m_free(a);
+	m_free(key);
 	
 	//test: Encryption step
 	/*

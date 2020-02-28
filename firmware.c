@@ -627,7 +627,7 @@ void main()
 	mem_print();
 
 	//test: Polynomial initialization step
-	
+	/*
 	BRLWE_Ring_polynomials a = NULL;
 	a = m_malloc(BRLWE_N);
 	print("\nPolynomial initialization step:\r\n");
@@ -638,14 +638,14 @@ void main()
 	phex(a);
 	print("\n");
 	
-	/*
+	
 	struct BRLWE_Ring_polynomials* m = NULL;
 	m = m_malloc(BRLWE_N);
 	m = BRLWE_init_hex(m, test_2, 0);
 	print("BRLWE_init_hex(test_2, 0) = ");
 	phex(m->polynomial);
 	print("\n");
-	*/
+	
 	
 	
 	a = BRLWE_init_bin_sampling(a);
@@ -656,28 +656,23 @@ void main()
 	print("BRLWE_init() = ");
 	phex(a);
 	print("\n");
-	mem_print();
-	m_free(a);
-	mem_print();
+	*/
 	
 	//test: Math-operation subfunctions
-	/*
+	
 	struct BRLWE_Ring_polynomials* n = NULL;
 	n = m_malloc(BRLWE_N);
 	print("\nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
-	phex(Ring_add(a, m, n)->polynomial);
+	phex(Ring_add(test_1, test_2, n)->polynomial);
 	print("test1 - test2 = \n");
-	phex(Ring_sub(a, m, n)->polynomial);
+	phex(Ring_sub(test_1, test_2, n)->polynomial);
 	print("test1 * test2 = \n");
-	phex(Simple_Ring_mul(a, m, n)->polynomial);
+	phex(Simple_Ring_mul(test_1, test_2, n)->polynomial);
 	
 	mem_print();
-	m_free(a);
-	m_free(m);
 	m_free(n);
-
-*/
+	mem_print();
 
 /*
 	//test: Key Generation step

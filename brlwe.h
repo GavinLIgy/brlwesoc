@@ -44,7 +44,7 @@ typedef uint8_t *BRLWE_Ring_polynomials ;
 typedef uint8_t *BRLWE_Ring_polynomials2 ;
 
 BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly);//initialize a polynomial by sampling on uniform distribution with binary coefficients 
-BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t str, int rev);//initialize a polynomial by input hex in form of string.
+BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str, int rev);//initialize a polynomial by input hex in form of string.
 BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly);//initialize a polynomial with all 0.
 BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring_polynomials2 key);
 BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials* a, const BRLWE_Ring_polynomials* p, uint8_t* m);

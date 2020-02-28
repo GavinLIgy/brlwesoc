@@ -88,32 +88,32 @@ BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly) {
 	return poly;
 };
 
-//Main Function 1: Key Generation
-//a is a global parameter shared by Alice and Bob
-// r1 and r2 are randomly selected binary polynomials, r2 is secret key
-// p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
-BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring_polynomials2 key) {
-	BRLWE_Ring_polynomials r1 = NULL;
-	BRLWE_Ring_polynomials r2 = &(key[BRLWE_N]);//sk
-	r1 = m_malloc(BRLWE_N);
+// //Main Function 1: Key Generation
+// //a is a global parameter shared by Alice and Bob
+// // r1 and r2 are randomly selected binary polynomials, r2 is secret key
+// // p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
+// BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring_polynomials2 key) {
+	// BRLWE_Ring_polynomials r1 = NULL;
+	// BRLWE_Ring_polynomials r2 = &(key[BRLWE_N]);//sk
+	// r1 = m_malloc(BRLWE_N);
 	
-	if (r1 == NULL) return NULL;// MEM alloc failed
+	// if (r1 == NULL) return NULL;// MEM alloc failed
 	
-	r1 = BRLWE_init_bin_sampling(r1);
-	r2 = BRLWE_init_bin_sampling(r2);
+	// r1 = BRLWE_init_bin_sampling(r1);
+	// r2 = BRLWE_init_bin_sampling(r2);
 	
-	//uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };//p random
-	//uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
-	/*BRLWE_init_hex(&r1, _r1, 0);
-	BRLWE_init_hex(&r2, _r2, 0);*/
+	// //uint8_t _r1[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)0 };//p random
+	// //uint8_t _r2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)1 };//p random
+	// /*BRLWE_init_hex(&r1, _r1, 0);
+	// BRLWE_init_hex(&r2, _r2, 0);*/
 	
-	passpoly (&(key->poly1) , Simple_Ring_mul(a, r2, &(key->poly1)));
-	passpoly (&(key->poly1) , Ring_sub(r1, &(key->poly1), &(key->poly1)) );//pk
-	print("mem_print() in BRLWE_Key_Gen(): \n");
-	mem_print();
-	m_free(r1);
-	return key;
-};
+	// passpoly (&(key->poly1) , Simple_Ring_mul(a, r2, &(key->poly1)));
+	// passpoly (&(key->poly1) , Ring_sub(r1, &(key->poly1), &(key->poly1)) );//pk
+	// print("mem_print() in BRLWE_Key_Gen(): \n");
+	// mem_print();
+	// m_free(r1);
+	// return key;
+// };
 
 // //Main Function 2: Encryption
 // //pre-requirement: length(m) = n, m belongs to {0,1}^n;

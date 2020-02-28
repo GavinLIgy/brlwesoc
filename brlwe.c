@@ -24,8 +24,8 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 //void setseed32(uint32_t seed);
 //void getrandom_binary(uint8_t* str);
 
-//typedef uint8_t (*BRLWE_Ring_polynomials) [BRLWE_N];
-//typedef uint8_t (*BRLWE_Ring_polynomials2) [(BRLWE_N*2)];
+//typedef uint8_t *BRLWE_Ring_polynomials ;
+//typedef uint8_t *BRLWE_Ring_polynomials2 ;
 /*****************************************************************************/
 /* Private functions:                                                        */
 /*****************************************************************************/
@@ -45,7 +45,7 @@ BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 	for (i = 0; i < BRLWE_N/4 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			poly[4*i+j] = (uint8_t)str[j];
+			*(poly+4*i+j) = (uint8_t)str[j];
 		};
 	};
 	print("mem_print() in BRLWE_init_bin_sampling(): \n");

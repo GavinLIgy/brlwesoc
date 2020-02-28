@@ -625,16 +625,10 @@ void main()
 	print("Booting..\n");
 	mem_init();
 	mem_print();
-	
-	/*
-	alloc_test();
-	print_dec(sizeof(struct BRLWE_Ring_polynomials)); //256(BRLWE_N)
-	print_dec(sizeof(struct BRLWE_Ring_polynomials2));//512(BRLWE_N * 2)
-	*/
 
 	//test: Polynomial initialization step
 	
-	struct BRLWE_Ring_polynomials* a = NULL;
+	BRLWE_Ring_polynomials a = NULL;
 	a = m_malloc(BRLWE_N);
 	print("\nPolynomial initialization step:\r\n");
 	a = BRLWE_init_hex(a, test_1, 0);
@@ -651,7 +645,7 @@ void main()
 	print("\n");
 	*/
 	
-	/*
+	
 	a = BRLWE_init_bin_sampling(a);
 	print("BRLWE_init_bin_sampling() = ");
 	phex(a->polynomial);
@@ -660,37 +654,9 @@ void main()
 	print("BRLWE_init() = ");
 	phex(a->polynomial);
 	print("\n");
-	*/
-	
-	//test: RNG generation
-	/*
-	uint8_t seed[4] = { (uint8_t)0, (uint8_t)0, (uint8_t)0 , (uint8_t)0 };
-	print("\nRNG generation:\r\n");
-	setseed32(seed);
-	struct BRLWE_Ring_polynomials n;
-	uint8_t* test_4 = NULL;
-    test_4 = m_malloc(256);
-	print("Size of memery control block: ");
-	print_dec(BLK_SIZE);
-	print("\r\n");
 	mem_print();
-	memset(test_4, 0, 256);
-    buff_print((unsigned char *)test_4, 256);
-	print("\nMemory allocation completed.\r\n");
-	
-	getrandom_binary(test_4);
-	BRLWE_init_hex(&n, test_4, 0);
-	print("\nRNG completed.\r\n");
-    buff_print((unsigned char *)test_4, BRLWE_N);
-	print("test_4 = ");
-	phex(test_4);
-	print("n.polynomial = ");
-	phex(n.polynomial);
-	m_free(test_4);
-	print("\nRNG completed.\r\n");
+	m_free(a);
 	mem_print();
-    buff_print((unsigned char *)test_4, BRLWE_N);
-	*/
 	
 	//test: Math-operation subfunctions
 	/*
@@ -708,8 +674,10 @@ void main()
 	m_free(a);
 	m_free(m);
 	m_free(n);
-	*/
 
+*/
+
+/*
 	//test: Key Generation step
 	
 	//struct BRLWE_Ring_polynomials pk, sk;
@@ -718,7 +686,7 @@ void main()
 	print("mem_print() 1 \n");
 	mem_print();
 	print("\nKey Generation:\n");
-	key = BRLWE_Key_Gen(a,key);
+	key = BRLWE_Key_Gen(test_1,key);
 	//pk=key.c1;
 	//sk=key.c2;
 	print("public key = \n");
@@ -728,11 +696,12 @@ void main()
 	
 	print("mem_print() 2 \n");
 	mem_print();
-	m_free(a);
+	//m_free(a);
 	m_free(key);
 	
 	print("mem_print() 3 \n");
 	mem_print();
+	*/
 	
 	//test: Encryption step
 	/*

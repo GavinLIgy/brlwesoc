@@ -22,6 +22,7 @@
 #define BRLWE_Q 256
 #endif
 
+/*
 #pragma pack(1)
 struct BRLWE_Ring_polynomials
 {
@@ -37,20 +38,30 @@ struct BRLWE_Ring_polynomials2
 };
 
 #pragma pack()
-struct BRLWE_Ring_polynomials* BRLWE_init_bin_sampling(struct BRLWE_Ring_polynomials* poly);//initialize a polynomial by sampling on uniform distribution with binary coefficients 
-struct BRLWE_Ring_polynomials * BRLWE_init_hex(struct BRLWE_Ring_polynomials * poly, uint8_t* str, int rev);//initialize a polynomial by input hex in form of string.
-struct BRLWE_Ring_polynomials * BRLWE_init(struct BRLWE_Ring_polynomials * poly);//initialize a polynomial with all 0.
-struct BRLWE_Ring_polynomials2* BRLWE_Key_Gen(const struct BRLWE_Ring_polynomials* a, struct BRLWE_Ring_polynomials2* key);
-struct BRLWE_Ring_polynomials2 BRLWE_Encry(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* p, uint8_t* m);
+*/
+
+typedef uint8_t (*BRLWE_Ring_polynomials) [BRLWE_N];
+typedef uint8_t (*BRLWE_Ring_polynomials2) [(BRLWE_N*2)];
+
+BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly);//initialize a polynomial by sampling on uniform distribution with binary coefficients 
+BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t str, int rev);//initialize a polynomial by input hex in form of string.
+BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly);//initialize a polynomial with all 0.
+BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring_polynomials2 key);
+BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials* a, const BRLWE_Ring_polynomials* p, uint8_t* m);
+/*
 uint8_t* BRLWE_Decry(struct BRLWE_Ring_polynomials2* c, struct BRLWE_Ring_polynomials* r2);
 void BRLWE_Encode(uint8_t* m, struct BRLWE_Ring_polynomials* m_wave);
 uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave);
+*/
 //pass b.polynomial to a.polynomial
-void passpoly (struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b);
+void passpoly (BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b);
 
 
-struct BRLWE_Ring_polynomials* Ring_add(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans);
-struct BRLWE_Ring_polynomials* Ring_sub(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans);
-struct BRLWE_Ring_polynomials* Simple_Ring_mul(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* b, struct BRLWE_Ring_polynomials* ans);
+BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans);
+BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans);
+BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans);
+
+
+
 
 #endif

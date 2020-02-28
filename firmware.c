@@ -715,6 +715,8 @@ void main()
 	//struct BRLWE_Ring_polynomials pk, sk;
 	struct BRLWE_Ring_polynomials2* key = NULL;
 	key = m_malloc(512);
+	print("mem_print() 1 \n");
+	mem_print();
 	print("\nKey Generation:\n");
 	key = BRLWE_Key_Gen(a,key);
 	//pk=key.c1;
@@ -724,7 +726,7 @@ void main()
 	print("secret key = \n");
 	phex(key->poly2.polynomial);
 	
-	print("mem_print() \n");
+	print("mem_print() 2 \n");
 	mem_print();
 	m_free(a);
 	m_free(key);

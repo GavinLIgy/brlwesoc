@@ -110,7 +110,7 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	for (i = 0; i < BRLWE_N/4 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(pk+4*i+j) = (uint8_t)str[j] - *(pk+4*i+j);
+			*(pk+4*i+j) = ( (uint8_t)str[j] - *(pk+4*i+j) ) % BRLWE_Q;
 		};
 	};
 	m_free(str);
@@ -151,16 +151,20 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	for (i = 0; i < BRLWE_N/4 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c1+4*i+j) = *(c1+4*i+j) + (uint8_t)str[j];
-			//   c1     =      c1     +          e2    ;
+			*(c1+4*i+j) = ( *(c1+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q;
+			//   c1     =      c1       +          e2    ;
 		};
 	};
 	
 	for (i = 0; i < BRLWE_N/4 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c2+4*i+j) = *(c2+4*i+j) + (uint8_t)str[j] + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
-			//   c2     =      c2     +           e3    +                 m_wave                                                       ;
+			*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q;// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
+			
+			if (m[4*i+j] != 0)
+				*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)(BRLWE_Q / 2) ) % BRLWE_Q;
+			*(c2+4*i+j) = ( *(c2+4*i+j) + BRLWE_Q + (BRLWE_N / 2) - 1 - i ) % BRLWE_Q;
+			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};
 	

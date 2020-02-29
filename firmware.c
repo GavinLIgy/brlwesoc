@@ -695,7 +695,7 @@ void main()
 	
 	print("\nEncryption:\n");
 	print("a = \n");
-	phex(a.polynomial);
+	phex(test_1);
 	print("public key = \n");
 	phex(key);
 	print("original message = \n");

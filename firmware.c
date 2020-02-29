@@ -634,6 +634,7 @@ void main()
 	int count_loop = 0;
 	
 	reg_leds = 0x00;
+	print("\nRNG Testing Progress : \n");
 	while (count_loop < 500000) {  
 		getrandom_binary(str);
 		for (i = 0; i < 4 ; i++){
@@ -642,6 +643,7 @@ void main()
 			if (str[i] == (uint8_t)0x01) count_1++;
 		};
 		count_loop++;
+		print("\r");print_dec(count_loop);print(" Of 500000");
 		if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
 	};
 	reg_leds = 0xff;

@@ -126,15 +126,15 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 //cryptom = [c1,c2] belonging to R_q^2 are cipertext
 BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials pk, uint8_t* m, BRLWE_Ring_polynomials2 cryptom ) {
 	BRLWE_Ring_polynomials c1 = cryptom;//public key
-	BRLWE_Ring_polynomials c2 = cryptom+BRLWE_N;//secret key
+	BRLWE_Ring_polynomials c2 = cryptom + BRLWE_N;//secret key
 	BRLWE_Ring_polynomials e1 = NULL;
 	
 	e1 = m_malloc(BRLWE_N);
 	
 	e1 = BRLWE_init_bin_sampling(e1);
 	
-	c1 = Simple_Ring_mul(a, e1, (BRLWE_Ring_polynomials) cryptom);//c1 = a*e1
-	c2 = Simple_Ring_mul(pk, e1, (BRLWE_Ring_polynomials) cryptom);//c2 = pk*e1
+	c1 = Simple_Ring_mul(a, e1, c1);//c1 = a*e1
+	c2 = Simple_Ring_mul(pk, e1, c2);//c2 = pk*e1
 	
 	m_free(e1);
 	

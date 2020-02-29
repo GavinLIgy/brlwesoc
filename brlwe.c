@@ -125,8 +125,8 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 //m_wave = encode(m), c1 = a*e1 +e2, c2 = pk*e1 + e3 + m_wave
 //cryptom = [c1,c2] belonging to R_q^2 are cipertext
 BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials pk, uint8_t* m, BRLWE_Ring_polynomials2 cryptom ) {
-	BRLWE_Ring_polynomials c1 = cryptom;//public key
-	BRLWE_Ring_polynomials c2 = cryptom + BRLWE_N;//secret key
+	BRLWE_Ring_polynomials c1 = cryptom;//crypto message 1
+	BRLWE_Ring_polynomials c2 = cryptom + BRLWE_N;//crypto message 2
 	BRLWE_Ring_polynomials e1 = NULL;
 	
 	e1 = m_malloc(BRLWE_N);
@@ -151,7 +151,7 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	for (i = 0; i < BRLWE_N/4 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c1+4*i+j) = ( *(c1+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q;
+			*(c1+4*i+j) = ( *(c1+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q ;
 			//   c1     =      c1       +          e2    ;
 		};
 	};
@@ -159,11 +159,11 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	for (i = 0; i < BRLWE_N/4 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q;// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
+			*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q ;// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
 			
 			if (m[4*i+j] != 0)
 				*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)(BRLWE_Q / 2) ) % BRLWE_Q;
-			*(c2+4*i+j) = ( *(c2+4*i+j) + BRLWE_Q + (BRLWE_N / 2) - 1 - 4*i - j ) % BRLWE_Q;
+			//*(c2+4*i+j) = ( *(c2+4*i+j) + BRLWE_Q + (BRLWE_N / 2) - 1 - 4*i - j ) % BRLWE_Q;
 			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};
@@ -237,9 +237,9 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 		if (b[i] == 0x01) {
 			for (j = 0; j < BRLWE_N; j++) {
 				if (i + j <= BRLWE_N - 1)
-					ans[i + j] = ans[i + j] + a[j];
+					ans[i + j] = (ans[i + j] + a[j] ) % BRLWE_Q;
 				else
-					ans[i + j - BRLWE_N] = ans[i + j - BRLWE_N] + BRLWE_N - a[j];
+					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + BRLWE_N - a[j] ) % BRLWE_Q;
 			};
 		};
 	};

@@ -683,7 +683,7 @@ void main()
 	print("mem_print() 1 \n");
 	mem_print();
 	print("\nKey Generation:\n");
-	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1,key);
+	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
 	print("public key = \n");
 	phex(key);
 	print("secret key = \n");
@@ -704,10 +704,11 @@ void main()
 	BRLWE_Ring_polynomials2 cryptom = NULL;
 	cryptom = m_malloc(512);
 	
-	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, key, test_2, cryptom);
+	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
  
-	print("secret message = \n");
+	print("secret message 1 = \n");
 	phex(cryptom);
+	print("secret message 2 = \n");
 	phex(cryptom + BRLWE_N);
 	
 	mem_print();

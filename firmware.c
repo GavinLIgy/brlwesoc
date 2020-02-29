@@ -679,7 +679,7 @@ void main()
 	//test: Key Generation step
 	
 	BRLWE_Ring_polynomials2 key = NULL;
-	key = m_malloc(512);
+	key = m_malloc(BRLWE_N * 2);
 	print("mem_print() 1 \n");
 	mem_print();
 	print("\nKey Generation:\n");
@@ -702,7 +702,7 @@ void main()
 	phex(test_2);
 
 	BRLWE_Ring_polynomials2 cryptom = NULL;
-	cryptom = m_malloc(512);
+	cryptom = m_malloc(BRLWE_N * 2);
 	
 	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
  
@@ -723,7 +723,7 @@ void main()
 	phex(cryptom + BRLWE_N);
 	
 	uint8_t* recoverm = NULL;
-	recoverm = m_malloc(256);
+	recoverm = m_malloc(BRLWE_N);
 	
 	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
 
@@ -732,13 +732,6 @@ void main()
 
 	print("recovered message = \n");
 	phex(recoverm);
-	
-	mem_print();
-	m_free(key);
-	m_free(cryptom);
-	m_free(recoverm);
-	mem_print();
-	
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
@@ -746,7 +739,14 @@ void main()
 	else {
 		print("check: Decryption is not the same!\n");
 		count = counterr(test_2, recoverm);
-		print("The error count is"); print_dec(count);
+		print("The error count is "); print_dec(count);
+		print("Total Number"); print_dec(BRLWE_N);
 	}
+	
+	mem_print();
+	m_free(key);
+	m_free(cryptom);
+	m_free(recoverm);
+	mem_print();
 	
 }

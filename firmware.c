@@ -633,7 +633,7 @@ void main()
 	int i = 0;
 	int count_loop = 0;
 
-	while (count_loop > 0x000FFFFFUL) {  
+	while (count_loop < 0x000FFFFFUL) {  
 		getrandom_binary(str);
 		for (i = 0; i < 4 ; i++){
 			print("str[");print_dec(i);print("] =");print_Hex_32(str[i]);

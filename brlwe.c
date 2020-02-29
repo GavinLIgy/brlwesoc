@@ -163,7 +163,7 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 			
 			if (m[4*i+j] != 0)
 				*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)(BRLWE_Q / 2) ) % BRLWE_Q;
-			*(c2+4*i+j) = ( *(c2+4*i+j) + BRLWE_Q + (BRLWE_N / 2) - 1 - i ) % BRLWE_Q;
+			*(c2+4*i+j) = ( *(c2+4*i+j) + BRLWE_Q + (BRLWE_N / 2) - 1 - 4*i - j ) % BRLWE_Q;
 			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};

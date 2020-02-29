@@ -739,16 +739,14 @@ void main()
 	m_free(recoverm);
 	mem_print();
 	
-	/*
-	double count = 0.0;
-	double errorprob = 0.0;
-	if (my_memcmp(m.polynomial, dm, BRLWE_N) == 0) print("check: Decryption success!\n");
+
+	int count = 0;
+	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
+		print("check: Decryption success!\n");
 	else {
 		print("check: Decryption is not the same!\n");
-		/*count = counterr(m.polynomial, dm);
-		double errorprob = count / BRLWE_N;
-		print("The error count is"); print_flt(count);
-		print(" , the error possibility is "); print_flt(errorprob);print(" .\n");
+		count = counterr(test_2, recoverm);
+		print("The error count is"); print_dec(count);
 	}
-	*/
+	
 }

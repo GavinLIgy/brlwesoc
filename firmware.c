@@ -631,14 +631,16 @@ void main()
 	uint8_t* str = NULL;
 	str = m_malloc(4);
 	int i = 0;
+	int count_loop = 0;
 
-	while (getchar_prompt("Press ENTER again to stop\n") != '\r') {  
+	while (count_loop > 0x000FFFFFUL) {  
 		getrandom_binary(str);
 		for (i = 0; i < 4 ; i++){
 			print("str[");print_dec(i);print("] =");print_Hex_32(str[i]);
 			if (str[i] == (uint8_t)0x00) count_0++;
 			if (str[i] == (uint8_t)0x01) count_1++;
 		};
+		count_loop++;
 		if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
 	};
 	

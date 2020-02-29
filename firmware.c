@@ -689,30 +689,31 @@ void main()
 	print("secret key = \n");
 	phex(key + BRLWE_N);
 	
-	print("mem_print() 2 \n");
-	mem_print();
-	m_free(key);
-	
-	print("mem_print() 3 \n");
-	mem_print();
+	//m_free(key);
 	
 	//test: Encryption step
-	/*
+	
 	print("\nEncryption:\n");
 	print("a = \n");
 	phex(a.polynomial);
 	print("public key = \n");
-	phex(pk.polynomial);
+	phex(key);
 	print("original message = \n");
-	phex(m.polynomial);
+	phex(test_2);
 
-	struct BRLWE_Ring_polynomials2 c;
-	c = BRLWE_Encry(&a, &pk, m.polynomial);
-
+	BRLWE_Ring_polynomials2 cryptom = NULL;
+	cryptom = m_malloc(512);
+	
+	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, key, test_2, cryptom);
+ 
 	print("secret message = \n");
-	phex(c.c1.polynomial);
-	phex(c.c2.polynomial);
-	*/
+	phex(cryptom);
+	phex(cryptom + BRLWE_N);
+	
+	mem_print();
+	m_free(key);
+	m_free(cryptom);
+	mem_print();
 	
 	//test: Decryption step
 	/*

@@ -94,7 +94,9 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	BRLWE_Ring_polynomials sk = key+BRLWE_N;//secret key
 	
 	sk = BRLWE_init_bin_sampling(sk);
-	passpoly (pk , Simple_Ring_mul(a, sk, pk));
+	
+	//passpoly (pk , Simple_Ring_mul(a, sk, pk));
+	pk = Simple_Ring_mul(a, sk, pk);
 	
 	int i = 0;
 	int j = 0;
@@ -116,76 +118,94 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	return key;
 };
 
-// //Main Function 2: Encryption
-// //pre-requirement: length(m) = n, m belongs to {0,1}^n;
-// //a is a global parameter shared by Alice and Bob, p is public key and would be sent to Bob after Key_Gen, m is the message to be crypto
-// //After receiving p, Bob uses 3 error(binary) polynomials e1, e2, e3
-// //m_wave = encode(m), c1 = a*e1 +e2, c2 = p*e1 + e3 + m_wave
-// //[c1,c2] belonging to R_q^2 are cipertext
-// struct BRLWE_Ring_polynomials2* BRLWE_Encry(const struct BRLWE_Ring_polynomials* a, const struct BRLWE_Ring_polynomials* p, uint8_t* m, struct BRLWE_Ring_polynomials2* cryptom ) {
-	// struct BRLWE_Ring_polynomials* e1, e2, e3, m_wave = NULL;
+//Main Function 2: Encryption
+//pre-requirement: length(m) = n, m belongs to {0,1}^n;
+//a is a global parameter shared by Alice and Bob, pk is public key and would be sent to Bob after Key_Gen, m is the message to be crypto
+//After receiving pk, Bob uses 3 error(binary) polynomials e1, e2, e3
+//m_wave = encode(m), c1 = a*e1 +e2, c2 = pk*e1 + e3 + m_wave
+//cryptom = [c1,c2] belonging to R_q^2 are cipertext
+BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials pk, uint8_t* m, BRLWE_Ring_polynomials2 cryptom ) {
+	BRLWE_Ring_polynomials c1 = cryptom;//public key
+	BRLWE_Ring_polynomials c2 = cryptom+BRLWE_N;//secret key
+	BRLWE_Ring_polynomials e1 = NULL;
 	
-	// BRLWE_Encode(m, &(cryptom->poly2));//m_wave = * cryptom->poly2
+	e1 = m_malloc(BRLWE_N);
 	
-	// Ring_add(e3, )
+	e1 = BRLWE_init_bin_sampling(e1);
 	
+	c1 = Simple_Ring_mul(a, e1, (BRLWE_Ring_polynomials) cryptom);//c1 = a*e1
+	c2 = Simple_Ring_mul(pk, e1, (BRLWE_Ring_polynomials) cryptom);//c2 = pk*e1
 	
-	// m_malloc(BRLWE_N);
+	m_free(e1);
 	
-	// /*
-	// uint8_t _e1[BRLWE_N] = {(uint8_t) 1, (uint8_t) 1, (uint8_t) 1 , (uint8_t) 0 };
-	// uint8_t _e2[BRLWE_N] = {(uint8_t) 0, (uint8_t) 1, (uint8_t) 1 , (uint8_t) 1 };
-	// uint8_t _e3[BRLWE_N] = {(uint8_t) 1, (uint8_t) 0, (uint8_t) 1 , (uint8_t) 0 };
-	// BRLWE_init_hex(&e1, _e1, 0);
-	// BRLWE_init_hex(&e2, _e2, 0);
-	// BRLWE_init_hex(&e3, _e3, 0);*/
+	int i = 0;
+	int j = 0;
 	
-	// /*BRLWE_init_bin_sampling(&e1);
-	// BRLWE_init_bin_sampling(&e2);
-	// BRLWE_init_bin_sampling(&e3);*/
-	// BRLWE_init(&c.c1);
-	// BRLWE_init(&c.c2);
-	// BRLWE_Encode(m, &m_wave);
-	// c.c1 = Ring_add(Simple_Ring_mul(*a, e1), e2);
-	// c.c2 = Ring_add(Ring_add(Simple_Ring_mul(*p, e1), e3), m_wave);
-	// return cryptom;
-// };
+	uint32_t cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	RNG_seed(cycles_now);
+	
+	uint8_t* str = NULL;
+	str = m_malloc(4);//random number buffer: uint8_t str [4]
+	
+	for (i = 0; i < BRLWE_N/4 ; i++) {
+		RNG_rand(str);
+		for (j = 0; j < 4 ; j++){
+			*(c1+4*i+j) = *(c1+4*i+j) + (uint8_t)str[j];
+			//   c1     =      c1     +          e2    ;
+		};
+	};
+	
+	for (i = 0; i < BRLWE_N/4 ; i++) {
+		RNG_rand(str);
+		for (j = 0; j < 4 ; j++){
+			*(c2+4*i+j) = *(c2+4*i+j) + (uint8_t)str[j] + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
+			//   c2     =      c2     +           e3    +                 m_wave                                                       ;
+		};
+	};
+	
+	m_free(str);
+	
+	return cryptom;
+};
 
-// //Main Function 3: Decryption
-// //output m' = Decode(c1*r2+c2)
-// //r2 is secret key
-// uint8_t* BRLWE_Decry(struct BRLWE_Ring_polynomials2* c, struct BRLWE_Ring_polynomials* r2) {
-	// return BRLWE_Decode(Ring_add(Simple_Ring_mul(c->c1, *r2), c->c2));
-// };
+//Main Function 3: Decryption
+//output m' = Decode(c1*r2+c2)
+//r2 is secret key
+uint8_t* BRLWE_Decry(struct BRLWE_Ring_polynomials2* c, struct BRLWE_Ring_polynomials* r2) {
+	return BRLWE_Decode(Ring_add(Simple_Ring_mul(c->c1, *r2), c->c2));
+};
 
-// //Encode function 2: FPT'19
-// //Encode string m into polynomial m_wave
-// //pre-requirement: length(m) = n, m belongs to {0,1}^n;;
-// struct BRLWE_Ring_polynomials* BRLWE_Encode(uint8_t* m, struct BRLWE_Ring_polynomials* m_wave) {
-	// int i = 0;
-	// for (i = 0; i < BRLWE_N; i++) {
-		// if (m[i] == 0)
-			// m_wave->polynomial[i] = 0;
-		// else
-			// m_wave->polynomial[i] = (uint8_t)(BRLWE_Q / 2);
-		// m_wave->polynomial[i] += BRLWE_Q + (BRLWE_N / 2) - 1 - i;
-	// };
-	// return m_wave;
-// };
+//Encode function 2: FPT'19
+//Encode string m into polynomial m_wave
+//pre-requirement: length(m) = n, m belongs to {0,1}^n;
+/*
+struct BRLWE_Ring_polynomials* BRLWE_Encode(uint8_t* m, struct BRLWE_Ring_polynomials* m_wave) {
+	int i = 0;
+	for (i = 0; i < BRLWE_N; i++) {
+		if (m[i] == 0)
+			m_wave->polynomial[i] = 0;
+		else
+			m_wave->polynomial[i] = (uint8_t)(BRLWE_Q / 2);
+		m_wave->polynomial[i] += BRLWE_Q + (BRLWE_N / 2) - 1 - i;
+	};
+	return m_wave;
+};
+*/
 
-// //Decode function 2: FPT'19
-// //Decode polynomial m_wave into string m
-// uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave) {
-	// uint8_t* m;
-	// int i = 0;
-	// for (i = 0; i < BRLWE_N; i++) {
-		// if (m_wave.polynomial[i] > (BRLWE_Q / 4) && m_wave.polynomial[i] < (3 * BRLWE_Q / 4))
-			// m[i] = (uint8_t)1;
-		// else
-			// m[i] = (uint8_t)0;
-	// };
-	// return m;
-// };
+//Decode function 2: FPT'19
+//Decode polynomial m_wave into string m
+uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave) {
+	uint8_t* m;
+	int i = 0;
+	for (i = 0; i < BRLWE_N; i++) {
+		if (m_wave.polynomial[i] > (BRLWE_Q / 4) && m_wave.polynomial[i] < (3 * BRLWE_Q / 4))
+			m[i] = (uint8_t)1;
+		else
+			m[i] = (uint8_t)0;
+	};
+	return m;
+};
 
 //return value ans = a + b;
 BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {

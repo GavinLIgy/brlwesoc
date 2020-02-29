@@ -635,8 +635,8 @@ void main()
 	while (getchar_prompt("Press ENTER again to stop\n") != '\r') {  
 		getrandom_binary(str);
 		for (i = 0; i < 4 ; i++){
-			if (str[i] == 0) count_0++;
-			if (str[i] == 1) count_1++;
+			if (str[i] == (uint8_t)0x00) count_0++;
+			if (str[i] == (uint8_t)0x01) count_1++;
 		};
 		if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
 	};
@@ -646,6 +646,7 @@ void main()
 	print("Count 0 = ");print_dec(count_0);
 	print("Count 1 = ");print_dec(count_1);
 	print("End of RNG testing");
+	
 	//test: memory allocate testing
 	/*
 	print("Booting..\n");

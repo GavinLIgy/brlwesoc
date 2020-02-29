@@ -554,8 +554,8 @@ void getrandom_binary(uint8_t* str)
 			tmp = reg_rng_data;
 		}// if RNG is not ready(tmp=0xffff_ffff), wait.
 	for (i = 0; i < 4; i++)	{
-			str[i]=(tmp/0x10000000)%2;
-			tmp = tmp << 4;
+			str[i]=(tmp/0x01000000)%2;
+			tmp = tmp << 8;
 		}//for uint32_t hex to uint8_t[4]
 	/*
 	//sizeof(str) = BRLWE_N

@@ -619,7 +619,7 @@ void main()
 	set_flash_qspi_flag();
 	
 	reg_leds = 127;//=0x7f=8'b0111_1111
-	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */ print("str["); };	
+	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */ };	
 
 	uint32_t cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -632,18 +632,19 @@ void main()
 	str = m_malloc(4);
 	int i = 0;
 	int count_loop = 0;
-
-	while (count_loop < 0x000FFFFFUL) {  
+	
+	reg_leds = 0x00;
+	while (count_loop < 500000) {  
 		getrandom_binary(str);
 		for (i = 0; i < 4 ; i++){
-			print("str[");print_dec(i);print("] =");print_Hex_32(str[i]);
+			//print("\nstr[");print_dec(i);print("] =");print_hex(str[i],2);
 			if (str[i] == (uint8_t)0x00) count_0++;
 			if (str[i] == (uint8_t)0x01) count_1++;
 		};
 		count_loop++;
 		if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
 	};
-	
+	reg_leds = 0xff;
 	m_free(str);
 	debug_rdcycle();
 	print("Count 0 = ");print_dec(count_0);

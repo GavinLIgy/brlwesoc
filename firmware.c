@@ -711,30 +711,35 @@ void main()
 	print("secret message 2 = \n");
 	phex(cryptom + BRLWE_N);
 	
+	//test: Decryption step
+	
+	print("\nDecryption:\n");
+	print("a = \n");
+	phex(test_1);
+	print("secret key = \n");
+	phex(key + BRLWE_N);
+	print("secret message = \n");
+	phex(cryptom);
+	phex(cryptom + BRLWE_N);
+	
+	uint8_t* recoverm = NULL;
+	recoverm = m_malloc(256);
+	
+	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
+
+	print("original message = \n");
+	phex(test_2);
+
+	print("recovered message = \n");
+	phex(recoverm);
+	
 	mem_print();
 	m_free(key);
 	m_free(cryptom);
+	m_free(recoverm);
 	mem_print();
 	
-	//test: Decryption step
 	/*
-	print("\nDecryption:\n");
-	print("a = \n");
-	phex(a.polynomial);
-	print("secret key = \n");
-	phex(sk.polynomial);
-	print("secret message = \n");
-	phex(c.c1.polynomial);
-	phex(c.c2.polynomial);
-
-	uint8_t* dm = BRLWE_Decry(&c, &sk);
-
-	print("original message = \n");
-	phex(m.polynomial);
-
-	print("decrypted message = \n");
-	phex(dm);
-
 	double count = 0.0;
 	double errorprob = 0.0;
 	if (my_memcmp(m.polynomial, dm, BRLWE_N) == 0) print("check: Decryption success!\n");

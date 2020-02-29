@@ -94,8 +94,6 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	BRLWE_Ring_polynomials sk = key+BRLWE_N;//secret key
 	
 	sk = BRLWE_init_bin_sampling(sk);
-	
-	//passpoly (pk , Simple_Ring_mul(a, sk, pk));
 	pk = Simple_Ring_mul(a, sk, pk);
 	
 	int i = 0;
@@ -173,43 +171,31 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	return cryptom;
 };
 
-// //Main Function 3: Decryption
-// //output m' = Decode(c1*r2+c2)
-// //r2 is secret key
-// uint8_t* BRLWE_Decry(struct BRLWE_Ring_polynomials2* c, struct BRLWE_Ring_polynomials* r2) {
-	// return BRLWE_Decode(Ring_add(Simple_Ring_mul(c->c1, *r2), c->c2));
-// };
+//Main Function 3: Decryption
+//output m' = Decode(c1*r2+c2)
+//r2 is secret key
+uint8_t* BRLWE_Decry(const BRLWE_Ring_polynomials2 cryptom, const BRLWE_Ring_polynomials r2, uint8_t* recoverm) {
+		BRLWE_Ring_polynomials c1 = cryptom;//crypto message 1
+	BRLWE_Ring_polynomials c2 = cryptom + BRLWE_N;//crypto message 2
+	
+	recoverm = Simple_Ring_mul(c1, r2, (BRLWE_Ring_polynomials)recoverm);//recoverm = c1*r2
+	recoverm = Ring_add((BRLWE_Ring_polynomials)recoverm, c2, (BRLWE_Ring_polynomials)recoverm);//recoverm = recoverm + c2
+	
+	return BRLWE_Decode(recoverm);
+};
 
-// //Encode function 2: FPT'19
-// //Encode string m into polynomial m_wave
-// //pre-requirement: length(m) = n, m belongs to {0,1}^n;
-
-// struct BRLWE_Ring_polynomials* BRLWE_Encode(uint8_t* m, struct BRLWE_Ring_polynomials* m_wave) {
-	// int i = 0;
-	// for (i = 0; i < BRLWE_N; i++) {
-		// if (m[i] == 0)
-			// m_wave->polynomial[i] = 0;
-		// else
-			// m_wave->polynomial[i] = (uint8_t)(BRLWE_Q / 2);
-		// m_wave->polynomial[i] += BRLWE_Q + (BRLWE_N / 2) - 1 - i;
-	// };
-	// return m_wave;
-// };
-
-
-// //Decode function 2: FPT'19
-// //Decode polynomial m_wave into string m
-// uint8_t* BRLWE_Decode(struct BRLWE_Ring_polynomials m_wave) {
-	// uint8_t* m;
-	// int i = 0;
-	// for (i = 0; i < BRLWE_N; i++) {
-		// if (m_wave.polynomial[i] > (BRLWE_Q / 4) && m_wave.polynomial[i] < (3 * BRLWE_Q / 4))
-			// m[i] = (uint8_t)1;
-		// else
-			// m[i] = (uint8_t)0;
-	// };
-	// return m;
-// };
+//Decode function
+//Decode polynomial m_wave into string m
+uint8_t* BRLWE_Decode(uint8_t* recoverm) {
+	int i = 0;
+	for (i = 0; i < BRLWE_N; i++) {
+		if (recoverm[i] > (BRLWE_Q / 4) && recoverm[i] < (3 * BRLWE_Q / 4))
+			recoverm[i] = (uint8_t)1;
+		else
+			recoverm[i] = (uint8_t)0;
+	};
+	return recoverm;
+};
 
 //return value ans = a + b;
 BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
@@ -244,11 +230,4 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 		};
 	};
 	return ans;
-};
-
-//pass b.polynomial to a.polynomial
-void passpoly (BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b) {
-	for (int i = 0; i < BRLWE_N; i++)
-		a[i] = b[i];
-	return;
 };

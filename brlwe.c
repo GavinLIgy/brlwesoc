@@ -34,10 +34,11 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 	int i = 0;
 	int j = 0;
-	
+	/*
 	uint32_t cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	RNG_seed(cycles_now);
+	*/
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);
@@ -99,9 +100,9 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	int i = 0;
 	int j = 0;
 	
-	uint32_t cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	RNG_seed(cycles_now);
+	// uint32_t cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// RNG_seed(cycles_now);
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);//random number buffer: uint8_t str [4]
@@ -139,9 +140,9 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	int i = 0;
 	int j = 0;
 	
-	uint32_t cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	RNG_seed(cycles_now);
+	// uint32_t cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// RNG_seed(cycles_now);
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);//random number buffer: uint8_t str [4]
@@ -223,9 +224,9 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 		if (b[i] == 0x01) {
 			for (j = 0; j < BRLWE_N; j++) {
 				if (i + j <= BRLWE_N - 1)
-					ans[i + j] = (ans[i + j] + a[j] ) % BRLWE_Q;
+					ans[i + j] = (ans[i + j] + a[j] ) ;//% BRLWE_Q;
 				else
-					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + BRLWE_N - a[j] ) % BRLWE_Q;
+					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + BRLWE_N - a[j] );// % BRLWE_Q;
 			};
 		};
 	};

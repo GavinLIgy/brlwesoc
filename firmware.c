@@ -621,44 +621,48 @@ void main()
 	reg_leds = 127;//=0x7f=8'b0111_1111
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */ };	
 
-	uint32_t cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	setseed32(cycles_now);
+	//RNG Testing
 	
-	uint32_t count_1 = 0;
-	uint32_t count_0 = 0;
+	// uint32_t cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// setseed32(cycles_now);
 	
-	uint8_t* str = NULL;
-	str = m_malloc(4);
-	int i = 0;
-	int count_loop = 0;
+	// uint32_t count_1 = 0;
+	// uint32_t count_0 = 0;
 	
-	reg_leds = 0x00;
-	print("\nRNG Testing Progress : \n");
-	while (count_loop < 500000) {  
-		getrandom_binary(str);
-		for (i = 0; i < 4 ; i++){
-			//print("\nstr[");print_dec(i);print("] =");print_hex(str[i],2);
-			if (str[i] == (uint8_t)0x00) count_0++;
-			if (str[i] == (uint8_t)0x01) count_1++;
-		};
-		count_loop++;
-		print("\r");print_dec(count_loop);print(" Of 500000");
-		if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
-	};
-	reg_leds = 0xff;
-	m_free(str);
-	debug_rdcycle();
-	print("Count 0 = ");print_dec(count_0);
-	print("\nCount 1 = ");print_dec(count_1);
-	print("\nEnd of RNG testing");
+	// uint8_t* str = NULL;
+	// str = m_malloc(4);
+	// int i = 0;
+	// int count_loop = 0;
 	
-	//test: memory allocate testing
-	/*
+	// reg_leds = 0x00;
+	// print("\nRNG Testing Progress : \n");
+	// while (count_loop < 500000) {  
+		// getrandom_binary(str);
+		// for (i = 0; i < 4 ; i++){
+			// //print("\nstr[");print_dec(i);print("] =");print_hex(str[i],2);
+			// if (str[i] == (uint8_t)0x00) count_0++;
+			// if (str[i] == (uint8_t)0x01) count_1++;
+		// };
+		// count_loop++;
+		// print("\r");print_dec(count_loop);print(" Of 500000");
+		// if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
+	// };
+	// reg_leds = 0xff;
+	// m_free(str);
+	// debug_rdcycle();
+	// print("Count 0 = ");print_dec(count_0);
+	// print("\nCount 1 = ");print_dec(count_1);
+	// print("\nEnd of RNG testing");
+	
+	//test: memory allocate testing & RNG initialization
+	
 	print("Booting..\n");
 	mem_init();
 	mem_print();
-	*/
+	uint32_t cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	RNG_seed(cycles_now);
 	
 	//test: Polynomial initialization step
 	/*
@@ -710,77 +714,77 @@ void main()
 */
 
 
-	// //test: Key Generation step
+	//test: Key Generation step
 	
-	// BRLWE_Ring_polynomials2 key = NULL;
-	// key = m_malloc(BRLWE_N * 2);
-	// print("mem_print() 1 \n");
-	// mem_print();
-	// print("\nKey Generation:\n");
-	// key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
-	// print("public key = \n");
-	// phex(key);
-	// print("secret key = \n");
-	// phex(key + BRLWE_N);
+	BRLWE_Ring_polynomials2 key = NULL;
+	key = m_malloc(BRLWE_N * 2);
+	print("mem_print() 1 \n");
+	mem_print();
+	print("\nKey Generation:\n");
+	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
+	print("public key = \n");
+	phex(key);
+	print("secret key = \n");
+	phex(key + BRLWE_N);
 	
-	// //m_free(key);
+	//m_free(key);
 	
-	// //test: Encryption step
+	//test: Encryption step
 	
-	// print("\nEncryption:\n");
-	// print("a = \n");
-	// phex(test_1);
-	// print("public key = \n");
-	// phex(key);
-	// print("original message = \n");
-	// phex(test_2);
+	print("\nEncryption:\n");
+	print("a = \n");
+	phex(test_1);
+	print("public key = \n");
+	phex(key);
+	print("original message = \n");
+	phex(test_2);
 
-	// BRLWE_Ring_polynomials2 cryptom = NULL;
-	// cryptom = m_malloc(BRLWE_N * 2);
+	BRLWE_Ring_polynomials2 cryptom = NULL;
+	cryptom = m_malloc(BRLWE_N * 2);
 	
-	// cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
+	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
  
-	// print("secret message 1 = \n");
-	// phex(cryptom);
-	// print("secret message 2 = \n");
-	// phex(cryptom + BRLWE_N);
+	print("secret message 1 = \n");
+	phex(cryptom);
+	print("secret message 2 = \n");
+	phex(cryptom + BRLWE_N);
 	
-	// //test: Decryption step
+	//test: Decryption step
 	
-	// print("\nDecryption:\n");
-	// print("a = \n");
-	// phex(test_1);
-	// print("secret key = \n");
-	// phex(key + BRLWE_N);
-	// print("secret message = \n");
-	// phex(cryptom);
-	// phex(cryptom + BRLWE_N);
+	print("\nDecryption:\n");
+	print("a = \n");
+	phex(test_1);
+	print("secret key = \n");
+	phex(key + BRLWE_N);
+	print("secret message = \n");
+	phex(cryptom);
+	phex(cryptom + BRLWE_N);
 	
-	// uint8_t* recoverm = NULL;
-	// recoverm = m_malloc(BRLWE_N);
+	uint8_t* recoverm = NULL;
+	recoverm = m_malloc(BRLWE_N);
 	
-	// recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
+	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
 
-	// print("original message = \n");
-	// phex(test_2);
+	print("original message = \n");
+	phex(test_2);
 
-	// print("recovered message = \n");
-	// phex(recoverm);
+	print("recovered message = \n");
+	phex(recoverm);
 
-	// int count = 0;
-	// if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
-		// print("check: Decryption success!\n");
-	// else {
-		// print("check: Decryption is not the same!\n");
-		// count = counterr(test_2, recoverm);
-		// print("The error count is "); print_dec(count);
-		// print("Total Number"); print_dec(BRLWE_N);
-	// }
+	int count = 0;
+	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
+		print("check: Decryption success!\n");
+	else {
+		print("check: Decryption is not the same!\n");
+		count = counterr(test_2, recoverm);
+		print("The error count is "); print_dec(count);
+		print("Total Number"); print_dec(BRLWE_N);
+	}
 	
-	// mem_print();
-	// m_free(key);
-	// m_free(cryptom);
-	// m_free(recoverm);
-	// mem_print();
+	mem_print();
+	m_free(key);
+	m_free(cryptom);
+	m_free(recoverm);
+	mem_print();
 	
 }

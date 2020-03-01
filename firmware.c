@@ -304,7 +304,7 @@ static void phex(uint8_t* str)
 	print("\r\n");
 }
 
-static void print_dec (uint32_t n)
+void print_dec (uint32_t n)
 {
     if (n >= 10)
     {

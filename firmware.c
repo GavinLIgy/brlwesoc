@@ -696,88 +696,98 @@ void main()
 	print("\n");
 	*/
 	
-	//test: Math-operation subfunctions
-
-	struct BRLWE_Ring_polynomials* n = NULL;
-	n = m_malloc(BRLWE_N);
-	print("\nMath-operation subfunctions:\r\n");
-	print("test1 + test2 = \n");
-	phex(Ring_add(test_1, test_2, n));
-	print("test1 - test2 = \n");
-	phex(Ring_sub(test_1, test_2, n));
-	print("test1 * test2 = \n");
-	phex(Simple_Ring_mul(test_1, test_2, n));
+	// //test: Math-operation subfunctions
 	
-	mem_print();
-	m_free(n);
-	mem_print();
-
+	// struct BRLWE_Ring_polynomials* n = NULL;
+	// n = m_malloc(BRLWE_N);
+	// print("\nMath-operation subfunctions:\r\n");
+	// print("test1 + test2 = \n");
+	// phex(Ring_add(test_1, test_2, n));
+	// print("test1 - test2 = \n");
+	// phex(Ring_sub(test_1, test_2, n));
+	// print("test1 * test2 = \n");
+	// phex(Simple_Ring_mul(test_1, test_2, n));
+	
+	// mem_print();
+	// m_free(n);
+	// mem_print();
 
 	//test: Key Generation step
 	
+	uint32_t cycles_begin;
+	
 	BRLWE_Ring_polynomials2 key = NULL;
 	key = m_malloc(BRLWE_N * 2);
-	print("mem_print() 1 \n");
-	mem_print();
+	//print("mem_print() 1 \n");
+	//mem_print();
 	print("\nKey Generation:\n");
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
-	print("public key = \n");
-	phex(key);
-	print("secret key = \n");
-	phex(key + BRLWE_N);
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for Key Generation = ");print_dec(cycles_now - cycles_begin);
+	//print("public key = \n");
+	//phex(key);
+	//print("secret key = \n");
+	//phex(key + BRLWE_N);
 	
 	//m_free(key);
 	
 	//test: Encryption step
 	
 	print("\nEncryption:\n");
-	print("a = \n");
-	phex(test_1);
-	print("public key = \n");
-	phex(key);
-	print("original message = \n");
-	phex(test_2);
+	// print("a = \n");
+	// phex(test_1);
+	// print("public key = \n");
+	// phex(key);
+	// print("original message = \n");
+	// phex(test_2);
 
 	BRLWE_Ring_polynomials2 cryptom = NULL;
 	cryptom = m_malloc(BRLWE_N * 2);
 	
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for Encryption = ");print_dec(cycles_now - cycles_begin);
  
-	print("secret message 1 = \n");
-	phex(cryptom);
-	print("secret message 2 = \n");
-	phex(cryptom + BRLWE_N);
+	// print("secret message 1 = \n");
+	// phex(cryptom);
+	// print("secret message 2 = \n");
+	// phex(cryptom + BRLWE_N);
 	
 	//test: Decryption step
 	
 	print("\nDecryption:\n");
-	print("a = \n");
-	phex(test_1);
-	print("secret key = \n");
-	phex(key + BRLWE_N);
-	print("secret message = \n");
-	phex(cryptom);
-	phex(cryptom + BRLWE_N);
+	// print("a = \n");
+	// phex(test_1);
+	// print("secret key = \n");
+	// phex(key + BRLWE_N);
+	// print("secret message = \n");
+	// phex(cryptom);
+	// phex(cryptom + BRLWE_N);
 	
 	uint8_t* recoverm = NULL;
 	recoverm = m_malloc(BRLWE_N);
 	
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for Decryption = ");print_dec(cycles_now - cycles_begin);
 
-	print("original message = \n");
-	phex(test_2);
+	// print("original message = \n");
+	// phex(test_2);
 
-	print("recovered message = \n");
-	phex(recoverm);
+	// print("recovered message = \n");
+	// phex(recoverm);
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
 		print("check: Decryption success!\n");
 	else {
-		print("check: Decryption is not the same!\n");
+		print("check: Decryption failed!\n");
 		count = counterr(test_2, recoverm);
 		print("The error count is "); print_dec(count);
-		print(" of total Number "); print_dec(BRLWE_N);
+		print(" of N :"); print_dec(BRLWE_N);
 	}
 	
 	mem_print();

@@ -226,9 +226,9 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 		if (b[i] == (uint8_t)0x01) {
 			for (j = 0; j < BRLWE_N; j++) {
 				if (i + j <= BRLWE_N - 1)
-					ans[i + j] = (ans[i + j] + a[j] );// % BRLWE_Q ;
+					ans[i + j] = (ans[i + j] + a[j] ) % BRLWE_Q ;
 				else
-					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + BRLWE_N - a[j] );// % BRLWE_Q;
+					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + (256 - a[j]) );// % BRLWE_Q;
 			};
 		};
 	};

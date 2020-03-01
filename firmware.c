@@ -720,7 +720,7 @@ void main()
 	key = m_malloc(BRLWE_N * 2);
 	//print("mem_print() 1 \n");
 	//mem_print();
-	print("\nKey Generation:\n");
+	//print("\n \nKey Generation:\n");
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -734,7 +734,7 @@ void main()
 	
 	//test: Encryption step
 	
-	print("\nEncryption:\n");
+	print("\n \nEncryption:\n");
 	// print("a = \n");
 	// phex(test_1);
 	// print("public key = \n");
@@ -757,7 +757,7 @@ void main()
 	
 	//test: Decryption step
 	
-	print("\nDecryption:\n");
+	print("\n \nDecryption:\n");
 	// print("a = \n");
 	// phex(test_1);
 	// print("secret key = \n");
@@ -782,9 +782,9 @@ void main()
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
-		print("check: Decryption success!\n");
+		print("\n \ncheck: Decryption success!\n");
 	else {
-		print("check: Decryption failed!\n");
+		print("\n \ncheck: Decryption failed!\n");
 		count = counterr(test_2, recoverm);
 		print("The error count is "); print_dec(count);
 		print(" of N :"); print_dec(BRLWE_N);

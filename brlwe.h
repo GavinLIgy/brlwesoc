@@ -4,9 +4,9 @@
 #include <stdint.h>
 
 //#define RBINLWEENC1 1
-#define RBINLWEENC2 1
+//#define RBINLWEENC2 1
 //#define RBINLWEENC3 1
-//#define RBINLWEENCT 1
+#define RBINLWEENCT 1
 
 #if defined(RBINLWEENC1) && (RBINLWEENC1 == 1)
 #define BRLWE_N 256 // n = 256 : polynomials length

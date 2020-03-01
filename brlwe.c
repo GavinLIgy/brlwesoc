@@ -26,8 +26,9 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 
 //typedef uint8_t *BRLWE_Ring_polynomials ;
 //typedef uint8_t *BRLWE_Ring_polynomials2 ;
+
 /*****************************************************************************/
-/* Private functions:                                                        */
+/* Public functions:                                                        */
 /*****************************************************************************/
 
 //initialize a polynomial by sampling a uniform distribution with binary coefficients 

@@ -778,7 +778,7 @@ void main()
 		print("check: Decryption is not the same!\n");
 		count = counterr(test_2, recoverm);
 		print("The error count is "); print_dec(count);
-		print(" of total Number"); print_dec(BRLWE_N);
+		print(" of total Number "); print_dec(BRLWE_N);
 	}
 	
 	mem_print();

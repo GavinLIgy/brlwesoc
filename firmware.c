@@ -697,7 +697,7 @@ void main()
 	*/
 	
 	//test: Math-operation subfunctions
-	/*
+
 	struct BRLWE_Ring_polynomials* n = NULL;
 	n = m_malloc(BRLWE_N);
 	print("\nMath-operation subfunctions:\r\n");
@@ -711,7 +711,6 @@ void main()
 	mem_print();
 	m_free(n);
 	mem_print();
-*/
 
 
 	//test: Key Generation step

@@ -226,10 +226,10 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 	for (i = 0; i < BRLWE_N; i++) {
 		if (b[i] != (uint8_t)0) {
 			for (j = 0; j < BRLWE_N; j++) {
-				if (i + j <= BRLWE_N - 1)
+				if ( (i + j) <= (BRLWE_N - 1) )
 					ans[i + j] = (ans[i + j] + a[j] ) % BRLWE_Q ;
 				else
-					tmp = (256 - a[j])
+					tmp = (256 - a[j]);
 					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + tmp ) % BRLWE_Q;
 			};
 		};

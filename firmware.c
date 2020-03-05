@@ -800,12 +800,14 @@ void main()
 		
 	}
 	
-	}
-	
-	mem_print();
 	m_free(key);
 	m_free(cryptom);
 	m_free(recoverm);
-	mem_print();
+	
+	}
+	
+	//mem_print();
+	
+	//mem_print();
 	
 }

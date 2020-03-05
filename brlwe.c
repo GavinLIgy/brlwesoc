@@ -35,11 +35,9 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 	int i = 0;
 	int j = 0;
-	/*
-	uint32_t cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	RNG_seed(cycles_now);
-	*/
+	
+	uint32_t cycles_begin, cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);
@@ -50,6 +48,10 @@ BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 		};
 	};
 	m_free(str);
+	
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\t| ");print_dec(cycles_now - cycles_begin);
+	//print("\n Cycles Number for BRLWE_init_bin_sampling = ");print_dec(cycles_now - cycles_begin);
 	
 	return poly;
 	
@@ -83,7 +85,8 @@ BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str,
 	}; 
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\n Cycles Number for BRLWE_init_hex = ");print_dec(cycles_now - cycles_begin);
+	print("\t| ");print_dec(cycles_now - cycles_begin);
+	//print("\n Cycles Number for BRLWE_init_hex = ");print_dec(cycles_now - cycles_begin);
 	
 	return poly;
 };
@@ -95,7 +98,8 @@ BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly) {
 	for (int i = 0; i < BRLWE_N; i++)
 		poly[i] = (uint8_t)0x00;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\n Cycles Number for BRLWE_init = ");print_dec(cycles_now - cycles_begin);
+	print("\t| ");print_dec(cycles_now - cycles_begin);
+	//print("\n Cycles Number for BRLWE_init = ");print_dec(cycles_now - cycles_begin);
 	return poly;
 };
 
@@ -216,7 +220,8 @@ BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 	for (i = 0; i < BRLWE_N; i++)
 		ans[i] = (a[i] + b[i]) % BRLWE_Q;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\n Cycles Number for Ring_add = ");print_dec(cycles_now - cycles_begin);
+	print("\t| ");print_dec(cycles_now - cycles_begin);
+	//print("\n Cycles Number for Ring_add = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
 
@@ -228,7 +233,8 @@ BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 	for (i = 0; i < BRLWE_N; i++) 
 		ans[i] = (a[i] - b[i]) % BRLWE_Q;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\n Cycles Number for Ring_sub = ");print_dec(cycles_now - cycles_begin);
+	print("\t| ");print_dec(cycles_now - cycles_begin);
+	//print("\n Cycles Number for Ring_sub = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
 
@@ -263,6 +269,7 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 		};
 	};
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\n Cycles Number for Simple_Ring_mul = ");print_dec(cycles_now - cycles_begin);
+	print("\t| ");print_dec(cycles_now - cycles_begin);
+	//print("\n Cycles Number for Simple_Ring_mul = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };

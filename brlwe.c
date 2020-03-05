@@ -69,6 +69,10 @@ BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 //pre-requirement: length(str) = BRLWE_N, rev = {0,1}^1
 //rev = 1: str[n] = poly[0]; else: str[0] = poly[0]
 BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str, int rev) {
+	
+	uint32_t cycles_begin, cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+	
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
 			*(poly+i) = (uint8_t)(str[BRLWE_N - 1 - i] % BRLWE_Q);
@@ -77,13 +81,21 @@ BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str,
 		for (int i = 0; i < BRLWE_N; i++)
 			*(poly+i) = (uint8_t)(str[i]% BRLWE_Q);
 	}; 
+	
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for BRLWE_init_hex = ");print_dec(cycles_now - cycles_begin);
+	
 	return poly;
 };
 
 //initialize a polynomial with all 0.
 BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly) {
+	uint32_t cycles_begin, cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	for (int i = 0; i < BRLWE_N; i++)
 		poly[i] = (uint8_t)0x00;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for BRLWE_init = ");print_dec(cycles_now - cycles_begin);
 	return poly;
 };
 
@@ -92,6 +104,7 @@ BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly) {
 // r1 and r2 are randomly selected binary polynomials, r2 is secret key
 // p = r1 - a * r2, p is public key and would be sent to Bob after Key_Gen
 BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring_polynomials2 key) {
+	
 	BRLWE_Ring_polynomials pk = key;//public key
 	BRLWE_Ring_polynomials sk = key+BRLWE_N;//secret key
 	
@@ -100,10 +113,6 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	
 	int i = 0;
 	int j = 0;
-	
-	// uint32_t cycles_now;
-	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	// RNG_seed(cycles_now);
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);//random number buffer: uint8_t str [4]
@@ -201,17 +210,25 @@ uint8_t* BRLWE_Decode(uint8_t* recoverm) {
 
 //return value ans = a + b;
 BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
+	uint32_t cycles_begin, cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++)
 		ans[i] = (a[i] + b[i]) % BRLWE_Q;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for Ring_add = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
 
 //return value = a - b;
 BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
+	uint32_t cycles_begin, cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++) 
 		ans[i] = (a[i] - b[i]) % BRLWE_Q;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for Ring_sub = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
 
@@ -219,6 +236,8 @@ BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 //i=0 is lsb, i=n-1 is msb
 //most time/area consuming function(by guess) 
 BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
+	uint32_t cycles_begin, cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	int j = 0;
 	int tmp = 0;
@@ -243,5 +262,7 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 			};
 		};
 	};
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	print("\n Cycles Number for Simple_Ring_mul = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };

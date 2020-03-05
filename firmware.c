@@ -622,38 +622,39 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */ };	
 
 	//RNG Testing
+	/*
+	uint32_t cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	setseed32(cycles_now);
 	
-	// uint32_t cycles_now;
-	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	// setseed32(cycles_now);
+	uint32_t count_1 = 0;
+	uint32_t count_0 = 0;
 	
-	// uint32_t count_1 = 0;
-	// uint32_t count_0 = 0;
+	uint8_t* str = NULL;
+	str = m_malloc(4);
+	int i = 0;
+	int count_loop = 0;
 	
-	// uint8_t* str = NULL;
-	// str = m_malloc(4);
-	// int i = 0;
-	// int count_loop = 0;
-	
-	// reg_leds = 0x00;
-	// print("\nRNG Testing Progress : \n");
-	// while (count_loop < 500000) {  
-		// getrandom_binary(str);
-		// for (i = 0; i < 4 ; i++){
-			// //print("\nstr[");print_dec(i);print("] =");print_hex(str[i],2);
-			// if (str[i] == (uint8_t)0x00) count_0++;
-			// if (str[i] == (uint8_t)0x01) count_1++;
-		// };
-		// count_loop++;
-		// print("\r");print_dec(count_loop);print(" Of 500000");
-		// if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
-	// };
-	// reg_leds = 0xff;
-	// m_free(str);
-	// debug_rdcycle();
-	// print("Count 0 = ");print_dec(count_0);
-	// print("\nCount 1 = ");print_dec(count_1);
-	// print("\nEnd of RNG testing");
+	reg_leds = 0x00;
+	print("\nRNG Testing Progress : \n");
+	while (count_loop < 500000) {  
+		getrandom_binary(str);
+		for (i = 0; i < 4 ; i++){
+			//print("\nstr[");print_dec(i);print("] =");print_hex(str[i],2);
+			if (str[i] == (uint8_t)0x00) count_0++;
+			if (str[i] == (uint8_t)0x01) count_1++;
+		};
+		count_loop++;
+		print("\r");print_dec(count_loop);print(" Of 500000");
+		if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
+	};
+	reg_leds = 0xff;
+	m_free(str);
+	debug_rdcycle();
+	print("Count 0 = ");print_dec(count_0);
+	print("\nCount 1 = ");print_dec(count_1);
+	print("\nEnd of RNG testing");
+	*/
 	
 	//test: memory allocate testing & RNG initialization
 	
@@ -676,15 +677,12 @@ void main()
 	phex(a);
 	print("\n");
 	
-	
 	struct BRLWE_Ring_polynomials* m = NULL;
 	m = m_malloc(BRLWE_N);
 	m = BRLWE_init_hex(m, test_2, 0);
 	print("BRLWE_init_hex(test_2, 0) = ");
 	phex(m->polynomial);
 	print("\n");
-	
-	
 	
 	a = BRLWE_init_bin_sampling(a);
 	print("BRLWE_init_bin_sampling() = ");

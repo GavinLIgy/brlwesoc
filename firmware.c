@@ -739,7 +739,7 @@ void main()
 	
 	//test: Encryption step
 	
-	print("\n \nEncryption:\n");
+	//print("\n \nEncryption:\n");
 	// print("a = \n");
 	// phex(test_1);
 	// print("public key = \n");
@@ -763,7 +763,7 @@ void main()
 	
 	//test: Decryption step
 	
-	print("\n \nDecryption:\n");
+	//print("\n \nDecryption:\n");
 	// print("a = \n");
 	// phex(test_1);
 	// print("secret key = \n");

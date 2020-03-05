@@ -713,7 +713,7 @@ void main()
 	//Test : Timing test: Table plot 
 	print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
 	
-	for (int i = 1; i <= 100; i++){
+	for (int i = 1; i <= 50; i++){
 	print("\n| ");print_dec(i);
 	
 	//test: Key Generation step

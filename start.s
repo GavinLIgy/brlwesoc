@@ -157,3 +157,21 @@ ret
 
 .balign 4
 flashio_worker_end:
+
+/* Hard mul functions for brlwe.c
+ **********************************/
+hard_mul:
+	mul a0, a0, a1
+	ret
+
+hard_mulh:
+	mulh a0, a0, a1
+	ret
+
+hard_mulhsu:
+	mulhsu a0, a0, a1
+	ret
+
+hard_mulhu:
+	mulhu a0, a0, a1
+	ret

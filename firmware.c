@@ -21,8 +21,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "alloc.h"
-#include "alloc.c"
+//#include "alloc.h"
+//#include "alloc.c"
 
 #include "brlwe.h"
 #include "brlwe.c"

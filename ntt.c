@@ -1,6 +1,6 @@
 // Number theory transform
 
-#include <string.h>
+//#include <string.h>
 #include <stdint.h>
 
 // #include "ntt.h"

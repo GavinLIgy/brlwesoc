@@ -709,10 +709,18 @@ void main()
 	print("test1 * test2 = \n");
 	phex(Simple_Ring_mul(test_1, test_2, n));
 	print("NTT: test1 * test2 = \n");
+	uint8_t* a = NULL;
+	a = m_malloc(BRLWE_N);
+	a = memcpy(a,test1,BRLWE_N);
+	uint8_t* b = NULL;
+	b = m_malloc(BRLWE_N);
+	b = memcpy(b,test1,BRLWE_N);
 	phex(Simple_Ring_mul_NTT(test_1, test_2, n));
 	
 	mem_print();
 	m_free(n);
+	m_free(a);
+	m_free(b);
 	mem_print();
 	
 /*

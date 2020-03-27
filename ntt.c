@@ -178,38 +178,38 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 //example: if DIGIT=3, key board input = 45678, buf = [04,05,06,07,08], len=2, arr=[678, 45]=[a6 02 00 00 2d 00 00 00]
 //if DIGIT=2, key board input = 45678, buf = [04,05,06,07,08], len=3, arr=[78,56,4]=[4e 00 00 00 38 00 00 00 04 00 00 00] -- not work properly
 
-size_t get_int(int *arr, char *buf) {
-	size_t len = 0, result = 0;
-	int ch;
-	char *begin = buf;
-	while (isspace(ch = getchar()));
-	while (ch == '0') ch = getchar();
-	while (isdigit(ch)) {
-		*buf++ = ch - '0';
-		ch = getchar();
-		len++;
-	}
-	while (len >= DIGIT) {
-		int d = 0, i = 1;
-		buf -= DIGIT;
-		d = *buf++;
-		while (i < DIGIT) d = d * 10 + *buf++, i++;
-		len -= DIGIT;
-		buf -= DIGIT;
-		*arr++ = d;
-		result++;
-	}
-	if (begin < buf) {
-		int d = 0;
-		d = *begin++;
-		while (begin < buf) {
-			d = d * 10 + *begin++;
-		}
-		*arr++ = d;
-		result++;
-	}
-	return result;
-}
+// size_t get_int(int *arr, char *buf) {
+	// size_t len = 0, result = 0;
+	// int ch;
+	// char *begin = buf;
+	// while (isspace(ch = getchar()));
+	// while (ch == '0') ch = getchar();
+	// while (isdigit(ch)) {
+		// *buf++ = ch - '0';
+		// ch = getchar();
+		// len++;
+	// }
+	// while (len >= DIGIT) {
+		// int d = 0, i = 1;
+		// buf -= DIGIT;
+		// d = *buf++;
+		// while (i < DIGIT) d = d * 10 + *buf++, i++;
+		// len -= DIGIT;
+		// buf -= DIGIT;
+		// *arr++ = d;
+		// result++;
+	// }
+	// if (begin < buf) {
+		// int d = 0;
+		// d = *begin++;
+		// while (begin < buf) {
+			// d = d * 10 + *begin++;
+		// }
+		// *arr++ = d;
+		// result++;
+	// }
+	// return result;
+// }
 
 //padding function from uint8_t to int.
 size_t get_int_poly(int *arr, uint8_t *poly, int n) {

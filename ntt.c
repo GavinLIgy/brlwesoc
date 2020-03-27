@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 // #include "ntt.h"
+#include "alloc.h"
+#include "alloc.c"
 
 // #define DIGIT 4
 // #define X     65536

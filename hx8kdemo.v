@@ -97,14 +97,6 @@ module hx8kdemo (
 	assign simplerng_dat_di[23:16] = iomem_wstrb[2] ? iomem_wdata[23:16] : 8'b 0;
 	assign simplerng_dat_di[31:24] = iomem_wstrb[3] ? iomem_wdata[31:24] : 8'b 0;
 	
-	//User RAM Memory interface
-	/*
-	reg ram_ready;
-	wire [31:0] ram_rdata;
-	wire [31:0] ram_addr;
-	
-	assign ram_addr = ram_ready ? iomem_addr - 32'h 0300_2000 : 32'h 0 ;
-	*/
 	always @(posedge clk) begin	
 		if (!resetn) begin
 			gpio <= 0;
@@ -184,20 +176,7 @@ module hx8kdemo (
 		.dat_di(	simplerng_dat_di	),
 		.dat_do(	simplerng_dat_do	),
 		.dat_wait(	simplerng_dat_wait	));	
-	/*
-	always @(posedge clk)
-		ram_ready <= iomem_valid && !iomem_ready && (iomem_addr >= 32'h 0300_2000) && ((iomem_addr - 32'h 0300_2000) < 4*256);
-		
-	picosoc_mem #(
-		.WORDS(256)
-	) user_memory (
-		.clk(clk),
-		.wen((iomem_valid && !iomem_ready && (iomem_addr >= 32'h 0300_2000) && (iomem_addr - 32'h 0300_2000) < 4*256) ? iomem_wstrb : 4'b0),
-		.addr(ram_addr[23:2]),
-		.wdata(iomem_wdata),
-		.rdata(ram_rdata)
-	);
-	*/
+
 	assign debug_ser_tx = ser_tx;
 	assign debug_ser_rx = ser_rx;
 

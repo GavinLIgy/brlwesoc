@@ -27,7 +27,7 @@ void fft(int *first, int *last, int prim_root, int mod);
 //void print(int *num, size_t sz);
 void cross(int *first, size_t len, int *assist);
 void reverse(int *first, int *last);
-int fpow(long long base, size_t expo, int mod);
+int fpow(int base, size_t expo, int mod);
 // int square(long long x, int mod);
 // int multiply(long long x, long long y, int mod);
 // int add(long long x, long long y, int mod);

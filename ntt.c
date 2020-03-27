@@ -35,29 +35,29 @@ int square(int x, int mod) {
 }
 
 //int fpow(long long base, size_t expo, int mod) 
-// int fpow(int base, size_t expo, int mod) {
-	// //long long coeff = 1;
-	// int coeff = 1;
-	// if (expo == 0) return 1;
-	// while (expo > 1) {
-		// if (expo & 1) {
-			// coeff = multiply(coeff, base, mod);
-		// }
-		// base = square(base, mod);
-		// expo >>= 1;
-	// }
-	// return multiply(base, coeff, mod);
-// }
-
-int fpow(int a, int n, int b){
-    int r=1;
-    while(b){
-        if(b&1)r=(r*a)%n;
-        a=(a*a)%n;
-        b>>=1;       // b = b>>1;
-    }
-    return r;
+int fpow(int base, size_t expo, int mod) {
+	//long long coeff = 1;
+	int coeff = 1;
+	if (expo == 0) return 1;
+	while (expo > 1) {
+		if (expo & 1) {
+			coeff = multiply(coeff, base, mod);
+		}
+		base = square(base, mod);
+		expo >>= 1;
+	}
+	return multiply(base, coeff, mod);
 }
+
+// int fpow(int a, int n, int b){
+    // int r=1;
+    // while(b){
+        // if(b&1)r=(r*a)%n;
+        // a=(a*a)%n;
+        // b>>=1;       // b = b>>1;
+    // }
+    // return r;
+// }
 
 void reverse(int *first, int *last) {
 	--last;

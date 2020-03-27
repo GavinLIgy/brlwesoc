@@ -1,7 +1,6 @@
 #ifndef _NTT_H_
 #define _NTT_H_
 
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdint.h>

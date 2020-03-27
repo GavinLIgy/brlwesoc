@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "ntt.h"
-#include "ntt.c"
+//#include "ntt.c"
 
 //#define RBINLWEENC1 1
 #define RBINLWEENC2 1

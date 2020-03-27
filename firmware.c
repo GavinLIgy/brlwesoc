@@ -24,10 +24,10 @@
 #include "alloc.h"
 #include "alloc.c"
 
-#include "brlwe.h"
+//#include "brlwe.h"
 #include "brlwe.c"
 
-#include "ntt.h"
+//#include "ntt.h"
 #include "ntt.c"
 
 #define alloc_printf  print

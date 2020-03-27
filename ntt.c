@@ -19,30 +19,44 @@
 // #define PR_POW 26               /* pow(136, 2 << PR_POW) % P == 1 */
 // #define N_REV  1811939302       /* (N_REV * pow(2, PR_POW)) % P == 1, see report */
 
-
-int add(long long x, long long y, int mod) {
+//int add(long long x, long long y, int mod)
+int add(int x, int y, int mod) {
 	return (x + y) % mod;
 }
 
-int multiply(long long x, long long y, int mod) {
+//int multiply(long long x, long long y, int mod)
+int multiply(int x, int y, int mod) {
 	return (x * y) % mod;
 }
 
-int square(long long x, int mod) {
+//int square(long long x, int mod)
+int square(int x, int mod) {
 	return multiply(x, x, mod);
 }
 
-int fpow(long long base, size_t expo, int mod) {
-	long long coeff = 1;
-	if (expo == 0) return 1;
-	while (expo > 1) {
-		if (expo & 1) {
-			coeff = multiply(coeff, base, mod);
-		}
-		base = square(base, mod);
-		expo >>= 1;
-	}
-	return multiply(base, coeff, mod);
+//int fpow(long long base, size_t expo, int mod) 
+// int fpow(int base, size_t expo, int mod) {
+	// //long long coeff = 1;
+	// int coeff = 1;
+	// if (expo == 0) return 1;
+	// while (expo > 1) {
+		// if (expo & 1) {
+			// coeff = multiply(coeff, base, mod);
+		// }
+		// base = square(base, mod);
+		// expo >>= 1;
+	// }
+	// return multiply(base, coeff, mod);
+// }
+
+int fpow(int a, int n, int b){
+    int r=1;
+    while(b){
+        if(b&1)r=(r*a)%n;
+        a=(a*a)%n;
+        b>>=1;       // b = b>>1;
+    }
+    return r;
 }
 
 void reverse(int *first, int *last) {

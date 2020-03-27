@@ -31,7 +31,7 @@ void reverse(int *first, int *last);
 // int square(long long x, int mod);
 // int multiply(long long x, long long y, int mod);
 // int add(long long x, long long y, int mod);
-int fpow(int a, int n, int b)
+int fpow(int a, int n, int b);
 int square(int x, int mod);
 int multiply(int x, int y, int mod);
 int add(int x, int y, int mod);

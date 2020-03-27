@@ -14,6 +14,8 @@
 // int a[N], b[N], c[N], temp[N];
 // char buffer[L];
 
+int* temp = NULL;
+
 // #define P      ((27 << 26) + 1) /* Mathematica Table[PrimeQ[a*2^26+1],{a,1,32}] */
 // #define PR     136              /* See report */
 // #define PR_POW 26               /* pow(136, 2 << PR_POW) % P == 1 */
@@ -73,19 +75,19 @@ void cross(int *first, size_t len, int *assist) {
 	int *end = first + len;
 	int *even_first = first;
 	int *odd_first = assist;
-	int *temp = first;
+	int *tmp = first;
 	++first;
 	while (first < end) {
 		*assist++ = *first;
 		first += 2;
 	}
 	while (even_first < end) {
-		*temp++ = *even_first;
+		*tmp++ = *even_first;
 		even_first += 2;
 	}
 
-	while (temp < end) {
-		*temp++ = *odd_first++;
+	while (tmp < end) {
+		*tmp++ = *odd_first++;
 	}
 }
 
@@ -173,6 +175,8 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		int *end;
 		s = 1 << s;
 		end = num1 + s;
+		temp = m_malloc((BRLWE_N + 1) * sizeof(int));
+		memset(temp, 0, (BRLWE_N + 1) * sizeof(int));
 		fft(num1, num1 + s, pr, P);
 		fft(num2, num2 + s, pr, P);
 		while (num1 < end) {
@@ -181,6 +185,7 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		result -= s;
 		end = result + s;
 		ifft(result, end, ni, pri, P);
+		m_free(temp);
 		while (result < end) {
 			result[1] += result[0] / X;
 			result[0] %= X;
@@ -247,17 +252,17 @@ size_t get_int_poly(int *arr, uint8_t *poly, int n) {
 //Polynomial Modulation
 //depadding function from int to uint8_t
 void get_hex_poly(int *arr,int szi, uint8_t *poly, int szh, int Q) {
-	int temp;
+	int tmp;
 	for (int i = 0; i < szi; i++) {
-		temp = arr[i];
+		tmp = arr[i];
 		for (int j = 0; j < DIGIT/2; j++) {
 			if (2 * i + j < szh) {
-				poly[2 * i + j] = (uint8_t)(temp % Q);
+				poly[2 * i + j] = (uint8_t)(tmp % Q);
 			}
 			else {
-				poly[2 * i + j - szh] = (uint8_t)(poly[2 * i + j - szh] + (uint8_t)((Q - (temp % Q)) % Q) % Q);
+				poly[2 * i + j - szh] = (uint8_t)(poly[2 * i + j - szh] + (uint8_t)((Q - (tmp % Q)) % Q) % Q);
 			}
-			temp >>= 8;
+			tmp >>= 8;
 		}
 	}
 	return;

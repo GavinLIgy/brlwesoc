@@ -18,7 +18,7 @@ char buffer[L];
 #define N_REV  1811939302       /* (N_REV * pow(2, PR_POW)) % P == 1, see report */
 
 
-void solve();
+//void solve();
 //size_t get_int(int *arr, char *buf);
 size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2);
 int get_bin_len(size_t sz);

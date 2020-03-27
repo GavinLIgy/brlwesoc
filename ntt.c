@@ -249,18 +249,18 @@ void get_hex_poly(int *arr,int szi, uint8_t *poly, int szh, int Q) {
 	return;
 }
 
-void solve() {
-	size_t s1, s2, rs;
-	memset(a, 0, N * sizeof(int));
-	memset(b, 0, N * sizeof(int));
-	memset(c, 0, N * sizeof(int));
-	s1 = get_int(a, buffer);
-	s2 = get_int(b, buffer);
-	rs = long_mul(c, a, s1, b, s2);
-	//reverse(c, c + rs);
-	//print(c, rs);
-	//putchar('\n');
-}
+// void solve() {
+	// size_t s1, s2, rs;
+	// memset(a, 0, N * sizeof(int));
+	// memset(b, 0, N * sizeof(int));
+	// memset(c, 0, N * sizeof(int));
+	// s1 = get_int(a, buffer);
+	// s2 = get_int(b, buffer);
+	// rs = long_mul(c, a, s1, b, s2);
+	// //reverse(c, c + rs);
+	// //print(c, rs);
+	// //putchar('\n');
+// }
 
 size_t get_s(int sz1, int sz2) {
 	return get_bin_len(sz1 + sz2 - 1);

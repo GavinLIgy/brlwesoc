@@ -3,19 +3,20 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "ntt.h"
+// #include "ntt.h"
 
-#define DIGIT 4
-#define X     65536
-#define N (1 << 13)
-#define L 5002
-int a[N], b[N], c[N], temp[N];
-char buffer[L];
+// #define DIGIT 4
+// #define X     65536
+// #define N (1 << 13)
+// #define L 5002
+// int a[N], b[N], c[N], temp[N];
+// char buffer[L];
 
-#define P      ((27 << 26) + 1) /* Mathematica Table[PrimeQ[a*2^26+1],{a,1,32}] */
-#define PR     136              /* See report */
-#define PR_POW 26               /* pow(136, 2 << PR_POW) % P == 1 */
-#define N_REV  1811939302       /* (N_REV * pow(2, PR_POW)) % P == 1, see report */
+// #define P      ((27 << 26) + 1) /* Mathematica Table[PrimeQ[a*2^26+1],{a,1,32}] */
+// #define PR     136              /* See report */
+// #define PR_POW 26               /* pow(136, 2 << PR_POW) % P == 1 */
+// #define N_REV  1811939302       /* (N_REV * pow(2, PR_POW)) % P == 1, see report */
+
 
 int add(long long x, long long y, int mod) {
 	return (x + y) % mod;

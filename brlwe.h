@@ -2,6 +2,8 @@
 #define _BRLWE_H_
 
 #include <stdint.h>
+#include "ntt.h"
+#include "ntt.c"
 
 //#define RBINLWEENC1 1
 #define RBINLWEENC2 1
@@ -45,5 +47,6 @@ uint8_t* BRLWE_Decode(uint8_t* recoverm);
 BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans);
 BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans);
 BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans);
+BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans);
 
 #endif

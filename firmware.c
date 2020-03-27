@@ -27,6 +27,9 @@
 #include "brlwe.h"
 #include "brlwe.c"
 
+#include "ntt.h"
+#include "ntt.c"
+
 #define alloc_printf  print
 
 #ifdef ICEBREAKER
@@ -694,22 +697,25 @@ void main()
 	print("\n");
 	*/
 	
-	// //test: Math-operation subfunctions
+	//test: Math-operation subfunctions
 	
-	// struct BRLWE_Ring_polynomials* n = NULL;
-	// n = m_malloc(BRLWE_N);
-	// print("\nMath-operation subfunctions:\r\n");
-	// print("test1 + test2 = \n");
-	// phex(Ring_add(test_1, test_2, n));
-	// print("test1 - test2 = \n");
-	// phex(Ring_sub(test_1, test_2, n));
-	// print("test1 * test2 = \n");
-	// phex(Simple_Ring_mul(test_1, test_2, n));
+	uint8_t* n = NULL;
+	n = m_malloc(BRLWE_N);
+	print("\nMath-operation subfunctions:\r\n");
+	print("test1 + test2 = \n");
+	phex(Ring_add(test_1, test_2, n));
+	print("test1 - test2 = \n");
+	phex(Ring_sub(test_1, test_2, n));
+	print("test1 * test2 = \n");
+	phex(Simple_Ring_mul(test_1, test_2, n));
+	print("NTT: test1 * test2 = \n");
+	phex(Simple_Ring_mul_NTT(test_1, test_2, n));
 	
-	// mem_print();
-	// m_free(n);
-	// mem_print();
+	mem_print();
+	m_free(n);
+	mem_print();
 	
+/*
 	//Test : Timing test: Table plot 
 	print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
 	
@@ -806,6 +812,7 @@ void main()
 	
 	}
 	
+*/
 	//mem_print();
 	
 	//mem_print();

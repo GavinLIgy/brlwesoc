@@ -36,7 +36,7 @@ hx8kprog_fw: hx8kdemo_fw.bin
 hx8kdemo_sections.lds: sections.lds
 	riscv32-unknown-elf-cpp -P -DHX8KDEMO -o $@ $^
 
-hx8kdemo_fw.elf: hx8kdemo_sections.lds start.s firmware.c alloc.c brlwe.c
+hx8kdemo_fw.elf: hx8kdemo_sections.lds start.s firmware.c alloc.c brlwe.c ntt.c
 	riscv32-unknown-elf-gcc -DHX8KDEMO -DRBINLWEENC2=1 -march=rv32imc -Wl,-Map=firmware.map,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
 
 hx8kdemo_fw.hex: hx8kdemo_fw.elf

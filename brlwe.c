@@ -13,8 +13,10 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 #include <stdint.h>
 #include <stdlib.h>
 #include "brlwe.h"
-//#include "alloc.h"
-//#include "alloc.c"
+#include "alloc.h"
+#include "alloc.c"
+#include "ntt.h"
+#include "ntt.c"
 
 /*****************************************************************************/
 /* Definition:                                                        */
@@ -272,4 +274,33 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 	print("\t| ");print_dec(cycles_now - cycles_begin);
 	//print("\n Cycles Number for Simple_Ring_mul = ");print_dec(cycles_now - cycles_begin);
 	return ans;
+};
+
+BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
+	
+	int* inta = NULL;
+	inta = m_malloc(BRLWE_N * sizeof(int));
+	memset(inta, 0, BRLWE_N * sizeof(int));
+	int s1 = 0;
+	s1 = get_int_poly(inta, a, BRLWE_N);
+
+	int* intb = NULL;
+	intb = m_malloc(BRLWE_N * sizeof(int));
+	memset(intb, 0, BRLWE_N * sizeof(int));
+	int s2 = 0;
+	s2 = get_int_poly(intb, b, BRLWE_N);
+
+	int* result = NULL;
+	result = m_malloc(BRLWE_N * sizeof(int));
+	memset(result, 0, BRLWE_N * sizeof(int));
+
+	int rs = long_mul(result, inta, s1, intb, s2);
+	get_hex_poly(result, rs, ans, BRLWE_N, BRLWE_Q);
+	return r;
+	
+	m_free(inta);
+	m_free(intb);
+	m_free(result);
+
+	
 };

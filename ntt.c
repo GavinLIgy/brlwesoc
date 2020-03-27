@@ -1,8 +1,9 @@
 // Number theory transform
 
 #include <string.h>
-#include <ctype.h>
 #include <stdint.h>
+
+#include "ntt.h"
 
 #define DIGIT 4
 #define X     65536

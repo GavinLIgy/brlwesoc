@@ -128,7 +128,7 @@ module hx8kdemo (
 	end
 
 	picosoc #(
-		.MEM_WORDS(512)
+		.MEM_WORDS(1024)
 	) soc (
 		.clk          (clk         ),
 		.resetn       (resetn      ),

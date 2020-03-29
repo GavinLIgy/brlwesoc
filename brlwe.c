@@ -95,12 +95,12 @@ BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str,
 
 //initialize a polynomial with all 0.
 BRLWE_Ring_polynomials BRLWE_init(BRLWE_Ring_polynomials poly) {
-	uint32_t cycles_begin, cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+	// uint32_t cycles_begin, cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	for (int i = 0; i < BRLWE_N; i++)
 		poly[i] = (uint8_t)0x00;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// print("\t| ");print_dec(cycles_now - cycles_begin);
 	//print("\n Cycles Number for BRLWE_init = ");print_dec(cycles_now - cycles_begin);
 	return poly;
 };

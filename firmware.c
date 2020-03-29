@@ -664,9 +664,9 @@ void main()
 	print("Booting..\n");
 	mem_init();
 	mem_print();
-	uint32_t cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	RNG_seed(cycles_now);
+	// uint32_t cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// RNG_seed(cycles_now);
 	
 	//test: Polynomial initialization step
 	/*
@@ -709,13 +709,39 @@ void main()
 	print("test1 * test2 = \n");
 	phex(Simple_Ring_mul(test_1, test_2, n));
 	print("NTT: test1 * test2 = \n");
-	uint8_t* a = NULL;
-	a = m_malloc(BRLWE_N);
-	a = memcpy(a,test_1,BRLWE_N);
-	uint8_t* b = NULL;
-	b = m_malloc(BRLWE_N);
-	b = memcpy(b,test_2,BRLWE_N);
-	phex(Simple_Ring_mul_NTT(test_1, test_2, n));
+	
+	// uint8_t* a = NULL;
+	// a = m_malloc(BRLWE_N);
+	// a = BRLWE_init_hex(a, test_1, 0);
+	
+	// uint8_t* b = NULL;
+	// b = m_malloc(BRLWE_N);
+	// b = BRLWE_init_hex(b, test_2, 0);
+	
+	//phex(Simple_Ring_mul_NTT(test_1, test_2, n));
+	
+	int* inta = NULL;
+	inta = m_malloc(BRLWE_N * 4 * sizeof(int));
+	memset(inta, 0, BRLWE_N * 4 * sizeof(int));
+	int s1 = 0;
+	s1 = get_int_poly(inta, a, BRLWE_N);
+
+	int* intb = NULL;
+	intb = m_malloc(BRLWE_N * 4 * sizeof(int));
+	memset(intb, 0, BRLWE_N * 4 * sizeof(int));
+	int s2 = 0;
+	s2 = get_int_poly(intb, b, BRLWE_N);
+
+	int* result = NULL;
+	result = m_malloc(BRLWE_N * 4 * sizeof(int));
+	memset(result, 0, BRLWE_N * 4 * sizeof(int));
+
+	int rs = long_mul(result, inta, s1, intb, s2);
+	get_hex_poly(result, rs, ans, BRLWE_N, BRLWE_Q);
+	
+	m_free(inta);
+	m_free(intb);
+	m_free(result);
 	
 	mem_print();
 	m_free(n);

@@ -83,7 +83,7 @@ BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str,
 	}
 	else {
 		for (int i = 0; i < BRLWE_N; i++)
-			*(poly+i) = (uint8_t)(str[i]% BRLWE_Q);
+			*(poly+i) = (uint8_t)(str[i] % BRLWE_Q);
 	}; 
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));

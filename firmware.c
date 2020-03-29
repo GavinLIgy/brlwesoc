@@ -709,13 +709,14 @@ void main()
 	print("test1 * test2 = \n");
 	phex(Simple_Ring_mul(test_1, test_2, n));
 	
+	
 	uint8_t* a = NULL;
 	a = m_malloc(BRLWE_N);
-	a = BRLWE_init_hex(a, test_1, 0);
+	a = memcpy(a, test_1, BRLWE_N);
 	
 	uint8_t* b = NULL;
 	b = m_malloc(BRLWE_N);
-	b = BRLWE_init_hex(b, test_2, 0);
+	b = memcpy(b, test_2, BRLWE_N);
 	
 	phex(Simple_Ring_mul_NTT(test_1, test_2, n));
 		

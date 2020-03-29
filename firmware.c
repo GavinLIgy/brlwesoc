@@ -724,7 +724,7 @@ void main()
 	inta = m_malloc(BRLWE_N * sizeof(int));
 	memset(inta, 0, BRLWE_N * sizeof(int));
 	int s1 = 0;
-	s1 = get_int_poly(inta, a, BRLWE_N);
+	s1 = get_int_poly(inta, test_1, BRLWE_N);
 	print("buff_print: inta \n");
 	buff_print(inta,BRLWE_N * sizeof(int));
 	
@@ -732,7 +732,7 @@ void main()
 	intb = m_malloc(BRLWE_N * sizeof(int));
 	memset(intb, 0, BRLWE_N * sizeof(int));
 	int s2 = 0;
-	s2 = get_int_poly(intb, b, BRLWE_N);
+	s2 = get_int_poly(intb, test_2, BRLWE_N);
 	print("buff_print: intb \n");
 	buff_print(intb,BRLWE_N * sizeof(int));
 	

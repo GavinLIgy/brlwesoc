@@ -9,8 +9,8 @@
 #define X     1000
 #define N (1 << 13)
 #define L 5002
-int a[N], b[N], c[N], temp[N];
-char buffer[L];
+//int a[N], b[N], c[N], temp[N];
+//char buffer[L];
 
 #define P      ((27 << 26) + 1) /* Mathematica Table[PrimeQ[a*2^26+1],{a,1,32}] */
 #define PR     136              /* See report */
@@ -22,11 +22,11 @@ char buffer[L];
 //size_t get_int(int *arr, char *buf);
 size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2);
 int get_bin_len(size_t sz);
-void ifft(int *first, int *last, int factor, int prim_root, int mod);
-void fft(int *first, int *last, int prim_root, int mod);
+void ifft(int *first, int *last, int factor, int prim_root, int mod, int *assist);
+void fft(int *first, int *last, int prim_root, int mod, int *assist);
 //void print(int *num, size_t sz);
 void cross(int *first, size_t len, int *assist);
-void reverse(int *first, int *last);
+//void reverse(int *first, int *last, int *assist);
 int fpow(int base, size_t expo, int mod);
 // int square(long long x, int mod);
 // int multiply(long long x, long long y, int mod);

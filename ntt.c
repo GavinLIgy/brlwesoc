@@ -14,8 +14,6 @@
 // int a[N], b[N], c[N], temp[N];
 // char buffer[L];
 
-int* temp = NULL;
-
 // #define P      ((27 << 26) + 1) /* Mathematica Table[PrimeQ[a*2^26+1],{a,1,32}] */
 // #define PR     136              /* See report */
 // #define PR_POW 26               /* pow(136, 2 << PR_POW) % P == 1 */
@@ -61,14 +59,14 @@ int fpow(int base, size_t expo, int mod) {
     // return r;
 // }
 
-void reverse(int *first, int *last) {
-	--last;
-	while (first < last) {
-		int temp = *first;
-		*first++ = *last;
-		*last-- = temp;
-	}
-}
+// void reverse(int *first, int *last, int *assist) {
+	// --last;
+	// while (first < last) {
+		// int assist = *first;
+		// *first++ = *last;
+		// *last-- = assist;
+	// }
+// }
 
 /* [1,2,3,4,...,n] -> [1,3,...,n-1,2,4,...,n] */
 void cross(int *first, size_t len, int *assist) {
@@ -129,13 +127,13 @@ void cross(int *first, size_t len, int *assist) {
 
 }*/
 
-void fft(int *first, int *last, int prim_root, int mod) {
+void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 	if (last - first > 1) {
 		int *mid = first + (last - first) / 2;
 		int cur = 1;
-		cross(first, last - first, temp);
-		fft(first, mid, square(prim_root, mod), mod);
-		fft(mid, last, square(prim_root, mod), mod);
+		cross(first, last - first, assist);
+		fft(first, mid, square(prim_root, mod), mod, assist);
+		fft(mid, last, square(prim_root, mod), mod, assist);
 		while (mid < last) {
 			int x1 = *first, x2 = *mid;
 			*first++ = add(x1, multiply(cur, x2, mod), mod);
@@ -145,8 +143,8 @@ void fft(int *first, int *last, int prim_root, int mod) {
 	}
 }
 
-void ifft(int *first, int *last, int factor, int prim_root, int mod) {
-	fft(first, last, prim_root, mod);
+void ifft(int *first, int *last, int factor, int prim_root, int mod, int *assist) {
+	fft(first, last, prim_root, mod, assist);
 	while (first < last) {
 		*first = multiply(*first, factor, mod);
 		first++;
@@ -175,17 +173,14 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		int *end;
 		s = 1 << s;
 		end = num1 + s;
-		temp = m_malloc((BRLWE_N + 1) * sizeof(int));
-		memset(temp, 0, (BRLWE_N + 1) * sizeof(int));
-		fft(num1, num1 + s, pr, P);
-		fft(num2, num2 + s, pr, P);
+		fft(num1, num1 + s, pr, P, result);//using result to be assist
+		fft(num2, num2 + s, pr, P, result);
 		while (num1 < end) {
 			*result++ = multiply(*num1++, *num2++, P);
 		}
 		result -= s;
 		end = result + s;
-		ifft(result, end, ni, pri, P);
-		m_free(temp);
+		ifft(result, end, ni, pri, P, num1);//using num1 to be assist
 		while (result < end) {
 			result[1] += result[0] / X;
 			result[0] %= X;

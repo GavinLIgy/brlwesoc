@@ -300,7 +300,6 @@ BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const
 	int rs = long_mul(result, inta, s1, intb, s2);
 	get_hex_poly(result, rs, ans, BRLWE_N, BRLWE_Q);
 	
-	
 	m_free(inta);
 	m_free(intb);
 	m_free(result);

@@ -708,7 +708,7 @@ void main()
 	phex(Ring_sub(test_1, test_2, n));
 	print("test1 * test2 = \n");
 	phex(Simple_Ring_mul(test_1, test_2, n));
-	print("NTT: test1 * test2 = \n");
+	
 	
 	// uint8_t* a = NULL;
 	// a = m_malloc(BRLWE_N);
@@ -721,32 +721,44 @@ void main()
 	//phex(Simple_Ring_mul_NTT(test_1, test_2, n));
 	
 	int* inta = NULL;
-	inta = m_malloc(BRLWE_N * 4 * sizeof(int));
-	memset(inta, 0, BRLWE_N * 4 * sizeof(int));
+	inta = m_malloc(BRLWE_N * sizeof(int));
+	memset(inta, 0, BRLWE_N * sizeof(int));
 	int s1 = 0;
 	s1 = get_int_poly(inta, a, BRLWE_N);
-
+	print("buff_print: inta \n");
+	buff_print(inta,BRLWE_N * sizeof(int));
+	
 	int* intb = NULL;
-	intb = m_malloc(BRLWE_N * 4 * sizeof(int));
-	memset(intb, 0, BRLWE_N * 4 * sizeof(int));
+	intb = m_malloc(BRLWE_N * sizeof(int));
+	memset(intb, 0, BRLWE_N * sizeof(int));
 	int s2 = 0;
 	s2 = get_int_poly(intb, b, BRLWE_N);
-
+	print("buff_print: intb \n");
+	buff_print(intb,BRLWE_N * sizeof(int));
+	
 	int* result = NULL;
-	result = m_malloc(BRLWE_N * 4 * sizeof(int));
-	memset(result, 0, BRLWE_N * 4 * sizeof(int));
+	result = m_malloc(BRLWE_N * sizeof(int));
+	memset(result, 0, BRLWE_N * sizeof(int));
 
 	int rs = long_mul(result, inta, s1, intb, s2);
-	get_hex_poly(result, rs, ans, BRLWE_N, BRLWE_Q);
+	print("buff_print: result \n");
+	buff_print(result, rs);
+	get_hex_poly(result, rs, n, BRLWE_N, BRLWE_Q);
 	
-	m_free(inta);
-	m_free(intb);
-	m_free(result);
+	print("buff_print: n \n");
+	buff_print(n, BRLWE_N * sizeof(uint8_t));
+	
+	print("NTT: test1 * test2 = \n");
+	phex(n);
+	
 	
 	mem_print();
 	m_free(n);
-	m_free(a);
-	m_free(b);
+	// m_free(a);
+	// m_free(b);
+	m_free(inta);
+	m_free(intb);
+	m_free(result);
 	mem_print();
 	
 /*

@@ -216,26 +216,26 @@ uint8_t* BRLWE_Decode(uint8_t* recoverm) {
 
 //return value ans = a + b;
 BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
-	uint32_t cycles_begin, cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+	// uint32_t cycles_begin, cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++)
 		ans[i] = (a[i] + b[i]) % BRLWE_Q;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
 	//print("\n Cycles Number for Ring_add = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
 
 //return value = a - b;
 BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
-	uint32_t cycles_begin, cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+	// uint32_t cycles_begin, cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++) 
 		ans[i] = (a[i] - b[i]) % BRLWE_Q;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
 	//print("\n Cycles Number for Ring_sub = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
@@ -244,8 +244,8 @@ BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 //i=0 is lsb, i=n-1 is msb
 //most time/area consuming function(by guess) 
 BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
-	uint32_t cycles_begin, cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+	// uint32_t cycles_begin, cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	int j = 0;
 	int tmp = 0;
@@ -270,16 +270,16 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 			};
 		};
 	};
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
 	//print("\n Cycles Number for Simple_Ring_mul = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
 
 BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const BRLWE_Ring_polynomials b, BRLWE_Ring_polynomials ans) {
 	
-	uint32_t cycles_begin, cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+	// uint32_t cycles_begin, cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
 	int* inta = NULL;
 	inta = m_malloc(BRLWE_N * 2 * sizeof(int));
@@ -304,8 +304,8 @@ BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const
 	m_free(intb);
 	m_free(result);
 	
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
 	
 	return ans;
 };

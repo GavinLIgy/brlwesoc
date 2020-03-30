@@ -739,7 +739,7 @@ void main()
 	
 	BRLWE_Ring_polynomials2 key = NULL;
 	key = m_malloc(BRLWE_N * 2);
-	print("mem_print() 1 \n");
+	print("\n mem_print() 1 \n");
 	mem_print();
 	print("\n \nKey Generation:\n");
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
@@ -747,9 +747,9 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Key Generation = ");print_dec(cycles_now - cycles_begin);
-	print("public key = \n");
+	print("\npublic key = \n");
 	phex(key);
-	print("secret key = \n");
+	print("\nsecret key = \n");
 	phex(key + BRLWE_N);
 	
 	//m_free(key);
@@ -759,9 +759,9 @@ void main()
 	print("\n \nEncryption:\n");
 	print("a = \n");
 	phex(test_1);
-	print("public key = \n");
+	print("\npublic key = \n");
 	phex(key);
-	print("original message = \n");
+	print("\noriginal message = \n");
 	phex(test_2);
 
 	BRLWE_Ring_polynomials2 cryptom = NULL;
@@ -773,9 +773,9 @@ void main()
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Encryption = ");print_dec(cycles_now - cycles_begin);
  
-	print("secret message 1 = \n");
+	print("\nsecret message 1 = \n");
 	phex(cryptom);
-	print("secret message 2 = \n");
+	print("\nsecret message 2 = \n");
 	phex(cryptom + BRLWE_N);
 	
 	//test: Decryption step
@@ -783,9 +783,9 @@ void main()
 	//print("\n \nDecryption:\n");
 	print("a = \n");
 	phex(test_1);
-	print("secret key = \n");
+	print("\nsecret key = \n");
 	phex(key + BRLWE_N);
-	print("secret message = \n");
+	print("\nsecret message = \n");
 	phex(cryptom);
 	phex(cryptom + BRLWE_N);
 	
@@ -798,22 +798,22 @@ void main()
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Decryption = ");print_dec(cycles_now - cycles_begin);
 
-	print("original message = \n");
+	print("\noriginal message = \n");
 	phex(test_2);
 
-	print("recovered message = \n");
+	print("\nrecovered message = \n");
 	phex(recoverm);
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
-		print("\t| success!");
-		//print("\n \ncheck: Decryption success!\n");
+		//print("\t| success!");
+		print("\n \ncheck: Decryption success!\n");
 	else {
-		//print("\n \ncheck: Decryption failed!\n");
+		print("\n \ncheck: Decryption failed!\n");
 		count = counterr(test_2, recoverm);
-		//print("The error count is "); print_dec(count);
-		//print(" of N :"); print_dec(BRLWE_N);
-		print("\t| failed!");print("\t ");print_dec(count);
+		print("The error count is "); print_dec(count);
+		print(" of N :"); print_dec(BRLWE_N);
+		//print("\t| failed!");print("\t ");print_dec(count);
 		
 	}
 	

@@ -728,10 +728,10 @@ void main()
 	*/
 
 	//Test : Timing test: Table plot 
-	print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
+	//print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
 	
-	for (int i = 1; i <= 3; i++){
-	print("\n| ");print_dec(i);
+	//for (int i = 1; i <= 3; i++){
+	//print("\n| ");print_dec(i);
 	
 	//test: Key Generation step
 	
@@ -739,30 +739,30 @@ void main()
 	
 	BRLWE_Ring_polynomials2 key = NULL;
 	key = m_malloc(BRLWE_N * 2);
-	//print("mem_print() 1 \n");
-	//mem_print();
-	//print("\n \nKey Generation:\n");
+	print("mem_print() 1 \n");
+	mem_print();
+	print("\n \nKey Generation:\n");
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);
-	//print("\n Cycles Number for Key Generation = ");print_dec(cycles_now - cycles_begin);
-	//print("public key = \n");
-	//phex(key);
-	//print("secret key = \n");
-	//phex(key + BRLWE_N);
+	//print("\t| ");print_dec(cycles_now - cycles_begin);
+	print("\n Cycles Number for Key Generation = ");print_dec(cycles_now - cycles_begin);
+	print("public key = \n");
+	phex(key);
+	print("secret key = \n");
+	phex(key + BRLWE_N);
 	
 	//m_free(key);
 	
 	//test: Encryption step
 	
-	//print("\n \nEncryption:\n");
-	// print("a = \n");
-	// phex(test_1);
-	// print("public key = \n");
-	// phex(key);
-	// print("original message = \n");
-	// phex(test_2);
+	print("\n \nEncryption:\n");
+	print("a = \n");
+	phex(test_1);
+	print("public key = \n");
+	phex(key);
+	print("original message = \n");
+	phex(test_2);
 
 	BRLWE_Ring_polynomials2 cryptom = NULL;
 	cryptom = m_malloc(BRLWE_N * 2);
@@ -770,24 +770,24 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);
-	//print("\n Cycles Number for Encryption = ");print_dec(cycles_now - cycles_begin);
+	//print("\t| ");print_dec(cycles_now - cycles_begin);
+	print("\n Cycles Number for Encryption = ");print_dec(cycles_now - cycles_begin);
  
-	// print("secret message 1 = \n");
-	// phex(cryptom);
-	// print("secret message 2 = \n");
-	// phex(cryptom + BRLWE_N);
+	print("secret message 1 = \n");
+	phex(cryptom);
+	print("secret message 2 = \n");
+	phex(cryptom + BRLWE_N);
 	
 	//test: Decryption step
 	
 	//print("\n \nDecryption:\n");
-	// print("a = \n");
-	// phex(test_1);
-	// print("secret key = \n");
-	// phex(key + BRLWE_N);
-	// print("secret message = \n");
-	// phex(cryptom);
-	// phex(cryptom + BRLWE_N);
+	print("a = \n");
+	phex(test_1);
+	print("secret key = \n");
+	phex(key + BRLWE_N);
+	print("secret message = \n");
+	phex(cryptom);
+	phex(cryptom + BRLWE_N);
 	
 	uint8_t* recoverm = NULL;
 	recoverm = m_malloc(BRLWE_N);
@@ -795,14 +795,14 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);
-	//print("\n Cycles Number for Decryption = ");print_dec(cycles_now - cycles_begin);
+	//print("\t| ");print_dec(cycles_now - cycles_begin);
+	print("\n Cycles Number for Decryption = ");print_dec(cycles_now - cycles_begin);
 
-	// print("original message = \n");
-	// phex(test_2);
+	print("original message = \n");
+	phex(test_2);
 
-	// print("recovered message = \n");
-	// phex(recoverm);
+	print("recovered message = \n");
+	phex(recoverm);
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
@@ -821,7 +821,7 @@ void main()
 	m_free(cryptom);
 	m_free(recoverm);
 	
-	}
+	//}
 	//mem_print();
 	
 	//mem_print();

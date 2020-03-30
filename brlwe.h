@@ -6,9 +6,9 @@
 #include "ntt.c"
 
 //#define RBINLWEENC1 1
-//#define RBINLWEENC2 1
+#define RBINLWEENC2 1
 //#define RBINLWEENC3 1
-#define RBINLWEENCT 1
+//#define RBINLWEENCT 1
 
 //#define hw_mul 1
 

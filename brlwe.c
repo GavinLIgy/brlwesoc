@@ -208,7 +208,7 @@ uint8_t* BRLWE_Decode(uint8_t* recoverm) {
 	uint8_t low_th = BRLWE_Q >> 2;
 	uint8_t hig_th = (BRLWE_Q + BRLWE_Q<<1) >> 2;
 	for (i = 0; i < BRLWE_N; i++) {
-		if (recoverm[i] > low_th && recoverm[i] < hig_th
+		if (recoverm[i] > low_th && recoverm[i] < hig_th)
 			recoverm[i] = (uint8_t)1;
 		else
 			recoverm[i] = (uint8_t)0;

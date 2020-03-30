@@ -69,12 +69,12 @@ int add(long long x, long long y, int mod) {
 	//return (x + y) % mod;
 
 	int* longint = NULL;
-	longint = (int*)malloc(8);
+	longint = (int*)m_malloc(8);
 
 	ll2int((x + y), longint);
 
 	int k = div64_32(longint, mod);
-	free(longint);
+	m_free(longint);
 
 	return k;
 }
@@ -83,12 +83,12 @@ int multiply(long long x, long long y, int mod) {
 	//return (x * y) % mod;
 
 	int* longint = NULL;
-	longint = (int*)malloc(8);
+	longint = (int*)m_malloc(8);
 
 	ll2int((x * y), longint);
 
 	int k = div64_32(longint, mod);
-	free(longint);
+	m_free(longint);
 
 	return k;
 }

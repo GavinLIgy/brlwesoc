@@ -284,20 +284,20 @@ BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const
 	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
 	int* inta = NULL;
-	inta = m_malloc(BRLWE_N>>3);
-	memset(inta, 0, BRLWE_N>>3);
+	inta = m_malloc(BRLWE_N<<3);
+	memset(inta, 0, BRLWE_N<<3);
 	int s1 = 0;
 	s1 = get_int_poly(inta, a, BRLWE_N);
 
 	int* intb = NULL;
-	intb = m_malloc(BRLWE_N>>3);
-	memset(intb, 0, BRLWE_N>>3);
+	intb = m_malloc(BRLWE_N<<3);
+	memset(intb, 0, BRLWE_N<<3);
 	int s2 = 0;
 	s2 = get_int_poly(intb, b, BRLWE_N);
 
 	int* result = NULL;
-	result = m_malloc(BRLWE_N>>3);
-	memset(result, 0, BRLWE_N>>3);
+	result = m_malloc(BRLWE_N<<3);
+	memset(result, 0, BRLWE_N<<3);
 
 	int rs = long_mul(result, inta, s1, intb, s2);
 	get_hex_poly(result, rs, ans, BRLWE_N, BRLWE_Q);

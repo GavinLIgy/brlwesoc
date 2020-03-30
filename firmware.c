@@ -664,9 +664,9 @@ void main()
 	print("Booting..\n");
 	mem_init();
 	mem_print();
-	// uint32_t cycles_now;
-	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	// RNG_seed(cycles_now);
+	uint32_t cycles_now;
+	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	RNG_seed(cycles_now);
 	
 	//test: Polynomial initialization step
 	/*

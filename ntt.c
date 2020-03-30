@@ -68,7 +68,7 @@ unsigned int div64_32(unsigned int a[], unsigned int b) {//假设你的64位数�
 int add(long long x, long long y, int mod) {
 	//return (x + y) % mod;
 	int* longint = NULL;
-	longint = (int*)m_malloc(8);
+	longint = (int*)m_malloc(16);
 
 	ll2int((x + y), longint);
 	print("Add 1 \n");
@@ -82,7 +82,7 @@ int multiply(long long x, long long y, int mod) {
 	//return (x * y) % mod;
 	
 	int* longint = NULL;
-	longint = (int*)m_malloc(8);
+	longint = (int*)m_malloc(16);
 	
 	ll2int((x * y), longint);
 	print("Mul 1 \n");

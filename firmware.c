@@ -698,7 +698,7 @@ void main()
 	*/
 	
 	//test: Math-operation subfunctions
-	
+	/*
 	uint8_t* n = NULL;
 	n = m_malloc(BRLWE_N);
 	print("\nMath-operation subfunctions:\r\n");
@@ -725,12 +725,12 @@ void main()
 	m_free(a);
 	m_free(b);
 	mem_print();
-	
-/*
+	*/
+
 	//Test : Timing test: Table plot 
 	print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
 	
-	for (int i = 1; i <= 50; i++){
+	for (int i = 1; i <= 3; i++){
 	print("\n| ");print_dec(i);
 	
 	//test: Key Generation step
@@ -822,8 +822,6 @@ void main()
 	m_free(recoverm);
 	
 	}
-	
-*/
 	//mem_print();
 	
 	//mem_print();

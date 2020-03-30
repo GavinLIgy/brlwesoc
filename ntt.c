@@ -231,6 +231,7 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		return 0;
 	}
 	else {
+		print("Point 1 \n");
 		int s = get_bin_len(sz1 + sz2 - 1);
 		int pr = fpow(PR, 1 << (PR_POW - s), P);
 		int ni = multiply(N_REV, 1 << (PR_POW - s), P);
@@ -240,12 +241,14 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		end = num1 + s;
 		fft(num1, num1 + s, pr, P, result);//using result to be assist
 		fft(num2, num2 + s, pr, P, result);
+		print("Point 2 \n");
 		while (num1 < end) {
 			*result++ = multiply(*num1++, *num2++, P);
 		}
 		result -= s;
 		end = result + s;
 		ifft(result, end, ni, pri, P, num1);//using num1 to be assist
+		print("Point 3 \n");
 		while (result < end) {
 			//result[1] += result[0] / X;
 			//result[0] %= X;

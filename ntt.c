@@ -67,7 +67,6 @@ unsigned int div64_32(unsigned int a[], unsigned int b) {//假设你的64位数�
 
 int add(long long x, long long y, int mod) {
 	//return (x + y) % mod;
-
 	int* longint = NULL;
 	longint = (int*)m_malloc(8);
 
@@ -197,7 +196,7 @@ void cross(int *first, size_t len, int *assist) {
 
 void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 	if (last - first > 1) {
-		int *mid = first + (last - first)/2;
+		int *mid = first + ((last - first)>>1);
 		int cur = 1;
 		print("fft 1 \n");
 		cross(first, last - first, assist);

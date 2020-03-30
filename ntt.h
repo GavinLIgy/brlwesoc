@@ -27,14 +27,15 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist);
 //void print(int *num, size_t sz);
 void cross(int *first, size_t len, int *assist);
 //void reverse(int *first, int *last, int *assist);
-int fpow(int base, size_t expo, int mod);
-// int square(long long x, int mod);
-// int multiply(long long x, long long y, int mod);
-// int add(long long x, long long y, int mod);
-//int fpow(int a, int n, int b);
-int square(int x, int mod);
-int multiply(int x, int y, int mod);
-int add(int x, int y, int mod);
+
+int square(long long x, int mod);
+int multiply(long long x, long long y, int mod);
+int add(long long x, long long y, int mod);
+int fpow(int a, int n, int b);
+// int square(int x, int mod);
+// int multiply(int x, int y, int mod);
+// int add(int x, int y, int mod);
+// int fpow(int base, size_t expo, int mod);
 
 size_t get_int_poly(int *arr, uint8_t *poly, int n);
 void get_hex_poly(int *arr, int szi, uint8_t *poly, int szh, int Q);

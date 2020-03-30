@@ -72,10 +72,10 @@ int add(long long x, long long y, int mod) {
 	longint = (int*)m_malloc(8);
 
 	ll2int((x + y), longint);
-	print("add 1 \n");
+	print("Add 1 \n");
 	int k = div64_32(longint, mod);
 	m_free(longint);
-	print("add 2 \n");
+	print("Add 2 \n");
 	return k;
 }
 
@@ -111,6 +111,7 @@ int fpow(long long base, size_t expo, int mod) {
 		base = square(base, mod);
 		expo >>= 1;
 	}
+	print("Fpow return\n");
 	return multiply(base, coeff, mod);
 }
 
@@ -236,9 +237,8 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		int pr = fpow(PR, 1 << (PR_POW - s), P);
 		int ni = multiply(N_REV, 1 << (PR_POW - s), P);
 		int pri = fpow(pr, (1 << s) - 1, P);
-		int *end;
 		s = 1 << s;
-		end = num1 + s;
+		int *end = num1 + s;
 		fft(num1, num1 + s, pr, P, result);//using result to be assist
 		fft(num2, num2 + s, pr, P, result);
 		print("Point 2 \n");

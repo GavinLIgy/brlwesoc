@@ -1,12 +1,12 @@
 #ifdef ICEBREAKER
 #  define MEM_TOTAL 0x20000 /* 128 KB */
 #elif HX8KDEMO
-#  define MEM_TOTAL 0x1200 /* 12 KB */
+#  define MEM_TOTAL 0x1100 /* 11 KB */
 #else
 #  error "Set -DICEBREAKER or -DHX8KDEMO when compiling firmware.c"
 #endif
 
-_Heap_Size = 0x11B0;      /* required amount of heap  */
+_Heap_Size = 0x10B0;      /* required amount of heap  */
 
 MEMORY
 {

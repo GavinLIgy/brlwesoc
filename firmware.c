@@ -625,7 +625,6 @@ void main()
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */ };	
 
 	//RNG Testing
-	/*
 	uint32_t cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	setseed32(cycles_now);
@@ -657,16 +656,15 @@ void main()
 	print("Count 0 = ");print_dec(count_0);
 	print("\nCount 1 = ");print_dec(count_1);
 	print("\nEnd of RNG testing");
-	*/
 	
 	//test: memory allocate testing & RNG initialization
 	
 	print("Booting..\n");
 	mem_init();
 	mem_print();
-	uint32_t cycles_now;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	RNG_seed(cycles_now);
+	// uint32_t cycles_now;
+	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
+	// RNG_seed(cycles_now);
 	
 	//test: Polynomial initialization step
 	/*

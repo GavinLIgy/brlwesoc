@@ -747,6 +747,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Key Generation = ");print_dec(cycles_now - cycles_begin);
+	mem_print();
 	print("\npublic key = \n");
 	phex(key);
 	print("\nsecret key = \n");
@@ -772,7 +773,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Encryption = ");print_dec(cycles_now - cycles_begin);
- 
+	mem_print();
 	print("\nsecret message 1 = \n");
 	phex(cryptom);
 	print("\nsecret message 2 = \n");
@@ -797,7 +798,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Decryption = ");print_dec(cycles_now - cycles_begin);
-
+	mem_print();
 	print("\noriginal message = \n");
 	phex(test_2);
 
@@ -816,10 +817,11 @@ void main()
 		//print("\t| failed!");print("\t ");print_dec(count);
 		
 	}
-	
+	mem_print();
 	m_free(key);
 	m_free(cryptom);
 	m_free(recoverm);
+	mem_print();
 	
 	//}
 	//mem_print();

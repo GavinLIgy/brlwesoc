@@ -2,7 +2,7 @@
 # ---- iCE40 HX8K Breakout Board ----
 
 hx8ksim: hx8kdemo_tb.vvp hx8kdemo_fw.hex
-	vvp -N $< +firmware=hx8kdemo_fw.hex -DRBINLWEENC2=1
+	vvp -N $< +firmware=hx8kdemo_fw.hex -DRBINLWEENCT=1
 
 hx8ksynsim: hx8kdemo_syn_tb.vvp hx8kdemo_fw.hex
 	vvp -N $< +firmware=hx8kdemo_fw.hex
@@ -37,7 +37,7 @@ hx8kdemo_sections.lds: sections.lds
 	riscv32-unknown-elf-cpp -P -DHX8KDEMO -o $@ $^
 
 hx8kdemo_fw.elf: hx8kdemo_sections.lds start.s firmware.c alloc.c brlwe.c ntt.c
-	riscv32-unknown-elf-gcc -DHX8KDEMO -DRBINLWEENC2=1 -march=rv32imc -Wl,-Map=firmware.map,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
+	riscv32-unknown-elf-gcc -DHX8KDEMO -DRBINLWEENCT=1 -march=rv32imc -Wl,-Map=firmware.map,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c
 
 #hx8kdemo_fw.elf: hx8kdemo_sections.lds start.s firmware.c alloc.c brlwe.c ntt.c
 #	riscv32-unknown-elf-gcc -DHX8KDEMO -DRBINLWEENCT=1 -march=rv32imc -Wl,-Map=firmware.map,-Bstatic,-T,hx8kdemo_sections.lds,--strip-debug -ffreestanding -nostdlib -o hx8kdemo_fw.elf start.s firmware.c

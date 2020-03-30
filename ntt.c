@@ -20,14 +20,79 @@
 // #define N_REV  1811939302       /* (N_REV * pow(2, PR_POW)) % P == 1, see report */
 
 //int add(long long x, long long y, int mod)
-int add(long long x, long long y, int mod) {
-	return (x + y) % mod;
+// int add(long long x, long long y, int mod) {
+	// return do_div((x + y), mod);
+// }
+
+// //int multiply(long long x, long long y, int mod)
+// int multiply(long long x, long long y, int mod) {
+	// return do_div((x * y), mod);
+// }
+
+int* ll2int(long long a, int* b) {
+	b[1] = a >> 32;
+	b[0] = (int)a & 0xFFFFFFFF;
+	return b;
 }
 
-//int multiply(long long x, long long y, int mod)
-int multiply(long long x, long long y, int mod) {
-	return (x * y) % mod;
+long long int2ll(int* a) {
+	long long b;
+	b = a[1] << 32 + a[0];
+	return b;
 }
+
+unsigned int div64_32(unsigned int a[], unsigned int b) {//假设你的64位数是一个32位数组，a[0]为低32位，a[1]为高32位	
+	unsigned int i, j, k, m, c[2] = { 0 };
+
+	for (i = 2, j = k = 0; i; i--) {
+		m = 0x80000000;                    //位探针，从最高位右移到最低位		
+		for (; m; m >>= 1) {
+			j = (k >= 0x80000000);         //j为进位，k为余数			
+			k <<= 1;                       //余数左移一位			
+			k |= ((m&a[i - 1]) && 1);      //将被除数当前位补进余数最低位			
+			c[1] <<= 1;                    //商高位左移1位为低位左移溢出做准备			
+			c[1] |= (c[0] >= 0x80000000);  //低位左移溢出到高位			
+			c[0] <<= 1;                    //低位左移一次准备做除法			
+			c[0] |= (j || k >= b);         //如果余数大于被除数则商低位补1		
+
+			if (j) k = k + ~b + 1;          //余数达到33位则“余数=当前余数+除数补码”			
+			else if (k >= b)k -= b;        //当前余数为32位且大于被除数则“余数=当前余数-除数”		
+		}
+	}//64位除以32位运算完成，商在数组c中	
+	a[0] = c[0];
+	a[1] = c[1];                          //商以数组参数a返回	
+	return k;
+	//返回余数
+}
+
+int add(long long x, long long y, int mod) {
+	//return (x + y) % mod;
+
+	int* longint = NULL;
+	longint = (int*)malloc(8);
+
+	ll2int((x + y), longint);
+
+	int k = div64_32(longint, mod);
+	free(longint);
+
+	return k;
+}
+
+int multiply(long long x, long long y, int mod) {
+	//return (x * y) % mod;
+
+	int* longint = NULL;
+	longint = (int*)malloc(8);
+
+	ll2int((x * y), longint);
+
+	int k = div64_32(longint, mod);
+	free(longint);
+
+	return k;
+}
+
 
 //int square(long long x, int mod)
 int square(long long x, int mod) {

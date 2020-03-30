@@ -6,7 +6,7 @@
 #  error "Set -DICEBREAKER or -DHX8KDEMO when compiling firmware.c"
 #endif
 
-_Heap_Size = 0xD40;      /* required amount of heap  */
+_Heap_Size = 0x11B0;      /* required amount of heap  */
 
 MEMORY
 {

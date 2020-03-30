@@ -197,9 +197,11 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 	if (last - first > 1) {
 		int *mid = first + (last - first)/2;
 		int cur = 1;
+		print("fft 1 \n");
 		cross(first, last - first, assist);
 		fft(first, mid, square(prim_root, mod), mod, assist);
 		fft(mid, last, square(prim_root, mod), mod, assist);
+		print("fft 2 \n");
 		while (mid < last) {
 			int x1 = *first, x2 = *mid;
 			*first++ = add(x1, multiply(cur, x2, mod), mod);
@@ -207,6 +209,7 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 			cur = multiply(cur, prim_root, mod);
 		}
 	}
+	print("fft 3 \n");
 }
 
 void ifft(int *first, int *last, int factor, int prim_root, int mod, int *assist) {
@@ -237,6 +240,7 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		int pr = fpow(PR, 1 << (PR_POW - s), P);
 		int ni = multiply(N_REV, 1 << (PR_POW - s), P);
 		int pri = fpow(pr, (1 << s) - 1, P);
+		print("Point 5 \n");
 		s = 1 << s;
 		int *end = num1 + s;
 		fft(num1, num1 + s, pr, P, result);//using result to be assist

@@ -72,24 +72,24 @@ int add(long long x, long long y, int mod) {
 	longint = (int*)m_malloc(8);
 
 	ll2int((x + y), longint);
-
+	print("add 1 \n");
 	int k = div64_32(longint, mod);
 	m_free(longint);
-
+	print("add 2 \n");
 	return k;
 }
 
 int multiply(long long x, long long y, int mod) {
 	//return (x * y) % mod;
-
+	
 	int* longint = NULL;
 	longint = (int*)m_malloc(8);
-
+	
 	ll2int((x * y), longint);
-
+	print("Mul 1 \n");
 	int k = div64_32(longint, mod);
 	m_free(longint);
-
+	print("Mul 2 \n");
 	return k;
 }
 

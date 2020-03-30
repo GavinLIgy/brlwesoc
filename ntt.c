@@ -93,7 +93,6 @@ int multiply(long long x, long long y, int mod) {
 	return k;
 }
 
-
 //int square(long long x, int mod)
 int square(long long x, int mod) {
 	return multiply(x, x, mod);

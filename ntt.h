@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 #define DIGIT 4
-#define X     65536
+#define X     16
 #define N (1 << 13)
 #define L 5002
 //int a[N], b[N], c[N], temp[N];

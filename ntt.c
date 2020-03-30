@@ -20,24 +20,24 @@
 // #define N_REV  1811939302       /* (N_REV * pow(2, PR_POW)) % P == 1, see report */
 
 //int add(long long x, long long y, int mod)
-int add(int x, int y, int mod) {
+int add(long long x, long long y, int mod) {
 	return (x + y) % mod;
 }
 
 //int multiply(long long x, long long y, int mod)
-int multiply(int x, int y, int mod) {
+int multiply(long long x, long long y, int mod) {
 	return (x * y) % mod;
 }
 
 //int square(long long x, int mod)
-int square(int x, int mod) {
+int square(long long x, int mod) {
 	return multiply(x, x, mod);
 }
 
 //int fpow(long long base, size_t expo, int mod) 
-int fpow(int base, size_t expo, int mod) {
+int fpow(long long base, size_t expo, int mod) {
 	//long long coeff = 1;
-	int coeff = 1;
+	long long coeff = 1;
 	if (expo == 0) return 1;
 	while (expo > 1) {
 		if (expo & 1) {
@@ -129,7 +129,7 @@ void cross(int *first, size_t len, int *assist) {
 
 void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 	if (last - first > 1) {
-		int *mid = first + (last - first) / 2;
+		int *mid = first + (last - first) >> 1;
 		int cur = 1;
 		cross(first, last - first, assist);
 		fft(first, mid, square(prim_root, mod), mod, assist);
@@ -182,8 +182,10 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		end = result + s;
 		ifft(result, end, ni, pri, P, num1);//using num1 to be assist
 		while (result < end) {
-			result[1] += result[0] / X;
-			result[0] %= X;
+			//result[1] += result[0] / X;
+			//result[0] %= X;
+			result[1] += result[0] >> X;
+			result[0] &= (1 << X) - 1;
 			result++;
 		}
 		return s;
@@ -252,10 +254,10 @@ void get_hex_poly(int *arr,int szi, uint8_t *poly, int szh, int Q) {
 		tmp = arr[i];
 		for (int j = 0; j < DIGIT/2; j++) {
 			if (2 * i + j < szh) {
-				poly[2 * i + j] = (uint8_t)(tmp % Q);
+				poly[2 * i + j] = (uint8_t)(tmp & (Q-1));
 			}
 			else {
-				poly[2 * i + j - szh] = (uint8_t)(poly[2 * i + j - szh] + (uint8_t)((Q - (tmp % Q)) % Q) % Q);
+				poly[2 * i + j - szh] = (uint8_t)(poly[2 * i + j - szh] + (uint8_t)((Q - (tmp & (Q-1))) & (Q-1)) & (Q-1));
 			}
 			tmp >>= 8;
 		}

@@ -299,7 +299,7 @@ static void phex(uint8_t* str)
 			print("\r\n");
 			j = 0;
 		}
-		else if (j%4==0 && j!=0){
+		else if (j & 3==0 && j!=0){
 			print(" ");
 		}
 	}
@@ -424,7 +424,7 @@ void buff_print(unsigned char *buf,unsigned int len)
     print("\r\n");
     for(i=0;i<len;i++)
     {
-        if(i%16 == 0 && i != 0)
+        if(i&15 == 0 && i != 0)
         {
             print("\r\n");
         }
@@ -557,7 +557,7 @@ void getrandom_binary(uint8_t* str)
 			tmp = reg_rng_data;
 		}// if RNG is not ready(tmp=0xffff_ffff), wait.
 	for (i = 0; i < 4; i++)	{
-			str[i]=(tmp/0x01000000)%2;
+			str[i]=(tmp >> 24) & 1;
 			tmp = tmp << 8;
 		}//for uint32_t hex to uint8_t[4]
 	/*

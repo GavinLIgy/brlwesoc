@@ -43,10 +43,10 @@ BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);
-	for (i = 0; i < BRLWE_N/4 ; i++) {
+	for (i = 0; i < (BRLWE_N>>2) ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(poly+4*i+j) = (uint8_t)str[j];
+			*(poly+(i<<2)+j) = (uint8_t)str[j];
 		};
 	};
 	m_free(str);
@@ -79,11 +79,11 @@ BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str,
 	
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
-			*(poly+i) = (uint8_t)(str[BRLWE_N - 1 - i] % BRLWE_Q);
+			*(poly+i) = (uint8_t)(str[BRLWE_N - 1 - i]  & (BRLWE_Q - 1));
 	}
 	else {
 		for (int i = 0; i < BRLWE_N; i++)
-			*(poly+i) = (uint8_t)(str[i] % BRLWE_Q);
+			*(poly+i) = (uint8_t)(str[i]  & (BRLWE_Q - 1));
 	}; 
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -122,10 +122,10 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);//random number buffer: uint8_t str [4]
-	for (i = 0; i < BRLWE_N/4 ; i++) {
+	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(pk+4*i+j) = ( (uint8_t)str[j] - *(pk+4*i+j) ) % BRLWE_Q;
+			*(pk+(i<<2)+j) = ( (uint8_t)str[j] - *(pk+(i<<2)+j) ) & (BRLWE_Q-1);
 		};
 	};
 	m_free(str);
@@ -163,22 +163,22 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	uint8_t* str = NULL;
 	str = m_malloc(4);//random number buffer: uint8_t str [4]
 	
-	for (i = 0; i < BRLWE_N/4 ; i++) {
+	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c1+4*i+j) = ( *(c1+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q ;
+			*(c1+(i<<2)+j) = ( *(c1+(i<<2)+j) + (uint8_t)str[j] ) & (BRLWE_Q-1) ;
 			//   c1     =      c1       +          e2    ;
 		};
 	};
 	
-	for (i = 0; i < BRLWE_N/4 ; i++) {
+	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)str[j] ) % BRLWE_Q ;// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
+			*(c2+(i<<2)+j) = ( *(c2+(i<<2)+j) + (uint8_t)str[j] ) & (BRLWE_Q - 1);// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
 			
-			if (m[4*i+j] != 0)
-				*(c2+4*i+j) = ( *(c2+4*i+j) + (uint8_t)(BRLWE_Q / 2) ) % BRLWE_Q;
-			*(c2+4*i+j) = ( *(c2+4*i+j) + BRLWE_Q + (BRLWE_N / 2) - 1 - 4*i - j ) % BRLWE_Q;
+			if (m[(i<<2)+j] != 0)
+				*(c2+(i<<2)+j) = ( *(c2+(i<<2)+j) + (uint8_t)(BRLWE_Q >> 1) ) & (BRLWE_Q - 1);
+			*(c2+(i<<2)+j) = ( *(c2+(i<<2)+j) + BRLWE_Q + (BRLWE_N >> 1) - 1 - (i<<2) - j ) & (BRLWE_Q - 1);
 			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};
@@ -205,8 +205,10 @@ uint8_t* BRLWE_Decry(const BRLWE_Ring_polynomials2 cryptom, const BRLWE_Ring_pol
 //Decode polynomial m_wave into string m
 uint8_t* BRLWE_Decode(uint8_t* recoverm) {
 	int i = 0;
+	uint8_t low_th = BRLWE_Q >> 2;
+	uint8_t hig_th = (BRLWE_Q + BRLWE_Q<<1) >> 2;
 	for (i = 0; i < BRLWE_N; i++) {
-		if (recoverm[i] > (BRLWE_Q / 4) && recoverm[i] < (3 * BRLWE_Q / 4))
+		if (recoverm[i] > low_th && recoverm[i] < hig_th
 			recoverm[i] = (uint8_t)1;
 		else
 			recoverm[i] = (uint8_t)0;
@@ -220,7 +222,7 @@ BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++)
-		ans[i] = (a[i] + b[i]) % BRLWE_Q;
+		ans[i] = (a[i] + b[i]) & (BRLWE_Q - 1);
 	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	// print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
 	//print("\n Cycles Number for Ring_add = ");print_dec(cycles_now - cycles_begin);
@@ -233,7 +235,7 @@ BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++) 
-		ans[i] = (a[i] - b[i]) % BRLWE_Q;
+		ans[i] = (a[i] - b[i]) & (BRLWE_Q - 1);
 	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	// print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
 	//print("\n Cycles Number for Ring_sub = ");print_dec(cycles_now - cycles_begin);
@@ -257,14 +259,14 @@ BRLWE_Ring_polynomials Simple_Ring_mul(const BRLWE_Ring_polynomials a, const BRL
 				
 				if ( (i + j) <= (BRLWE_N - 1) ){
 					//print("\n new ans[i + j] = ");
-					ans[i + j] = (ans[i + j] + a[j] ) % BRLWE_Q ;
+					ans[i + j] = (ans[i + j] + a[j] ) & (BRLWE_Q - 1) ;
 					//print_dec(ans[i + j]);
 				}
 				else
 				{
 					//print("\n new ans[i + j - BRLWE_N] = ");
 					tmp = (256 - a[j]);
-					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + tmp ) % BRLWE_Q;
+					ans[i + j - BRLWE_N] = (ans[i + j - BRLWE_N] + tmp )  & (BRLWE_Q - 1);
 					//print_dec(ans[i + j - BRLWE_N]);
 				};	
 			};
@@ -282,20 +284,20 @@ BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const
 	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
 	int* inta = NULL;
-	inta = m_malloc(BRLWE_N * 2 * sizeof(int));
-	memset(inta, 0, BRLWE_N * 2 * sizeof(int));
+	inta = m_malloc(BRLWE_N>>3);
+	memset(inta, 0, BRLWE_N>>3);
 	int s1 = 0;
 	s1 = get_int_poly(inta, a, BRLWE_N);
 
 	int* intb = NULL;
-	intb = m_malloc(BRLWE_N * 2 * sizeof(int));
-	memset(intb, 0, BRLWE_N * 2 * sizeof(int));
+	intb = m_malloc(BRLWE_N>>3);
+	memset(intb, 0, BRLWE_N>>3);
 	int s2 = 0;
 	s2 = get_int_poly(intb, b, BRLWE_N);
 
 	int* result = NULL;
-	result = m_malloc(BRLWE_N * 2 * sizeof(int));
-	memset(result, 0, BRLWE_N * 2 * sizeof(int));
+	result = m_malloc(BRLWE_N>>3);
+	memset(result, 0, BRLWE_N>>3);
 
 	int rs = long_mul(result, inta, s1, intb, s2);
 	get_hex_poly(result, rs, ans, BRLWE_N, BRLWE_Q);

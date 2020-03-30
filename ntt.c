@@ -71,10 +71,8 @@ int add(long long x, long long y, int mod) {
 	longint = (int*)m_malloc(16);
 
 	ll2int((x + y), longint);
-	print("Add 1 \n");
 	int k = div64_32(longint, mod);
 	m_free(longint);
-	print("Add 2 \n");
 	return k;
 }
 
@@ -85,13 +83,8 @@ int multiply(long long x, long long y, int mod) {
 	longint = (int*)m_malloc(16);
 	
 	ll2int((x * y), longint);
-	print("Mul 1 \n");
 	int k = div64_32(longint, mod);
-	mem_print();
-	m_free(longint);
-	mem_print();
-	print("Mul 2 \n");
-	
+	m_free(longint);	
 	return k;
 }
 
@@ -112,7 +105,6 @@ int fpow(long long base, size_t expo, int mod) {
 		base = square(base, mod);
 		expo >>= 1;
 	}
-	print("Fpow return\n");
 	return multiply(base, coeff, mod);
 }
 
@@ -142,21 +134,17 @@ void cross(int *first, size_t len, int *assist) {
 	int *odd_first = assist;
 	int *tmp = first;
 	++first;
-	print("cross 1 \n");
 	while (first < end) {
 		*assist++ = *first;
 		first += 2;
 	}
-	print("cross 2 \n");
 	while (even_first < end) {
 		*tmp++ = *even_first;
 		even_first += 2;
 	}
-	print("cross 3 \n");
 	while (tmp < end) {
 		*tmp++ = *odd_first++;
 	}
-	print("cross 4 \n");
 }
 
 /*void print(int *num, size_t sz) {
@@ -201,11 +189,9 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 	if (last - first > 1) {
 		int *mid = first + ((last - first)>>1);
 		int cur = 1;
-		print("fft 1 \n");
 		cross(first, last - first, assist);
 		fft(first, mid, square(prim_root, mod), mod, assist);
 		fft(mid, last, square(prim_root, mod), mod, assist);
-		print("fft 2 \n");
 		while (mid < last) {
 			int x1 = *first, x2 = *mid;
 			*first++ = add(x1, multiply(cur, x2, mod), mod);
@@ -213,7 +199,6 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 			cur = multiply(cur, prim_root, mod);
 		}
 	}
-	print("fft 3 \n");
 }
 
 void ifft(int *first, int *last, int factor, int prim_root, int mod, int *assist) {
@@ -239,27 +224,21 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		return 0;
 	}
 	else {
-		print("Point 1 \n");
 		int s = get_bin_len(sz1 + sz2 - 1);
 		int pr = fpow(PR, 1 << (PR_POW - s), P);
 		int ni = multiply(N_REV, 1 << (PR_POW - s), P);
 		int pri = fpow(pr, (1 << s) - 1, P);
-		print("Point 5 \n");
 		s = 1 << s;
 		int *end = num1 + s;
 		fft(num1, num1 + s, pr, P, result);//using result to be assist
 		fft(num2, num2 + s, pr, P, result);
-		print("Point 2 \n");
 		while (num1 < end) {
 			*result++ = multiply(*num1++, *num2++, P);
 		}
 		result -= s;
 		end = result + s;
 		ifft(result, end, ni, pri, P, num1);//using num1 to be assist
-		print("Point 3 \n");
 		while (result < end) {
-			//result[1] += result[0] / X;
-			//result[0] %= X;
 			result[1] += result[0] >> X;
 			result[0] &= (1 << X) - 1;
 			result++;
@@ -340,19 +319,6 @@ void get_hex_poly(int *arr,int szi, uint8_t *poly, int szh, int Q) {
 	}
 	return;
 }
-
-// void solve() {
-	// size_t s1, s2, rs;
-	// memset(a, 0, N * sizeof(int));
-	// memset(b, 0, N * sizeof(int));
-	// memset(c, 0, N * sizeof(int));
-	// s1 = get_int(a, buffer);
-	// s2 = get_int(b, buffer);
-	// rs = long_mul(c, a, s1, b, s2);
-	// //reverse(c, c + rs);
-	// //print(c, rs);
-	// //putchar('\n');
-// }
 
 size_t get_s(int sz1, int sz2) {
 	return get_bin_len(sz1 + sz2 - 1);

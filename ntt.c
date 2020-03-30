@@ -199,10 +199,12 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 		int *mid = first + ((last - first)>>1);
 		int cur = 1;
 		print("fft 1 \n");
+		mem_print();
 		cross(first, last - first, assist);
 		fft(first, mid, square(prim_root, mod), mod, assist);
 		fft(mid, last, square(prim_root, mod), mod, assist);
 		print("fft 2 \n");
+		mem_print();
 		while (mid < last) {
 			int x1 = *first, x2 = *mid;
 			*first++ = add(x1, multiply(cur, x2, mod), mod);
@@ -211,6 +213,7 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 		}
 	}
 	print("fft 3 \n");
+	mem_print();
 }
 
 void ifft(int *first, int *last, int factor, int prim_root, int mod, int *assist) {

@@ -87,8 +87,11 @@ int multiply(long long x, long long y, int mod) {
 	ll2int((x * y), longint);
 	print("Mul 1 \n");
 	int k = div64_32(longint, mod);
+	mem_print();
 	m_free(longint);
+	mem_print();
 	print("Mul 2 \n");
+	
 	return k;
 }
 
@@ -140,24 +143,20 @@ void cross(int *first, size_t len, int *assist) {
 	int *tmp = first;
 	++first;
 	print("cross 1 \n");
-	mem_print();
 	while (first < end) {
 		*assist++ = *first;
 		first += 2;
 	}
 	print("cross 2 \n");
-	mem_print();
 	while (even_first < end) {
 		*tmp++ = *even_first;
 		even_first += 2;
 	}
 	print("cross 3 \n");
-	mem_print();
 	while (tmp < end) {
 		*tmp++ = *odd_first++;
 	}
 	print("cross 4 \n");
-	mem_print();
 }
 
 /*void print(int *num, size_t sz) {
@@ -203,12 +202,10 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 		int *mid = first + ((last - first)>>1);
 		int cur = 1;
 		print("fft 1 \n");
-		mem_print();
 		cross(first, last - first, assist);
 		fft(first, mid, square(prim_root, mod), mod, assist);
 		fft(mid, last, square(prim_root, mod), mod, assist);
 		print("fft 2 \n");
-		mem_print();
 		while (mid < last) {
 			int x1 = *first, x2 = *mid;
 			*first++ = add(x1, multiply(cur, x2, mod), mod);
@@ -217,7 +214,6 @@ void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 		}
 	}
 	print("fft 3 \n");
-	mem_print();
 }
 
 void ifft(int *first, int *last, int factor, int prim_root, int mod, int *assist) {

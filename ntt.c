@@ -129,7 +129,7 @@ void cross(int *first, size_t len, int *assist) {
 
 void fft(int *first, int *last, int prim_root, int mod, int *assist) {
 	if (last - first > 1) {
-		int *mid = first + (int *)(((int)last - (int)first) >> 1);
+		int *mid = first + (last - first)/2;
 		int cur = 1;
 		cross(first, last - first, assist);
 		fft(first, mid, square(prim_root, mod), mod, assist);

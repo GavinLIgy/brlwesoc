@@ -141,18 +141,21 @@ void cross(int *first, size_t len, int *assist) {
 	int *odd_first = assist;
 	int *tmp = first;
 	++first;
+	print("cross 1 \n");
 	while (first < end) {
 		*assist++ = *first;
 		first += 2;
 	}
+	print("cross 2 \n");
 	while (even_first < end) {
 		*tmp++ = *even_first;
 		even_first += 2;
 	}
-
+	print("cross 3 \n");
 	while (tmp < end) {
 		*tmp++ = *odd_first++;
 	}
+	print("cross 4 \n");
 }
 
 /*void print(int *num, size_t sz) {

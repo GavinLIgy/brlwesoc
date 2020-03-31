@@ -285,22 +285,22 @@ BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const
 	
 	print("Check point 0");
 	int* inta = NULL;
-	inta = (int*)m_malloc(BRLWE_N<<4);
+	inta = (int*)m_malloc(BRLWE_N<<1);
 	print("Check point 0");
-	memset(inta, 0, BRLWE_N<<4);
+	memset(inta, 0, BRLWE_N<<1);
 	int s1 = 0;
 	s1 = get_int_poly(inta, a, BRLWE_N);
 	print("Check point 0");
 	
 	int* intb = NULL;
-	intb = (int*)m_malloc(BRLWE_N<<4);
-	memset(intb, 0, BRLWE_N<<4);
+	intb = (int*)m_malloc(BRLWE_N<<1);
+	memset(intb, 0, BRLWE_N<<1);
 	int s2 = 0;
 	s2 = get_int_poly(intb, b, BRLWE_N);
 
 	int* result = NULL;
-	result = (int*)m_malloc(BRLWE_N<<4);
-	memset(result, 0, BRLWE_N<<4);
+	result = (int*)m_malloc(BRLWE_N<<1);
+	memset(result, 0, BRLWE_N<<1);
 	print("Check point 0");
 	
 	mem_print();

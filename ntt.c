@@ -226,16 +226,12 @@ size_t long_mul(int *result, int *num1, size_t sz1, int *num2, size_t sz2) {
 		return 0;
 	}
 	else {
-		print("Check point 1");
-		mem_print();
 		int s = get_bin_len(sz1 + sz2 - 1);
 		int pr = fpow(PR, 1 << (PR_POW - s), P);
 		int ni = multiply(N_REV, 1 << (PR_POW - s), P);
 		int pri = fpow(pr, (1 << s) - 1, P);
 		s = 1 << s;
 		int *end = num1 + s;
-		print("Check point 2");
-		mem_print();
 		fft(num1, num1 + s, pr, P, result);//using result to be assist
 		fft(num2, num2 + s, pr, P, result);
 		while (num1 < end) {

@@ -283,12 +283,15 @@ BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const
 	uint32_t cycles_begin, cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
+	print("Check point 0");
 	int* inta = NULL;
 	inta = (int*)m_malloc(BRLWE_N<<4);
+	print("Check point 0");
 	memset(inta, 0, BRLWE_N<<4);
 	int s1 = 0;
 	s1 = get_int_poly(inta, a, BRLWE_N);
-
+	print("Check point 0");
+	
 	int* intb = NULL;
 	intb = (int*)m_malloc(BRLWE_N<<4);
 	memset(intb, 0, BRLWE_N<<4);

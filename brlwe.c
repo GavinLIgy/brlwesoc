@@ -46,7 +46,7 @@ BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 	for (i = 0; i < (BRLWE_N>>2) ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(poly+(i<<2)+j) = (uint8_t)str[j];
+			poly[(i<<2)+j] = (uint8_t)str[j];
 		};
 	};
 	m_free(str);
@@ -79,11 +79,11 @@ BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint8_t* str,
 	
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
-			*(poly+i) = (uint8_t)(str[BRLWE_N - 1 - i]  & (BRLWE_Q - 1));
+			poly[i] = (uint8_t)(str[BRLWE_N - 1 - i]  & (BRLWE_Q - 1));
 	}
 	else {
 		for (int i = 0; i < BRLWE_N; i++)
-			*(poly+i) = (uint8_t)(str[i]  & (BRLWE_Q - 1));
+			poly[i] = (uint8_t)(str[i] & (BRLWE_Q - 1));
 	}; 
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -125,7 +125,7 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(pk+(i<<2)+j) = ( (uint8_t)str[j] - *(pk+(i<<2)+j) ) & (BRLWE_Q-1);
+			pk[(i<<2)+j] = (uint8_t)((uint8_t)str[j] - pk[(i<<2)+j] ) & (BRLWE_Q-1);
 		};
 	};
 	m_free(str);
@@ -166,7 +166,7 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c1+(i<<2)+j) = ( *(c1+(i<<2)+j) + (uint8_t)str[j] ) & (BRLWE_Q-1) ;
+			c1[(i<<2)+j] = ( c1[(i<<2)+j] + (uint8_t)str[j] ) & (BRLWE_Q - 1);
 			//   c1     =      c1       +          e2    ;
 		};
 	};
@@ -174,11 +174,11 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			*(c2+(i<<2)+j) = ( *(c2+(i<<2)+j) + (uint8_t)str[j] ) & (BRLWE_Q - 1);// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
+			c2[(i<<2)+j] = ( c2[(i<<2)+j] + (uint8_t)str[j] ) & (BRLWE_Q - 1);// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
 			
 			if (m[(i<<2)+j] != 0)
-				*(c2+(i<<2)+j) = ( *(c2+(i<<2)+j) + (uint8_t)(BRLWE_Q >> 1) ) & (BRLWE_Q - 1);
-			*(c2+(i<<2)+j) = ( *(c2+(i<<2)+j) + BRLWE_Q + (BRLWE_N >> 1) - 1 - (i<<2) - j ) & (BRLWE_Q - 1);
+				c2[(i<<2)+j] = ( c2[(i<<2)+j] + (uint8_t)(BRLWE_Q >> 1) ) & (BRLWE_Q - 1);
+			c2[(i<<2)+j] = ( c2[(i<<2)+j] + BRLWE_Q + (BRLWE_N >> 1) - 1 - ( i << 2 ) - j ) & (BRLWE_Q - 1);
 			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};
@@ -205,8 +205,8 @@ uint8_t* BRLWE_Decry(const BRLWE_Ring_polynomials2 cryptom, const BRLWE_Ring_pol
 //Decode polynomial m_wave into string m
 uint8_t* BRLWE_Decode(uint8_t* recoverm) {
 	int i = 0;
-	uint8_t low_th = BRLWE_Q >> 2;
-	uint8_t hig_th = (BRLWE_Q + BRLWE_Q<<1) >> 2;
+	int low_th = BRLWE_Q >> 2;
+	int hig_th = (BRLWE_Q + BRLWE_Q << 1) >> 2;
 	for (i = 0; i < BRLWE_N; i++) {
 		if (recoverm[i] > low_th && recoverm[i] < hig_th)
 			recoverm[i] = (uint8_t)1;

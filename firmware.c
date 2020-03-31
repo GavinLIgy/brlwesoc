@@ -557,7 +557,7 @@ void getrandom_binary(uint8_t* str)
 			tmp = reg_rng_data;
 		}// if RNG is not ready(tmp=0xffff_ffff), wait.
 	for (i = 0; i < 4; i++)	{
-			str[i]=(tmp >> 24) & 1;
+			str[i]=(uint8_t)((tmp >> 24) & 1);
 			tmp = tmp << 8;
 		}//for uint32_t hex to uint8_t[4]
 	/*
@@ -623,7 +623,11 @@ void main()
 	
 	reg_leds = 127;//=0x7f=8'b0111_1111
 	while (getchar_prompt("Press ENTER to continue..\n") != '\r') {  /* wait */ };	
-
+	
+	print("Booting..\n");
+	mem_init();
+	mem_print();
+	
 	//RNG Testing
 	uint32_t cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -639,7 +643,7 @@ void main()
 	
 	reg_leds = 0x00;
 	print("\nRNG Testing Progress : \n");
-	while (count_loop < 500000) {  
+	while (count_loop < 5000) {  
 		getrandom_binary(str);
 		for (i = 0; i < 4 ; i++){
 			//print("\nstr[");print_dec(i);print("] =");print_hex(str[i],2);
@@ -647,7 +651,7 @@ void main()
 			if (str[i] == (uint8_t)0x01) count_1++;
 		};
 		count_loop++;
-		print("\r");print_dec(count_loop);print(" Of 500000");
+		print("\r");print_dec(count_loop);print(" Of 5000");
 		if ((count_0 > 0xFFFFFFF0UL) || (count_1 > 0xFFFFFFF0UL)) break;
 	};
 	reg_leds = 0xff;
@@ -659,9 +663,6 @@ void main()
 	
 	//test: memory allocate testing & RNG initialization
 	
-	print("Booting..\n");
-	mem_init();
-	mem_print();
 	// uint32_t cycles_now;
 	// __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	// RNG_seed(cycles_now);

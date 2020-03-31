@@ -115,7 +115,7 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	BRLWE_Ring_polynomials sk = key+BRLWE_N;//secret key
 	
 	sk = BRLWE_init_bin_sampling(sk);
-	pk = Simple_Ring_mul(a, sk, pk);
+	pk = Simple_Ring_mul_NTT(a, sk, pk);
 	
 	int i = 0;
 	int j = 0;
@@ -148,8 +148,8 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	
 	e1 = BRLWE_init_bin_sampling(e1);
 	
-	c1 = Simple_Ring_mul(a, e1, c1);//c1 = a*e1
-	c2 = Simple_Ring_mul(pk, e1, c2);//c2 = pk*e1
+	c1 = Simple_Ring_mul_NTT(a, e1, c1);//c1 = a*e1
+	c2 = Simple_Ring_mul_NTT(pk, e1, c2);//c2 = pk*e1
 	
 	m_free(e1);
 	
@@ -195,7 +195,7 @@ uint8_t* BRLWE_Decry(const BRLWE_Ring_polynomials2 cryptom, const BRLWE_Ring_pol
 		BRLWE_Ring_polynomials c1 = cryptom;//crypto message 1
 	BRLWE_Ring_polynomials c2 = cryptom + BRLWE_N;//crypto message 2
 	
-	recoverm = Simple_Ring_mul(c1, r2, (BRLWE_Ring_polynomials)recoverm);//recoverm = c1*r2
+	recoverm = Simple_Ring_mul_NTT(c1, r2, (BRLWE_Ring_polynomials)recoverm);//recoverm = c1*r2
 	recoverm = Ring_add((BRLWE_Ring_polynomials)recoverm, c2, (BRLWE_Ring_polynomials)recoverm);//recoverm = recoverm + c2
 	
 	return BRLWE_Decode(recoverm);

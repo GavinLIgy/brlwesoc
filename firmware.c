@@ -700,30 +700,21 @@ void main()
 	
 	uint8_t* n = NULL;
 	n = m_malloc(BRLWE_N);
-	print("\nMath-operation subfunctions:\r\n");
+	print("\n \nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
-	phex(Ring_add(test_1, test_2, n));
+	n = Ring_add(test_1, test_2, n)；
+	phex(n);
 	print("test1 - test2 = \n");
-	phex(Ring_sub(test_1, test_2, n));
+	n = Ring_sub(test_1, test_2, n);
+	phex(n);
 	print("test1 * test2 = \n");
-	phex(Simple_Ring_mul(test_1, test_2, n));
-	
-	
-	uint8_t* a = NULL;
-	a = m_malloc(BRLWE_N);
-	a = memcpy(a, test_1, BRLWE_N);
-	
-	uint8_t* b = NULL;
-	b = m_malloc(BRLWE_N);
-	b = memcpy(b, test_2, BRLWE_N);
-	
-	phex(Simple_Ring_mul_NTT(test_1, test_2, n));
+	n = Simple_Ring_mul(test_1, test_2, n);
+	phex(n);
+	print("NTT: test1 * test2 = \n");
+	n = Simple_Ring_mul_NTT(test_1, test_2, n)
+	phex(n);
 		
-	mem_print();
 	m_free(n);
-	m_free(a);
-	m_free(b);
-	mem_print();
 
 	//Test : Timing test: Table plot 
 	//print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
@@ -737,15 +728,15 @@ void main()
 	
 	BRLWE_Ring_polynomials2 key = NULL;
 	key = m_malloc(BRLWE_N * 2);
-	print("\n mem_print() 1 \n");
-	mem_print();
+	// print("\n mem_print() 1 \n");
+	// mem_print();
 	print("\n \nKey Generation:\n");
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Key Generation = ");print_dec(cycles_now - cycles_begin);
-	mem_print();
+	// mem_print();
 	print("\npublic key = \n");
 	phex(key);
 	print("\nsecret key = \n");
@@ -771,7 +762,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Encryption = ");print_dec(cycles_now - cycles_begin);
-	mem_print();
+	// mem_print();
 	print("\nsecret message 1 = \n");
 	phex(cryptom);
 	print("\nsecret message 2 = \n");
@@ -796,7 +787,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);
 	print("\n Cycles Number for Decryption = ");print_dec(cycles_now - cycles_begin);
-	mem_print();
+	// mem_print();
 	print("\noriginal message = \n");
 	phex(test_2);
 

@@ -702,7 +702,7 @@ void main()
 	n = m_malloc(BRLWE_N);
 	print("\n \nMath-operation subfunctions:\r\n");
 	print("test1 + test2 = \n");
-	n = Ring_add(test_1, test_2, n)；
+	n = Ring_add(test_1, test_2, n);
 	phex(n);
 	print("test1 - test2 = \n");
 	n = Ring_sub(test_1, test_2, n);
@@ -711,7 +711,7 @@ void main()
 	n = Simple_Ring_mul(test_1, test_2, n);
 	phex(n);
 	print("NTT: test1 * test2 = \n");
-	n = Simple_Ring_mul_NTT(test_1, test_2, n)
+	n = Simple_Ring_mul_NTT(test_1, test_2, n);
 	phex(n);
 		
 	m_free(n);

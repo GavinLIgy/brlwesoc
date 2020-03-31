@@ -633,6 +633,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	setseed32(cycles_now);
 	
+	/*
 	uint32_t count_1 = 0;
 	uint32_t count_0 = 0;
 	
@@ -660,6 +661,7 @@ void main()
 	print("Count 0 = ");print_dec(count_0);
 	print("\nCount 1 = ");print_dec(count_1);
 	print("\nEnd of RNG testing");
+	*/
 	
 	//test: memory allocate testing & RNG initialization
 	
@@ -723,7 +725,7 @@ void main()
 	//print("\n| ");print_dec(i);
 	
 	//test: Key Generation step
-	
+	/*
 	uint32_t cycles_begin;
 	
 	BRLWE_Ring_polynomials2 key = NULL;
@@ -811,7 +813,7 @@ void main()
 	m_free(cryptom);
 	m_free(recoverm);
 	mem_print();
-	
+	*/
 	//}
 	//mem_print();
 	

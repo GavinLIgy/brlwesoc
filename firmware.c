@@ -712,6 +712,8 @@ void main()
 	print("test1 * test2 = \n");
 	n = Simple_Ring_mul(test_1, test_2, n);
 	phex(n);
+	mem_print();
+	
 	print("NTT: test1 * test2 = \n");
 	n = Simple_Ring_mul_NTT(test_1, test_2, n);
 	phex(n);

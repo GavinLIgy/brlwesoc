@@ -21,9 +21,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "brlwe.h"
 #include "params.h"
 #include "alloc.c"
+#include "ntt.c"
+#include "brlwe.c"
 
 #define alloc_printf  print
 

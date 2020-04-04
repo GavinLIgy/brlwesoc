@@ -731,7 +731,7 @@ void main()
 	key = m_malloc(BRLWE_N * 2);
 	// print("\n mem_print() 1 \n");
 	// mem_print();
-	print("\n \nKey Generation:\n");
+	// print("\n \nKey Generation:\n");
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -793,7 +793,7 @@ void main()
 	// phex(test_2);
 
 	// print("\nrecovered message = \n");
-	phex(recoverm);
+	// phex(recoverm);
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 

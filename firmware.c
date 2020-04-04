@@ -629,7 +629,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	setseed32(cycles_now);
 	
-	/*
+	
 	uint32_t count_1 = 0;
 	uint32_t count_0 = 0;
 	
@@ -657,7 +657,7 @@ void main()
 	print("Count 0 = ");print_dec(count_0);
 	print("\nCount 1 = ");print_dec(count_1);
 	print("\nEnd of RNG testing");
-	*/
+	
 	
 	//test: memory allocate testing & RNG initialization
 	
@@ -720,7 +720,7 @@ void main()
 	//Test : Timing test: Table plot 
 	print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
 	
-	for (int i = 1; i <= 50; i++){
+	for (int i = 1; i <= 3; i++){
 	print("\n| ");print_dec(i);
 	
 	//test: Key Generation step
@@ -735,7 +735,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	key = BRLWE_Key_Gen((BRLWE_Ring_polynomials) test_1, key);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);
+	print("\t|* ");print_dec(cycles_now - cycles_begin);
 	// print("\n Cycles Number for Key Generation = ");print_dec(cycles_now - cycles_begin);
 	// mem_print();
 	// print("\npublic key = \n");
@@ -761,7 +761,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);
+	print("\t|* ");print_dec(cycles_now - cycles_begin);
 	// print("\n Cycles Number for Encryption = ");print_dec(cycles_now - cycles_begin);
 	// mem_print();
 	// print("\nsecret message 1 = \n");
@@ -786,7 +786,7 @@ void main()
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-	print("\t| ");print_dec(cycles_now - cycles_begin);
+	print("\t|* ");print_dec(cycles_now - cycles_begin);
 	// print("\n Cycles Number for Decryption = ");print_dec(cycles_now - cycles_begin);
 	// mem_print();
 	// print("\noriginal message = \n");

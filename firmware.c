@@ -718,7 +718,7 @@ void main()
 	*/
 	
 	//Test : Timing test: Table plot 
-	print("\n| I \t| bin_sampling \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| Ring_mul \t| *Encryp \t| Ring_mul \t| Ring_add \t| *Decryp \t| Result Check \t");
+	print("\n| I \t| bin_sampling \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| Ring_mul_1 \t| Ring_mul_2 \t| *Encryp \t| Ring_mul \t| Ring_add \t| *Decryp \t| Result Check \t");
 	
 	for (int i = 1; i <= 3; i++){
 	print("\n| ");print_dec(i);

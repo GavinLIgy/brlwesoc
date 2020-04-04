@@ -23,7 +23,7 @@
 
 #include "brlwe.h"
 #include "params.h"
-#include "alloc.h"
+#include "alloc.c"
 
 #define alloc_printf  print
 

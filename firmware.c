@@ -21,14 +21,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-//#include "alloc.h"
-//#include "alloc.c"
-
-//#include "brlwe.h"
-#include "brlwe.c"
-
-//#include "ntt.h"
-//#include "ntt.c"
+#include "brlwe.h"
+#include "params.h"
 
 #define alloc_printf  print
 
@@ -699,7 +693,7 @@ void main()
 	*/
 	
 	//test: Math-operation subfunctions
-	
+	/*
 	uint8_t* n = NULL;
 	n = m_malloc(BRLWE_N);
 	print("\n \nMath-operation subfunctions:\r\n");
@@ -719,7 +713,8 @@ void main()
 	phex(n);
 		
 	m_free(n);
-
+	*/
+	
 	//Test : Timing test: Table plot 
 	//print("\n| I \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| *Key_Gen \t| bin_sampling \t| BRLWE_init \t| Ring_mul \t| BRLWE_init \t| Simple_Ring_mul \t| *Encryp \t| BRLWE_init \t| Simple_Ring_mul \t| Ring_add \t| Decryp \t| Result Check \t");
 	
@@ -727,7 +722,7 @@ void main()
 	//print("\n| ");print_dec(i);
 	
 	//test: Key Generation step
-	/*
+	
 	uint32_t cycles_begin;
 	
 	BRLWE_Ring_polynomials2 key = NULL;
@@ -815,7 +810,7 @@ void main()
 	m_free(cryptom);
 	m_free(recoverm);
 	mem_print();
-	*/
+	
 	//}
 	//mem_print();
 	

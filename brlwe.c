@@ -12,11 +12,8 @@ BRLWE scheme consists of three main phases: key generation, encryption, and decr
 /*****************************************************************************/
 #include <stdint.h>
 #include <stdlib.h>
-#include "brlwe.h"
-// #include "alloc.h"
-// #include "alloc.c"
-//#include "ntt.h"
-//#include "ntt.c"
+
+#include "ntt.h"
 
 /*****************************************************************************/
 /* Definition:                                                        */
@@ -283,33 +280,75 @@ BRLWE_Ring_polynomials Simple_Ring_mul_NTT(const BRLWE_Ring_polynomials a, const
 	uint32_t cycles_begin, cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	
-	int* inta = NULL;
-	inta = (int*)m_malloc(BRLWE_N<<1);
-	memset(inta, 0, BRLWE_N<<1);
-	int s1 = 0;
-	s1 = get_int_poly(inta, a, BRLWE_N);
-	
-	int* intb = NULL;
-	intb = (int*)m_malloc(BRLWE_N<<1);
-	memset(intb, 0, BRLWE_N<<1);
-	int s2 = 0;
-	s2 = get_int_poly(intb, b, BRLWE_N);
+	int16_t* f0 = NULL;
+	int16_t* f1 = NULL;
+	int16_t* g0 = NULL;
+	int16_t* g1 = NULL;
+	uint16_t* h0 = NULL;
+	uint16_t* h1 = NULL;
 
-	int* result = NULL;
-	result = (int*)m_malloc(BRLWE_N<<1);
-	memset(result, 0, BRLWE_N<<1);
-	
-	mem_print();
-	int rs = long_mul(result, inta, s1, intb, s2);
-	get_hex_poly(result, rs, ans, BRLWE_N, BRLWE_Q);
-	
-	mem_print();
-	m_free(inta);
-	m_free(intb);
-	m_free(result);
+	f0 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N);
+	f1 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N);
+	g0 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N);
+	g1 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N);
+	h0 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N);
+	h1 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N);
+
+	get_int16_half_polys(f0, a);
+	get_int16_half_polys(g0, b);
+	get_int16_half_polys(f1, a + (BRLWE_N >> 1));
+	get_int16_half_polys(g1, b + (BRLWE_N >> 1));
+
+	bitrev_vector_256(f0);
+	bitrev_vector_256(g0);
+	bitrev_vector_256(f1);
+	bitrev_vector_256(g1);
+
+	poly_add2(h0, g0, g1);
+	poly_add2(h1, f0, f1);
+
+	poly_ntt(f0);
+	poly_ntt(g0);
+	poly_ntt(f1);
+	poly_ntt(g1);
+	poly_ntt(h0);
+	poly_ntt(h1);
+
+	poly_mul_pointwise(g0, g0, f0);
+	poly_mul_pointwise(g1, g1, f1);
+	poly_mul_pointwise(h0, h0, h1);
+
+	free(f0);
+	free(f1);
+	free(h1);
+
+	poly_invntt(g0);
+	poly_invntt(h0);
+	poly_invntt(g1);
+
+	poly_sub3(h0, g0, g1, h0);
+
+	for (int i = 0; i < BRLWE_N << 1; i++) {
+		if (i < (BRLWE_N>>1)) {
+			ans[i] = (uint8_t)(g0[i] & (BRLWE_Q - 1));
+		}
+		else if (i < BRLWE_N) {
+			ans[i] = (uint8_t)(g0[i] + h0[i - (BRLWE_N >> 1)] & (BRLWE_Q - 1));
+		}
+		else if (i < (BRLWE_N + (BRLWE_N >> 1))) {
+			ans[i - BRLWE_N] = (uint8_t)(ans[i - BRLWE_N] + BRLWE_Q - h0[i - (BRLWE_N >> 1)] + BRLWE_Q - g1[i - BRLWE_N] & (BRLWE_Q - 1));
+		}
+		else {
+			ans[i - BRLWE_N] = (uint8_t)(ans[i - BRLWE_N] + BRLWE_Q - g1[i - BRLWE_N] & (BRLWE_Q - 1));
+		}
+	}
+
+	free(g0);
+	free(g1);
+	free(h0);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	//print("\t| ");print_dec(cycles_now - cycles_begin);print("*");
-	print("\n Cycles Number for Simple_Ring_mul = ");print_dec(cycles_now - cycles_begin);
+	print("\n Cycles Number for Simple_Ring_mul_NTT = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };

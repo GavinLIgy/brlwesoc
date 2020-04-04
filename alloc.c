@@ -27,7 +27,7 @@
 extern uint32_t _heap_start;
 
 #define MEM_START     (uint32_t)(& _heap_start)              	  	/*定义内存池的首地址*/
-#define MEM_END       0x00001000UL	        			/*定义内存池的尾地址*/
+#define MEM_END       0x00001500UL	        			/*定义内存池的尾地址*/
 
 #define MEM_SIZE         (MEM_END - MEM_START)             /*内存池的大小*/
   

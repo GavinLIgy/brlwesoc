@@ -60,7 +60,7 @@ static uint16_t coeff_freeze(uint16_t x)
 * Description: Contains powers of 256th root of unity in Montgomery
 *              domain with R=2^18 in bit-reversed order
 ************************************************************/
-uint16_t omegas_bitrev_montgomery[128] = {
+static const uint16_t omegas_bitrev_montgomery[128] = {
   990, 7427, 2634, 6819, 578, 3281, 2143, 1095, 484, 6362, 3336, 5382, 6086, 3823, 877, 5656,
   3583, 7010, 6414, 263, 1285, 291, 7143, 7338, 1581, 5134, 5184, 5932, 4042, 5775, 2468, 3,
   606, 729, 5383, 962, 3240, 7548, 5129, 7653, 5929, 4965, 2461, 641, 1584, 2666, 1142, 157,
@@ -77,7 +77,7 @@ uint16_t omegas_bitrev_montgomery[128] = {
 * Description: Contains inverses of powers of 256th root of unity
 *              in Montgomery domain with R=2^18 in bit-reversed order
 ************************************************************/
-uint16_t omegas_inv_bitrev_montgomery[128] = {
+static const uint16_t omegas_inv_bitrev_montgomery[128] = {
   990, 254, 862, 5047, 6586, 5538, 4400, 7103, 2025, 6804, 3858, 1595, 2299, 4345, 1319, 7197,
   7678, 5213, 1906, 3639, 1749, 2497, 2547, 6100, 343, 538, 7390, 6396, 7418, 1267, 671, 4098,
   5724, 491, 4146, 412, 4143, 5625, 2397, 5596, 6122, 2750, 2196, 1541, 2539, 2079, 2459, 274,
@@ -94,7 +94,7 @@ uint16_t omegas_inv_bitrev_montgomery[128] = {
 * Description: Contains powers of 256th root of -1 in Montgomery
 *              domain with R=2^18 in bit-reversed order
 ************************************************************/
-uint16_t psis_bitrev_montgomery[256] = {
+static const uint16_t psis_bitrev_montgomery[256] = {
   990, 7427, 2634, 6819, 578, 3281, 2143, 1095, 484, 6362, 3336, 5382, 6086, 3823, 877, 5656,
   3583, 7010, 6414, 263, 1285, 291, 7143, 7338, 1581, 5134, 5184, 5932, 4042, 5775, 2468, 3,
   606, 729, 5383, 962, 3240, 7548, 5129, 7653, 5929, 4965, 2461, 641, 1584, 2666, 1142, 157,
@@ -119,7 +119,7 @@ uint16_t psis_bitrev_montgomery[256] = {
 * Description: Contains inverses of powers of 256th  root of -1
 *              divided by n in Montgomery domain with R=2^18
 ************************************************************/
-uint16_t psis_inv_montgomery[256] = {
+static const uint16_t psis_inv_montgomery[256] = {
   1024, 4972, 5779, 6907, 4943, 4168,  315, 5580,   90,  497, 1123,  142, 4710, 5527, 2443, 4871,
    698, 2489, 2394, 4003,  684, 2241, 2390, 7224, 5072, 2064, 4741, 1687, 6841,  482, 7441, 1235,
   2126, 4742, 2802, 5744, 6287, 4933,  699, 3604, 1297, 2127, 5857, 1705, 3868, 3779, 4397, 2177,
@@ -138,7 +138,7 @@ uint16_t psis_inv_montgomery[256] = {
   6839, 5933, 1954, 4987, 7142, 5814, 7527, 4953, 7637, 4707, 2182, 5734, 2818,  541, 4097, 5641
 };
 
-static uint16_t bitrev_table_256[256] = {
+static const static uint16_t bitrev_table_256[256] = {
 0,128,64,192,32,160,96,224,16,144,80,208,48,176,112,240,
 	 8,136,72,200,40,168,104,232,24,152,88,216,56,184,120,248,
 	 4,132,68,196,36,164,100,228,20,148,84,212,52,180,116,244,

@@ -41,17 +41,646 @@ static uint16_t coeff_freeze(uint16_t x)
 {
 	uint16_t m, r;
 	int16_t c;
-	r = x & (BRLWE_Q - 1);
+	r = x % NTT_Q;
 
-	m = r - BRLWE_Q;
+	m = r - NTT_Q;
 	c = m;
 	c >>= 15;
 	r = m ^ ((r^m)&c);
 
 	return r;
 }
+#if (BRLWE_N == 128)
 
-#if (BRLWE_N == 256)
+#if (My_NTT == 1)
+
+#elif (PtNTT == 1)	
+	
+/************************************************************
+* Name:        omegas_bitrev_montgomery
+*
+* Description: Contains powers of 64th root of unity in Montgomery
+*              domain with R=2^18 in bit-reversed order
+************************************************************/
+static uint16_t omegas_bitrev_montgomery_64[32] = { \
+990, 254, 6819, 2634, 2143, 6586, 7103, 3281,\
+6086, 3858, 5656, 877, 6362, 484, 4345, 5382,\
+1581, 2547, 5932, 5184, 2468, 7678, 3639, 5775,\
+6414, 7418, 4098, 7010, 291, 1285, 538, 7338 };
+
+/************************************************************
+* Name:        omegas_inv_bitrev_montgomery
+*
+* Description: Contains inverses of powers of 64th root of unity
+*              in Montgomery domain with R=2^18 in bit-reversed order
+************************************************************/
+static uint16_t omegas_inv_bitrev_montgomery_64[32] = { \
+990, 7427, 5047, 862, 4400, 578, 1095, 5538,\
+2299, 3336, 7197, 1319, 6804, 2025, 3823, 1595,\
+343, 7143, 6396, 7390, 671, 3583, 263, 1267,\
+1906, 4042, 3, 5213, 2497, 1749, 5134, 6100 };
+
+/************************************************************
+* Name:        psis_bitrev_montgomery
+*
+* Description: Contains powers of 64th root of -1 in Montgomery
+*              domain with R=2^18 in bit-reversed order
+************************************************************/
+static uint16_t psis_bitrev_montgomery_64[64] = { \
+990, 254, 6819, 2634, 2143, 6586, 7103, 3281,\
+6086, 3858, 5656, 877, 6362, 484, 4345, 5382,\
+1581, 2547, 5932, 5184, 2468, 7678, 3639, 5775,\
+6414, 7418, 4098, 7010, 291, 1285, 538, 7338,\
+274, 5222, 2539, 2079, 2750, 1559, 6140, 2196,\
+412, 3535, 5724, 491, 2397, 5596, 2056, 4143,\
+4441, 7548, 28, 2552, 6952, 7075, 5383, 6719,\
+5220, 641, 5929, 2716, 5015, 6097, 1142, 7524 };
+
+
+/************************************************************
+* Name:         psis_inv_montgomery
+*
+* Description: Contains inverses of powers of 64th  root of -1
+*              divided by n in Montgomery domain with R=2^18
+************************************************************/
+static uint16_t psis_inv_montgomery_64[64] = { \
+4096, 4203, 4926, 5576, 636, 7456, 1710, 2366,\
+1989, 3318, 3971, 5153, 5387, 6681, 7600, 3688, \
+1159, 1945, 580, 3273, 4313, 4090, 7321, 2736, \
+6858, 110, 6845, 1745, 2100, 7083, 6081, 4479, \
+7437, 6463, 3112, 928, 6773, 756, 6544, 7105, \
+7450, 4828, 176, 3271, 2792, 3360, 5188, 5121, \
+4094, 2682, 4196, 3443, 3021, 4692, 4282, 7398, \
+3687, 4239, 1580, 3354, 625, 2931, 5376, 2156 };
+
+/************************************************************
+* Name:        bitrev_table
+*
+* Description: Contains bit-reversed 10-bit indices to be used to re-order
+*              polynomials before number theoratic transform
+************************************************************/
+static uint16_t bitrev_table_64[64] = { \
+0,	32,	16,	48,	8,	40,	24,	56,	4,	36,	20,	52,\
+12,	44,	28,	60,	2,	34,	18,	50,	10,	42,	26,	58,\
+6,	38,	22,	54,	14,	46,	30,	62,	1,	33,	17,	49,\
+9,	41,	25,	57,	5,	37,	21,	53,	13,	45,	29,	61,\
+3,	35,	19,	51,	11,	43,	27,	59,	7,	39,	23,	55,\
+15,	47,	31,	63 };
+
+/*************************************************
+* Name:        bitrev_vector
+*
+* Description: Permutes coefficients of a polynomial into bitreversed order
+*
+* Arguments:   - uint16_t* poly: pointer to in/output polynomial
+**************************************************/
+void bitrev_vector_64(uint16_t* poly)
+{
+	unsigned int i, r;
+	uint16_t tmp;
+
+	for (i = 0; i < 64; i++)
+	{
+		r = bitrev_table_64[i];
+		if (i < r)
+		{
+			tmp = poly[i];
+			poly[i] = poly[r];
+			poly[r] = tmp;
+		}
+	}
+}
+
+/*************************************************
+* Name:        get_int16_polys
+*
+* Description: spliting function from 1 uint8_t[n] to uint16_t[n/2].
+*
+* Arguments:    - uint16_t *arr : The pointer to output uint16_t array. No need to be memset(0) before.
+*				- uint8_t *poly : The pointer to input uint8_t polynomial.
+*
+* Returns:     None
+**************************************************/
+void get_int16_polys(uint16_t *arr, uint16_t *poly) {
+	for (int j = 0; j < BRLWE_N * 2; j++) {
+		if (j < BRLWE_N) arr[j] = (uint16_t)poly[j];
+		else arr[j] = 0;
+	}
+
+};
+
+/*************************************************
+* Name:        mul_coefficients
+*
+* Description: Performs pointwise (coefficient-wise) multiplication
+*              of two polynomials
+* Arguments:   - uint16_t* poly:          pointer to in/output polynomial
+*              - const uint16_t* factors: pointer to input polynomial, coefficients
+*                                         are assumed to be in Montgomery representation
+**************************************************/
+void mul_coefficients_64(uint16_t* poly, const uint16_t* factors)
+{
+	unsigned int i;
+
+	for (i = 0; i < 64; i++)
+		poly[i] = montgomery_reduce((poly[i] * factors[i]));
+}
+
+/*************************************************
+* Name:        ntt_64
+*
+* Description: Computes number-theoretic transform (NTT) of
+*              a polynomial in place; inputs assumed to be in
+*              bitreversed order, output in normal order
+*
+* Arguments:   - uint16_t * a:          pointer to in/output polynomial
+*              - const uint16_t* omega: pointer to input powers of root of unity omega;
+*                                       assumed to be in Montgomery domain
+**************************************************/
+void ntt_64(uint16_t * a, const uint16_t* omega)
+{
+	int i, start, j, jTwiddle, distance;
+	uint16_t temp, W;
+
+
+	for (i = 0; i < 6; i += 2) // 1<<6 = 64 
+	{
+		// Even level
+		distance = (1 << i);
+		for (start = 0; start < distance; start++)
+		{
+			jTwiddle = 0;
+			for (j = start; j < 63; j += 2 * distance)
+			{
+				W = omega[jTwiddle++];
+				temp = a[j];
+				a[j] = (temp + a[j + distance]); // Omit reduction (be lazy)
+				a[j + distance] = montgomery_reduce((W * ((uint32_t)temp + 3 * 7681 - a[j + distance])));
+			}
+		}
+		if (i + 1 < 6) { // 1<<6 = 64 
+			// Odd level
+			distance <<= 1;
+			for (start = 0; start < distance; start++)
+			{
+				jTwiddle = 0;
+				for (j = start; j < 63; j += 2 * distance)
+				{
+					W = omega[jTwiddle++];
+					temp = a[j];
+					a[j] = (temp + a[j + distance]) % 7681;
+					a[j + distance] = montgomery_reduce((W * ((uint32_t)temp + 3 * 7681 - a[j + distance])));
+				}
+			}
+		}
+	}
+}
+
+/*************************************************
+* Name:        poly_pointwise
+*
+* Description: Multiply two polynomials pointwise (i.e., coefficient-wise).
+*
+* Arguments:   - poly *r:       pointer to output polynomial
+*              - const poly *a: pointer to first input polynomial
+*              - const poly *b: pointer to second input polynomial
+**************************************************/
+void poly_quarter_mul_pointwise(uint16_t *r, const uint16_t *a, const uint16_t *b)
+{
+	int i;
+	uint16_t t;
+	for (i = 0; i < 64; i++)
+	{
+		t = montgomery_reduce(4613 * b[i]); /* t is now in Montgomery domain */
+		r[i] = montgomery_reduce(a[i] * t);  /* r->coeffs[i] is back in normal domain */
+	}
+}
+/*************************************************
+* Name:        poly_add
+*
+* Description: Add two polynomials
+*
+* Arguments:   - poly *r:       pointer to output polynomial
+*              - const poly *a: pointer to first input polynomial
+*              - const poly *b: pointer to second input polynomial
+**************************************************/
+void poly_add(uint16_t *r, const uint16_t *a, const uint16_t *b)
+{
+	int i;
+	for (i = 0; i < 256; i++)
+		r[i] = (a[i] + b[i]) % NTT_Q;
+}
+/*************************************************
+* Name:        poly_quarter_add
+*
+* Description: Add four polynomials
+*
+* Arguments:   - poly *r:       pointer to output polynomial
+*              - const poly *a: pointer to first input polynomial
+*              - const poly *b: pointer to second input polynomial
+*              - const poly *c: pointer to third input polynomial
+*              - const poly *d: pointer to forth input polynomial
+**************************************************/
+void poly_quarter_add(uint16_t *r, const uint16_t *a, const uint16_t *b, const uint16_t *c, const uint16_t *d)
+{
+	int i;
+	for (i = 0; i < 64; i++)
+		r[i] = (a[i] + b[i] + c[i] + d[i]) % NTT_Q;
+}
+/*************************************************
+* Name:        poly_sub
+*
+* Description: Subtract two polynomials
+*
+* Arguments:   - poly *r:       pointer to output polynomial
+*              - const poly *a: pointer to first input polynomial
+*              - const poly *b: pointer to second input polynomial
+**************************************************/
+void poly_sub(uint16_t *r, const uint16_t *a, const uint16_t *b)
+{
+	int i;
+	for (i = 0; i < 256; i++)
+		r[i] = (a[i] + 4 * NTT_Q - b[i]) % NTT_Q;
+}
+
+/*************************************************
+* Name:        poly_equal
+*
+* Description: Determine if two polynomials are equal
+*              Input are two polynomials
+*              Output is 0 or 1
+*
+* Arguments:   - poly *f: pointer to input polynomial
+			   - poly *g: pointer to input polynomial
+**************************************************/
+int poly_equal(uint16_t *f, uint16_t *g)
+{
+	int i;
+	for (i = 0; i < 256; i++)
+	{
+		if (f[i] != g[i])
+			return 0;
+		return 1;
+	}
+}
+/*************************************************
+* Name:        print_poly
+*
+* Description: Print the coefficents of a polynomial
+*              Input is a polynomial
+*
+* Arguments:   - poly *p: pointer to input polynomial
+**************************************************/
+int print_poly(uint16_t *p)
+{
+	int i;
+	for (i = 0; i < 256; i++)
+	{
+		printf("%d,", p[i]);
+	}
+	printf("\n");
+	return 1;
+}
+/*************************************************
+* Name:        split_poly
+*
+* Description: Split the poly (polynomial with N coefficients) into four poly_quarter (polynomial with N/4 coefficients)
+			   according to the index
+*              Input are a polynomial with N coefficients
+*              Output are four polynomials with N/4 coefficients
+*
+* Arguments:   - poly *f: pointer to input polynomial
+			   - poly_quarter *f00: pointer to output polynomial
+			   - poly_quarter *f01: pointer to output polynomial
+			   - poly_quarter *f10: pointer to output polynomial
+			   - poly_quarter *f11: pointer to output polynomial
+**************************************************/
+int split_poly(uint16_t *f, struct ptpoly4 poly)
+{
+	int i;
+	for (i = 0; i < 64; i++)
+	{
+		poly.poly00[i] = f[4 * i];
+		poly.poly10[i] = f[4 * i + 1];
+		poly.poly01[i] = f[4 * i + 2];
+		poly.poly11[i] = f[4 * i + 3];
+	}
+	return 1;
+}
+/*************************************************
+* Name:        shift_poly
+*
+* Description: Rotate the polynomial one bit right
+*              Input is a polynomial
+*              Output is a polynomial
+*
+* Arguments:   - poly *g: pointer to input polynomial
+			   - poly *f: pointer to output polynomial
+
+**************************************************/
+int shift_poly(uint16_t *f, uint16_t *g)
+{
+	int i;
+	//coefficients in polynomials of Kyber < q = 3329 which need 2 bytes
+	for (i = 1; i < 64; i++)
+	{
+		f[64 - i] = g[64 - i - 1];
+	}
+	f[0] = NTT_Q - (g[63] % NTT_Q);
+
+	return 1;
+}
+/*************************************************
+* Name:        recover_poly
+*
+* Description: Recover the poly (polynomial with N coefficients) from four poly_quarter (polynomial with N/4 coefficients)
+			   according to the index
+*              Input are four polynomials with N/4 coefficients
+*              Output is a polynomial with N coefficients
+*
+* Arguments:   - poly *f: pointer to output polynomial
+			   - poly_quarter *f00: pointer to input polynomial
+			   - poly_quarter *f01: pointer to input polynomial
+			   - poly_quarter *f10: pointer to input polynomial
+			   - poly_quarter *f11: pointer to input polynomial
+**************************************************/
+int recover_poly(uint16_t *f, struct ptpoly4 poly)
+{
+	int i;
+	for (i = 0; i < 64; i++)
+	{
+		f[4 * i] = poly.poly00[i];
+		f[4 * i + 1] = poly.poly10[i];
+		f[4 * i + 2] = poly.poly01[i];
+		f[4 * i + 3] = poly.poly11[i];
+	}
+	return 1;
+}
+
+/*************************************************
+* Name:        poly_ntt
+*
+* Description: Forward NTT transform of a polynomial in place
+*              Input is assumed to have coefficients in bitreversed order
+*              Output has coefficients in normal order
+*
+* Arguments:   - poly *r: pointer to in/output polynomial
+**************************************************/
+void poly_ntt_64(uint16_t *r)
+{
+	mul_coefficients_64(r, psis_bitrev_montgomery_64);
+	ntt_64(r, omegas_bitrev_montgomery_64);
+}
+
+
+/*************************************************
+* Name:        poly_invntt_128
+*
+* Description: Inverse NTT transform of a polynomial in place
+*              Input is assumed to have coefficients in normal order
+*              Output has coefficients in normal order
+*
+* Arguments:   - poly *r: pointer to in/output polynomial
+**************************************************/
+void poly_invntt_64(uint16_t *r)
+{
+	bitrev_vector_64(r);
+	ntt_64((uint16_t *)r, omegas_inv_bitrev_montgomery_64);
+	mul_coefficients_64(r, psis_inv_montgomery_64);
+	for (int i = 0; i < 63; i++)
+	{
+		r[i] = coeff_freeze(r[i]);
+	}
+	
+}
+
+void poly_pt_ntt4(uint16_t *p, struct ptpoly4 poly)
+{
+	split_poly(p, poly);
+
+	bitrev_vector_64(poly.poly00);
+	bitrev_vector_64(poly.poly10);
+	bitrev_vector_64(poly.poly01);
+	bitrev_vector_64(poly.poly11);
+
+	poly_ntt_64(poly.poly00);
+	poly_ntt_64(poly.poly10);
+	poly_ntt_64(poly.poly01);
+	poly_ntt_64(poly.poly11);
+}
+
+void poly_pt_ntt7(uint16_t *p, struct ptpoly7 poly)
+{
+	split_poly(p, poly.poly4);
+	shift_poly(poly.poly10_s, poly.poly4.poly10);
+	shift_poly(poly.poly01_s, poly.poly4.poly01);
+	shift_poly(poly.poly11_s, poly.poly4.poly11);
+
+	bitrev_vector_64(poly.poly4.poly00);
+	bitrev_vector_64(poly.poly4.poly10);
+	bitrev_vector_64(poly.poly4.poly01);
+	bitrev_vector_64(poly.poly4.poly11);
+
+	poly_ntt_64(poly.poly4.poly00);
+	poly_ntt_64(poly.poly4.poly10);
+	poly_ntt_64(poly.poly4.poly01);
+	poly_ntt_64(poly.poly4.poly11);
+
+	bitrev_vector_64(poly.poly01_s);
+	bitrev_vector_64(poly.poly10_s);
+	bitrev_vector_64(poly.poly11_s);
+
+	poly_ntt_64(poly.poly01_s);
+	poly_ntt_64(poly.poly10_s);
+	poly_ntt_64(poly.poly11_s);
+}
+
+void pt_ntt_bowtiemultiply(uint16_t *b, struct ptpoly4 f, struct ptpoly7 g)
+{
+	/*
+	uint16_t* f00 = NULL;
+	uint16_t* f01 = NULL;
+	uint16_t* f10 = NULL;
+	uint16_t* f11 = NULL;
+	uint16_t* b00 = NULL;
+	uint16_t* b10 = NULL;
+	uint16_t* b01 = NULL;
+	uint16_t* b11 = NULL; 
+	uint16_t* temp0 = NULL;
+	uint16_t* temp1 = NULL;
+	uint16_t* temp2 = NULL; 
+	uint16_t* temp3 = NULL;
+
+	f00 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	f01 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	f10 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	f11 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	b00 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	b01 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	b10 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	b11 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	temp0 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	temp1 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	temp2 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	temp3 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+
+	split_poly(f, f00, f01, f10, f11);
+	// split_poly(g, &g00, &g01, &g10, &g11);
+
+	poly_quarter_mul_pointwise(temp0, f00, g00);
+	poly_quarter_mul_pointwise(temp1, f01, g01_s);
+	poly_quarter_mul_pointwise(temp2, f10, g11_s);
+	poly_quarter_mul_pointwise(temp3, f11, g10_s);
+	poly_quarter_add(b00, temp0, temp1, temp2, temp3);
+
+	poly_quarter_mul_pointwise(temp0, f00, g10);
+	poly_quarter_mul_pointwise(temp1, f01, g11_s);
+	poly_quarter_mul_pointwise(temp2, f10, g00);
+	poly_quarter_mul_pointwise(temp3, f11, g01_s);
+	poly_quarter_add(b10, temp0, temp1, temp2, temp3);
+
+	poly_quarter_mul_pointwise(temp0, f00, g01);
+	poly_quarter_mul_pointwise(temp1, f01, g00);
+	poly_quarter_mul_pointwise(temp2, f10, g10);
+	poly_quarter_mul_pointwise(temp3, f11, g11_s);
+	poly_quarter_add(b01, temp0, temp1, temp2, temp3);
+
+	poly_quarter_mul_pointwise(temp0, f00, g11);
+	poly_quarter_mul_pointwise(temp1, f01, g10);
+	poly_quarter_mul_pointwise(temp2, f10, g01);
+	poly_quarter_mul_pointwise(temp3, f11, g00);
+	poly_quarter_add(b11, temp0, temp1, temp2, temp3);
+
+	recover_poly(b, b00, b01, b10, b11);
+
+
+
+	free(f00);
+	free(f01);
+	free(f10);
+	free(f11);
+	free(b00);
+	free(b01);
+	free(b10);
+	free(b11);
+	free(temp0);
+	free(temp1);
+	free(temp2);
+	free(temp3);*/
+
+	/*uint16_t* f00 = NULL;
+	uint16_t* f01 = NULL;
+	uint16_t* f10 = NULL;
+	uint16_t* f11 = NULL;
+
+	f00 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	f01 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	f10 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	f11 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+
+	split_poly(f, f00, f01, f10, f11);*/
+
+	int i;
+	uint32_t t1, t2, t3, t4;
+	for (i = 0; i < 64; i++)
+	{
+		/*poly_quarter_mul_pointwise(temp0, f00, g00);
+		poly_quarter_mul_pointwise(temp1, f01, g01_s);
+		poly_quarter_mul_pointwise(temp2, f10, g11_s);
+		poly_quarter_mul_pointwise(temp3, f11, g10_s);
+		poly_quarter_add(b00, temp0, temp1, temp2, temp3);*/
+
+		t1 = montgomery_reduce(4613 * f.poly00[i]);
+		t1 = montgomery_reduce(g.poly4.poly00[i] * t1); 
+		t2 = montgomery_reduce(4613 * f.poly01[i]); 
+		t2 = montgomery_reduce(g.poly01_s[i] * t2); 
+		t3 = montgomery_reduce(4613 * f.poly10[i]); 
+		t3 = montgomery_reduce(g.poly11_s[i] * t3); 
+		t4 = montgomery_reduce(4613 * f.poly11[i]); 
+		t4 = montgomery_reduce(g.poly10_s[i] * t4);
+		b[4 * i] = (t1 + t2 + t3 + t4) % NTT_Q;
+
+		/*poly_quarter_mul_pointwise(temp0, f00, g10);
+		poly_quarter_mul_pointwise(temp1, f01, g11_s);
+		poly_quarter_mul_pointwise(temp2, f10, g00);
+		poly_quarter_mul_pointwise(temp3, f11, g01_s);
+		poly_quarter_add(b10, temp0, temp1, temp2, temp3);*/
+
+		t1 = montgomery_reduce(4613 * f.poly00[i]);
+		t1 = montgomery_reduce(g.poly4.poly10[i] * t1);
+		t2 = montgomery_reduce(4613 * f.poly01[i]);
+		t2 = montgomery_reduce(g.poly11_s[i] * t2);
+		t3 = montgomery_reduce(4613 * f.poly10[i]);
+		t3 = montgomery_reduce(g.poly4.poly00[i] * t3);
+		t4 = montgomery_reduce(4613 * f.poly11[i]);
+		t4 = montgomery_reduce(g.poly01_s[i] * t4);
+		b[4 * i + 1] = (t1 + t2 + t3 + t4) % NTT_Q;
+
+		/*poly_quarter_mul_pointwise(temp0, f00, g01);
+		poly_quarter_mul_pointwise(temp1, f01, g00);
+		poly_quarter_mul_pointwise(temp2, f10, g10);
+		poly_quarter_mul_pointwise(temp3, f11, g11_s);
+		poly_quarter_add(b01, temp0, temp1, temp2, temp3);*/
+
+		t1 = montgomery_reduce(4613 * f.poly00[i]);
+		t1 = montgomery_reduce(g.poly4.poly01[i] * t1);
+		t2 = montgomery_reduce(4613 * f.poly01[i]);
+		t2 = montgomery_reduce(g.poly4.poly00[i] * t2);
+		t3 = montgomery_reduce(4613 * f.poly10[i]);
+		t3 = montgomery_reduce(g.poly4.poly10[i] * t3);
+		t4 = montgomery_reduce(4613 * f.poly11[i]);
+		t4 = montgomery_reduce(g.poly11_s[i] * t4);
+		b[4 * i + 2] = (t1 + t2 + t3 + t4) % NTT_Q;
+
+		/*poly_quarter_mul_pointwise(temp0, f00, g11);
+		poly_quarter_mul_pointwise(temp1, f01, g10);
+		poly_quarter_mul_pointwise(temp2, f10, g01);
+		poly_quarter_mul_pointwise(temp3, f11, g00);
+		poly_quarter_add(b11, temp0, temp1, temp2, temp3);*/
+
+		t1 = montgomery_reduce(4613 * f.poly00[i]);
+		t1 = montgomery_reduce(g.poly4.poly11[i] * t1);
+		t2 = montgomery_reduce(4613 * f.poly01[i]);
+		t2 = montgomery_reduce(g.poly4.poly10[i] * t2);
+		t3 = montgomery_reduce(4613 * f.poly10[i]);
+		t3 = montgomery_reduce(g.poly4.poly01[i] * t3);
+		t4 = montgomery_reduce(4613 * f.poly11[i]);
+		t4 = montgomery_reduce(g.poly4.poly00[i] * t4);
+		b[4 * i + 3] = (t1 + t2 + t3 + t4) % NTT_Q;
+
+	}
+	/*
+	free(f00);
+	free(f01);
+	free(f10);
+	free(f11);*/
+
+}
+
+void poly_inv_ptntt(uint16_t *b)
+{
+	struct ptpoly4 n;
+
+	n.poly00 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	n.poly01 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	n.poly10 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+	n.poly11 = (uint16_t *)malloc(sizeof(uint16_t) * BRLWE_N / 2);
+
+	split_poly(b, n);
+	poly_invntt_64(n.poly00);
+	poly_invntt_64(n.poly10);
+	poly_invntt_64(n.poly01);
+	poly_invntt_64(n.poly11);
+
+	recover_poly(b, n);
+
+	free(n.poly00);
+	free(n.poly01);
+	free(n.poly10);
+	free(n.poly11);
+}
+
+#elif (BRLWE_N == 256)
 
 
 /************************************************************

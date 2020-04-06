@@ -2,7 +2,7 @@
 #define PARAMS_H
 
 //#define RBINLWEENC1 1
-#define RBINLWEENC2 1
+//#define RBINLWEENC2 1
 //#define RBINLWEENC3 1
 //#define RBINLWEENCT 1
 
@@ -17,11 +17,15 @@
 #elif defined(RBINLWEENCT) && (RBINLWEENCT == 1)
 #define BRLWE_N 4
 #define BRLWE_Q 256
-#else
+#elif defined(RBINLWEENC3) && (RBINLWEENC3 == 1)
 #define BRLWE_N 512
 #define BRLWE_Q 256
-#endif
+#else
 
-#define NTT_Q 7681
+#define BRLWE_N 128
+#define BRLWE_Q 7681
+#define NTT_Q 7681 
+
+#endif
 
 #endif

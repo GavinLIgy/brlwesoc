@@ -662,6 +662,8 @@ void poly_inv_ptntt(uint16_t *b)
 	free(n.poly11);
 }
 
+#endif
+
 #elif (BRLWE_N == 256)
 
 

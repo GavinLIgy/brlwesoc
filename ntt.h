@@ -12,7 +12,7 @@ static uint16_t coeff_freeze(uint16_t x);
 
 #if (BRLWE_N == 128)
 
-#if defined(My_NTT) && (My_NTT == 1)
+	#if defined(My_NTT) && (My_NTT == 1)
 /*
 void get_int16_half_polys(uint16_t *arr, uint8_t *poly);
 void bitrev_vector_256(uint16_t* poly);
@@ -23,7 +23,7 @@ void poly_add2(uint16_t *r, const uint16_t *a, const uint16_t *b);
 void poly_sub3(uint16_t *r, const uint16_t *a, const uint16_t *b, uint16_t *c);
 */
 
-#elif defined(PtNTT) && (PtNTT == 1)
+	#elif defined(PtNTT) && (PtNTT == 1)
 
 struct ptpoly4 {
 	uint16_t* poly00;
@@ -58,7 +58,7 @@ void poly_pt_ntt7(uint16_t *p, struct ptpoly7 poly);
 void pt_ntt_bowtiemultiply(uint16_t *b, struct ptpoly4 f, struct ptpoly7 g);
 void poly_inv_ptntt(uint16_t *b);
 
-#endif
+	#endif
 
 #elif (BRLWE_N == 256)
 void get_int16_half_polys(uint16_t *arr, uint8_t *poly);
@@ -74,6 +74,8 @@ void poly_sub3(uint16_t *r, const uint16_t *a, const uint16_t *b, uint16_t *c);
 
 
 #elif (BRLWE_N == 4)
+
+#endif
 
 #endif
 

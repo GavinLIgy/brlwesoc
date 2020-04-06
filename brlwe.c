@@ -495,16 +495,16 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 	uint16_t* f = NULL;
 	uint16_t* g = NULL;
 
-	f = (uint16_t*)malloc(2 * BRLWE_N * sizeof(uint16_t));
+	f = (uint16_t*)m_malloc(2 * BRLWE_N * sizeof(uint16_t));
 
 	get_int16_polys(f, a);
 
 	struct ptpoly4 fpoly;
 
-	fpoly.poly00 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	fpoly.poly01 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	fpoly.poly10 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	fpoly.poly11 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	fpoly.poly00 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	fpoly.poly01 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	fpoly.poly10 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	fpoly.poly11 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
 
 	memset(fpoly.poly00, 0, BRLWE_N / 2 * sizeof(uint16_t));
 	memset(fpoly.poly01, 0, BRLWE_N / 2 * sizeof(uint16_t));
@@ -513,21 +513,21 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 
 	poly_pt_ntt4(f, fpoly);
 
-	free(f);
+	m_free(f);
 
-	g = (uint16_t*)malloc(2 * BRLWE_N * sizeof(uint16_t));
+	g = (uint16_t*)m_malloc(2 * BRLWE_N * sizeof(uint16_t));
 
 	get_int16_polys(g, b);
 
 	struct ptpoly7 gpoly;
 
-	gpoly.poly4.poly00 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	gpoly.poly4.poly01 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	gpoly.poly4.poly10 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	gpoly.poly4.poly11 = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	gpoly.poly01_s = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	gpoly.poly10_s = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
-	gpoly.poly11_s = (uint16_t*)malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	gpoly.poly4.poly00 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	gpoly.poly4.poly01 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	gpoly.poly4.poly10 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	gpoly.poly4.poly11 = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	gpoly.poly01_s = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	gpoly.poly10_s = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
+	gpoly.poly11_s = (uint16_t*)m_malloc(BRLWE_N / 2 * sizeof(uint16_t));
 
 	memset(gpoly.poly4.poly00, 0, BRLWE_N / 2 * sizeof(uint16_t));
 	memset(gpoly.poly4.poly01, 0, BRLWE_N / 2 * sizeof(uint16_t));
@@ -540,17 +540,17 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 	poly_pt_ntt7(g, gpoly);
 	pt_ntt_bowtiemultiply(g, fpoly, gpoly);
 	
-	free(fpoly.poly00);
-	free(fpoly.poly01);
-	free(fpoly.poly10);
-	free(fpoly.poly11);
-	free(gpoly.poly4.poly00);
-	free(gpoly.poly4.poly01);
-	free(gpoly.poly4.poly10);
-	free(gpoly.poly4.poly11);
-	free(gpoly.poly01_s);
-	free(gpoly.poly10_s);
-	free(gpoly.poly11_s);
+	m_free(fpoly.poly00);
+	m_free(fpoly.poly01);
+	m_free(fpoly.poly10);
+	m_free(fpoly.poly11);
+	m_free(gpoly.poly4.poly00);
+	m_free(gpoly.poly4.poly01);
+	m_free(gpoly.poly4.poly10);
+	m_free(gpoly.poly4.poly11);
+	m_free(gpoly.poly01_s);
+	m_free(gpoly.poly10_s);
+	m_free(gpoly.poly11_s);
 
 	poly_inv_ptntt(g);
 

@@ -327,13 +327,13 @@ BRLWE_Ring_polynomials BRLWE_init_hex(BRLWE_Ring_polynomials poly, uint16_t* str
 	
 	if (rev == 1) {
 		for (int i = 0; i < BRLWE_N; i++)
-			//poly[i] = (uint16_t)(str[BRLWE_N - 1 - i] % BRLWE_Q );
-			poly[i] = montgomery_reduce(str[BRLWE_N - 1 - i]);
+			poly[i] = (uint16_t)(str[BRLWE_N - 1 - i] % BRLWE_Q );
+			//poly[i] = montgomery_reduce(str[BRLWE_N - 1 - i]);
 	}
 	else {
 		for (int i = 0; i < BRLWE_N; i++)
-			//poly[i] = (uint16_t)(str[i] % BRLWE_Q );
-			poly[i] = montgomery_reduce(str[i] % BRLWE_Q );
+			poly[i] = (uint16_t)(str[i] % BRLWE_Q );
+			//poly[i] = montgomery_reduce(str[i]);
 	}; 
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
@@ -375,8 +375,8 @@ BRLWE_Ring_polynomials2 BRLWE_Key_Gen(const BRLWE_Ring_polynomials a, BRLWE_Ring
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			//pk[(i<<2)+j] = (uint16_t)((uint16_t)str[j] - pk[(i<<2)+j] ) % BRLWE_Q ;
-			pk[(i<<2)+j] = montgomery_reduce((uint16_t)str[j] - pk[(i<<2)+j] );
+			pk[(i<<2)+j] = (uint16_t)((uint16_t)str[j] - pk[(i<<2)+j] ) % BRLWE_Q ;
+			//pk[(i<<2)+j] = montgomery_reduce((uint16_t)str[j] - pk[(i<<2)+j] );
 		};
 	};
 	m_free(str);
@@ -415,8 +415,8 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			//c1[(i<<2)+j] = ( c1[(i<<2)+j] + (uint16_t)str[j] ) % BRLWE_Q;
-			c1[(i<<2)+j] = montgomery_reduce( c1[(i<<2)+j] + (uint16_t)str[j] );
+			c1[(i<<2)+j] = ( c1[(i<<2)+j] + (uint16_t)str[j] ) % BRLWE_Q;
+			//c1[(i<<2)+j] = montgomery_reduce( c1[(i<<2)+j] + (uint16_t)str[j] );
 			//   c1     =      c1       +          e2    ;
 		};
 	};
@@ -424,13 +424,13 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
-			//c2[(i<<2)+j] = ( c2[(i<<2)+j] + (uint16_t)str[j] ) % BRLWE_Q ;// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
-			c2[(i<<2)+j] = montgomery_reduce( c2[(i<<2)+j] + (uint16_t)str[j] );
+			c2[(i<<2)+j] = ( c2[(i<<2)+j] + (uint16_t)str[j] ) % BRLWE_Q ;// + (uint8_t)(BRLWE_Q / 2) * (*(m+4*i+j)) + BRLWE_Q + (BRLWE_N / 2) - 1 - (4*i+j);
+			//c2[(i<<2)+j] = montgomery_reduce( c2[(i<<2)+j] + (uint16_t)str[j] );
 			if (m[(i<<2)+j] != 0)
-				//c2[(i<<2)+j] = ( c2[(i<<2)+j] + (uint16_t)(BRLWE_Q >> 1) ) % BRLWE_Q;
-				c2[(i<<2)+j] = montgomery_reduce( c2[(i<<2)+j] + (uint16_t)(BRLWE_Q >> 1) );
-			//c2[(i<<2)+j] = ( c2[(i<<2)+j] + BRLWE_Q + (BRLWE_N >> 1) - 1 - ( i << 2 ) - j ) % BRLWE_Q;
-			c2[(i<<2)+j] = montgomery_reduce( c2[(i<<2)+j] + BRLWE_Q + (BRLWE_N >> 1) - 1 - ( i << 2 ) - j );
+				c2[(i<<2)+j] = ( c2[(i<<2)+j] + (uint16_t)(BRLWE_Q >> 1) ) % BRLWE_Q;
+				//c2[(i<<2)+j] = montgomery_reduce( c2[(i<<2)+j] + (uint16_t)(BRLWE_Q >> 1) );
+			c2[(i<<2)+j] = ( c2[(i<<2)+j] + BRLWE_Q + (BRLWE_N >> 1) - 1 - ( i << 2 ) - j ) % BRLWE_Q;
+			//c2[(i<<2)+j] = montgomery_reduce( c2[(i<<2)+j] + BRLWE_Q + (BRLWE_N >> 1) - 1 - ( i << 2 ) - j );
 			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};
@@ -473,8 +473,8 @@ BRLWE_Ring_polynomials Ring_add(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++)
-		//ans[i] = (a[i] + b[i]) % BRLWE_Q;
-		ans[i] = montgomery_reduce(a[i] + b[i]);
+		ans[i] = (a[i] + b[i]) % BRLWE_Q;
+		//ans[i] = montgomery_reduce(a[i] + b[i]);
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	print("\t| ");print_dec(cycles_now - cycles_begin);//print("*");
 	// print("\n Cycles Number for Ring_add = ");print_dec(cycles_now - cycles_begin);
@@ -487,8 +487,8 @@ BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++) 
-		ans[i] = montgomery_reduce(a[i] + 4 * BRLWE_Q - b[i]);
-		//ans[i] = (a[i] + 4 * BRLWE_Q - b[i]) % BRLWE_Q;
+		//ans[i] = montgomery_reduce(a[i] + 4 * BRLWE_Q - b[i]);
+		ans[i] = (a[i] + 4 * BRLWE_Q - b[i]) % BRLWE_Q;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	print("\t| ");print_dec(cycles_now - cycles_begin);//print("*");
 	// print("\n Cycles Number for Ring_sub = ");print_dec(cycles_now - cycles_begin);
@@ -566,13 +566,13 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 	for (int i = 0; i < BRLWE_N * 2; i++) {
 		if (i < BRLWE_N) {
 			tmp = (uint32_t)g[i];
-			ans[i] = montgomery_reduce(tmp);
-			//ans[i] = (uint16_t)(tmp % BRLWE_Q);
+			//ans[i] = montgomery_reduce(tmp);
+			ans[i] = (uint16_t)(tmp % BRLWE_Q);
 		}
 		else {
 			tmp = (uint32_t)ans [i - BRLWE_N] + 4 * BRLWE_Q - (uint32_t)g[i];
-			ans[i - BRLWE_N] = montgomery_reduce(tmp);
-			//ans[i - BRLWE_N] = (uint16_t)(tmp % BRLWE_Q);
+			//ans[i - BRLWE_N] = montgomery_reduce(tmp);
+			ans[i - BRLWE_N] = (uint16_t)(tmp % BRLWE_Q);
 		}
 	}
 	

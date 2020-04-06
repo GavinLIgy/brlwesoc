@@ -62,7 +62,7 @@ static uint16_t coeff_freeze(uint16_t x)
 * Description: Contains powers of 64th root of unity in Montgomery
 *              domain with R=2^18 in bit-reversed order
 ************************************************************/
-static uint16_t omegas_bitrev_montgomery_64[32] = { \
+static const uint16_t omegas_bitrev_montgomery_64[32] = { \
 990, 254, 6819, 2634, 2143, 6586, 7103, 3281,\
 6086, 3858, 5656, 877, 6362, 484, 4345, 5382,\
 1581, 2547, 5932, 5184, 2468, 7678, 3639, 5775,\
@@ -74,7 +74,7 @@ static uint16_t omegas_bitrev_montgomery_64[32] = { \
 * Description: Contains inverses of powers of 64th root of unity
 *              in Montgomery domain with R=2^18 in bit-reversed order
 ************************************************************/
-static uint16_t omegas_inv_bitrev_montgomery_64[32] = { \
+static const uint16_t omegas_inv_bitrev_montgomery_64[32] = { \
 990, 7427, 5047, 862, 4400, 578, 1095, 5538,\
 2299, 3336, 7197, 1319, 6804, 2025, 3823, 1595,\
 343, 7143, 6396, 7390, 671, 3583, 263, 1267,\
@@ -86,7 +86,7 @@ static uint16_t omegas_inv_bitrev_montgomery_64[32] = { \
 * Description: Contains powers of 64th root of -1 in Montgomery
 *              domain with R=2^18 in bit-reversed order
 ************************************************************/
-static uint16_t psis_bitrev_montgomery_64[64] = { \
+static const uint16_t psis_bitrev_montgomery_64[64] = { \
 990, 254, 6819, 2634, 2143, 6586, 7103, 3281,\
 6086, 3858, 5656, 877, 6362, 484, 4345, 5382,\
 1581, 2547, 5932, 5184, 2468, 7678, 3639, 5775,\
@@ -103,7 +103,7 @@ static uint16_t psis_bitrev_montgomery_64[64] = { \
 * Description: Contains inverses of powers of 64th  root of -1
 *              divided by n in Montgomery domain with R=2^18
 ************************************************************/
-static uint16_t psis_inv_montgomery_64[64] = { \
+static const uint16_t psis_inv_montgomery_64[64] = { \
 4096, 4203, 4926, 5576, 636, 7456, 1710, 2366,\
 1989, 3318, 3971, 5153, 5387, 6681, 7600, 3688, \
 1159, 1945, 580, 3273, 4313, 4090, 7321, 2736, \
@@ -119,7 +119,7 @@ static uint16_t psis_inv_montgomery_64[64] = { \
 * Description: Contains bit-reversed 10-bit indices to be used to re-order
 *              polynomials before number theoratic transform
 ************************************************************/
-static uint16_t bitrev_table_64[64] = { \
+static const uint16_t bitrev_table_64[64] = { \
 0,	32,	16,	48,	8,	40,	24,	56,	4,	36,	20,	52,\
 12,	44,	28,	60,	2,	34,	18,	50,	10,	42,	26,	58,\
 6,	38,	22,	54,	14,	46,	30,	62,	1,	33,	17,	49,\
@@ -980,7 +980,7 @@ void poly_sub3(uint16_t *r, const uint16_t *a, const uint16_t *b, uint16_t *c)
 
 #elif (BRLWE_N == 4)
 
-static uint16_t bitrev_table_4[4] = {0,2,1,3};
+static const uint16_t bitrev_table_4[4] = {0,2,1,3};
 
 /*************************************************
 * Name:        bitrev_vector

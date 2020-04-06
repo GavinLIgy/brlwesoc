@@ -395,10 +395,10 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	e1 = m_malloc(BRLWE_N);
 	
 	e1 = BRLWE_init_bin_sampling(e1);
-	
+	print("\n Check point 1 \n ");
 	c1 = Ring_mul(a, e1, c1);//c1 = a*e1
 	c2 = Ring_mul(pk, e1, c2);//c2 = pk*e1
-	
+	print("\n Check point 2 \n ");
 	m_free(e1);
 	
 	int i = 0;
@@ -410,7 +410,7 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);//random number buffer: uint8_t str [4]
-	
+	print("\n Check point 3 \n ");
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
@@ -430,7 +430,7 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};
-	
+	print("\n Check point 4 \n ");
 	m_free(str);
 	
 	return cryptom;
@@ -571,7 +571,7 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	// print("\t| ");print_dec(cycles_now - cycles_begin);//print("*");
-	print("\n Cycles Number for Simple_Ring_mul_NTT = ");print_dec(cycles_now - cycles_begin);
+	print("\n Cycles Number for Simple_Ring_mul_PtNTT = ");print_dec(cycles_now - cycles_begin);
 	return ans;
 };
 

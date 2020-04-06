@@ -78,5 +78,3 @@ void poly_sub3(uint16_t *r, const uint16_t *a, const uint16_t *b, uint16_t *c);
 #endif
 
 #endif
-
-#endif

@@ -299,7 +299,7 @@ void print(const char *p)
 		putchar(*(p++));
 }
 
-void print_hex(uint8_t v, int digits)
+void print_hex(uint16_t v, int digits)
 {
 	for (int i = 7; i >= 0; i--) {
 		char c = "0123456789abcdef"[(v >> (4 * i)) & 15];
@@ -309,12 +309,12 @@ void print_hex(uint8_t v, int digits)
 	}
 }
 
-static void phex(uint8_t* str)
+static void phex(uint16_t* str)
 {
 	int i, j;
 	for (i = 0, j = 1; i < BRLWE_N; ++i, ++j) {
-		print_hex(str[i],4);//updated, original:printf("%.2x", str[i]);
-		
+		print_hex(str[i] & 255,2);//updated, original:printf("%.2x", str[i]);
+		print_hex(str[i] >> 8,2);
 		if (j == 16) {
 			print("\r\n");
 			j = 0;

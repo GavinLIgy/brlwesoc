@@ -48,7 +48,6 @@ void poly_add(uint16_t *r, const uint16_t *a, const uint16_t *b);
 void poly_quarter_add(uint16_t *r, const uint16_t *a, const uint16_t *b, const uint16_t *c, const uint16_t *d);
 void poly_sub(uint16_t *r, const uint16_t *a, const uint16_t *b);
 int poly_equal(uint16_t *f, uint16_t *g);
-int print_poly(uint16_t *p);
 int split_poly(uint16_t *f, struct ptpoly4 poly);
 int shift_poly(uint16_t *f, uint16_t *g);
 int recover_poly(uint16_t *f, struct ptpoly4 poly);

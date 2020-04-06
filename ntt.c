@@ -324,24 +324,6 @@ int poly_equal(uint16_t *f, uint16_t *g)
 	}
 }
 /*************************************************
-* Name:        print_poly
-*
-* Description: Print the coefficents of a polynomial
-*              Input is a polynomial
-*
-* Arguments:   - poly *p: pointer to input polynomial
-**************************************************/
-int print_poly(uint16_t *p)
-{
-	int i;
-	for (i = 0; i < 256; i++)
-	{
-		printf("%d,", p[i]);
-	}
-	printf("\n");
-	return 1;
-}
-/*************************************************
 * Name:        split_poly
 *
 * Description: Split the poly (polynomial with N coefficients) into four poly_quarter (polynomial with N/4 coefficients)

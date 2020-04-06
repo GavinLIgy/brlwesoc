@@ -291,10 +291,10 @@ BRLWE_Ring_polynomials BRLWE_init_bin_sampling(BRLWE_Ring_polynomials poly) {
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);
-	for (i = 0; i < (BRLWE_N>>2) ; i++) {
+	for (i = 0; i < (BRLWE_N>>1) ; i++) {
 		RNG_rand(str);
-		for (j = 0; j < 4 ; j++){
-			poly[(i<<2)+j] = (uint16_t)str[j];
+		for (j = 0; j < 2; j++){
+			poly[(i<<1)+j] = (uint16_t)str[j];
 		};
 	};
 	m_free(str);
@@ -395,10 +395,9 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	e1 = m_malloc(BRLWE_N * 2);
 	
 	e1 = BRLWE_init_bin_sampling(e1);
-	print("\n Check point 1 \n ");
 	c1 = Ring_mul(a, e1, c1);//c1 = a*e1
 	c2 = Ring_mul(pk, e1, c2);//c2 = pk*e1
-	print("\n Check point 2 \n ");
+
 	m_free(e1);
 	
 	int i = 0;
@@ -410,7 +409,6 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	
 	uint8_t* str = NULL;
 	str = m_malloc(4);//random number buffer: uint8_t str [4]
-	print("\n Check point 3 \n ");
 	for (i = 0; i < BRLWE_N>>2 ; i++) {
 		RNG_rand(str);
 		for (j = 0; j < 4 ; j++){
@@ -430,7 +428,6 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 			//c2=c2+e3+m_wave;                                                    ;
 		};
 	};
-	print("\n Check point 4 \n ");
 	m_free(str);
 	
 	return cryptom;
@@ -483,7 +480,7 @@ BRLWE_Ring_polynomials Ring_sub(const BRLWE_Ring_polynomials a, const BRLWE_Ring
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	int i = 0;
 	for (i = 0; i < BRLWE_N; i++) 
-		ans[i] = (a[i] + BRLWE_Q - b[i]) % BRLWE_Q;
+		ans[i] = (a[i] + 4 * BRLWE_Q - b[i]) % BRLWE_Q;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	// print("\t| ");print_dec(cycles_now - cycles_begin);//print("*");
 	print("\n Cycles Number for Ring_sub = ");print_dec(cycles_now - cycles_begin);
@@ -515,9 +512,7 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 	memset(fpoly.poly11, 0, BRLWE_N / 2 * sizeof(uint16_t));
 
 	poly_pt_ntt4(f, fpoly);
-	
-	print("\n Check point 1 in Simple_Ring_mul_PtNTT : \n");
-	mem_print();
+
 	free(f);
 
 	g = (uint16_t*)malloc(2 * BRLWE_N * sizeof(uint16_t));
@@ -545,8 +540,6 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 	poly_pt_ntt7(g, gpoly);
 	pt_ntt_bowtiemultiply(g, fpoly, gpoly);
 	
-	print("\n Check point 2 in Simple_Ring_mul_PtNTT : \n");
-	mem_print();
 	free(fpoly.poly00);
 	free(fpoly.poly01);
 	free(fpoly.poly10);

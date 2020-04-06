@@ -652,7 +652,7 @@ void main()
 	uint32_t cycles_now;
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	setseed32(cycles_now);
-	
+	print("\n RNG Seed =");print_Hex_32(cycles_now);
 	
 	uint32_t count_1 = 0;
 	uint32_t count_0 = 0;
@@ -821,14 +821,14 @@ void main()
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N * 2) == 0) 
-		print("\t| success!\n");
+		print("\t| success!");
 		// print("\n \ncheck: Decryption success!\n");
 	else {
 		// print("\n \ncheck: Decryption failed!\n");
 		count = counterr(test_2, recoverm);
 		// print("The error count is "); print_dec(count);
 		// print(" of N :"); print_dec(BRLWE_N);
-		print("\t| failed!\n");print("\t ");print_dec(count);
+		print("\t| failed! Number of Error bit:");print("\t ");print_dec(count);
 		
 	}
 	//mem_print();

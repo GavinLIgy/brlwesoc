@@ -128,9 +128,33 @@ extern uint32_t sram;
 	#define BRLWE_Q 256
 	uint8_t test_1[4] = { (uint8_t)30, (uint8_t)20, (uint8_t)150 , (uint8_t)80 };
 	uint8_t test_2[4] = { (uint8_t)1, (uint8_t)0, (uint8_t)1, (uint8_t)1 };
-#else
+#elif defined(RBINLWEENC3) && (RBINLWEENC3 == 1)
 	#define BRLWE_N 512
 	#define BRLWE_Q 256
+	
+#else
+	
+	static const uint16_t test_1[BRLWE_N] = {\
+	2377, 2546, 7558, 2766, 4666, 5515, 6558, 6060, 5746, 3769, 5579, 3431, 6205, 2711, 408, 3312,\
+	2934, 302, 2388, 7099, 144, 2000, 6475, 5012, 889, 6691, 1092, 2505, 3307, 7020, 3181, 4996,\
+	2822, 5532, 6752, 1410, 7314, 2202, 164, 4786, 6473, 6232, 5122, 2323, 4720, 2971, 3486, 6980,\
+	2986, 3043, 5844, 1716, 2126, 81, 1346, 2573, 6034, 408, 3993, 6994, 2819, 2329, 3928, 334,\
+	457, 5267, 6290, 6158, 2464, 2322, 5477, 7481, 3194, 4418, 4281, 5374, 2907, 5980, 2274, 7065,\
+	5885, 5878, 3600, 7221, 388, 2581, 7166, 6990, 2073, 1113, 4813, 2813, 4491, 7639, 6530, 6561,\
+	7355, 6390, 6, 1319, 2139, 1275, 5063, 6137, 5281, 5002, 7256, 5994, 5353, 6817, 3032, 3236,\
+	4360, 204, 776, 7093, 6374, 1594, 5247, 4951, 5395, 2933, 5264, 3146, 3763, 6119, 4126, 6284};
+	
+	static const uint16_t test_2[BRLWE_N] = { \
+	 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,\
+	 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,\
+	 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1,\
+	 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0,\
+	 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0,\
+	 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0,\
+	 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0,\
+	 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0};
+
+
 #endif
 
 //--------------------------------------------------------------------------
@@ -289,7 +313,7 @@ static void phex(uint8_t* str)
 {
 	int i, j;
 	for (i = 0, j = 1; i < BRLWE_N; ++i, ++j) {
-		print_hex(str[i],2);//updated, original:printf("%.2x", str[i]);
+		print_hex(str[i],4);//updated, original:printf("%.2x", str[i]);
 		
 		if (j == 16) {
 			print("\r\n");
@@ -728,7 +752,7 @@ void main()
 	uint32_t cycles_begin;
 	
 	BRLWE_Ring_polynomials2 key = NULL;
-	key = m_malloc(BRLWE_N * 2);
+	key = m_malloc(BRLWE_N * 2 * 2);
 	// print("\n mem_print() 1 \n");
 	// mem_print();
 	// print("\n \nKey Generation:\n");
@@ -756,7 +780,7 @@ void main()
 	// phex(test_2);
 
 	BRLWE_Ring_polynomials2 cryptom = NULL;
-	cryptom = m_malloc(BRLWE_N * 2);
+	cryptom = m_malloc(BRLWE_N * 2 * 2);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
@@ -780,8 +804,8 @@ void main()
 	// phex(cryptom);
 	// phex(cryptom + BRLWE_N);
 	
-	uint8_t* recoverm = NULL;
-	recoverm = m_malloc(BRLWE_N);
+	uint16_t* recoverm = NULL;
+	recoverm = m_malloc(BRLWE_N * 2);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
@@ -796,7 +820,7 @@ void main()
 	// phex(recoverm);
 
 	int count = 0;
-	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
+	if (memcmp(test_2, recoverm, BRLWE_N * 2) == 0) 
 		print("\t| success!");
 		//print("\n \ncheck: Decryption success!\n");
 	else {

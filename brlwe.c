@@ -392,7 +392,7 @@ BRLWE_Ring_polynomials2 BRLWE_Encry(const BRLWE_Ring_polynomials a, const BRLWE_
 	BRLWE_Ring_polynomials c2 = cryptom + BRLWE_N;//crypto message 2
 	BRLWE_Ring_polynomials e1 = NULL;
 	
-	e1 = m_malloc(BRLWE_N);
+	e1 = m_malloc(BRLWE_N * 2);
 	
 	e1 = BRLWE_init_bin_sampling(e1);
 	print("\n Check point 1 \n ");
@@ -515,7 +515,9 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 	memset(fpoly.poly11, 0, BRLWE_N / 2 * sizeof(uint16_t));
 
 	poly_pt_ntt4(f, fpoly);
-
+	
+	print("\n Check point 1 in Simple_Ring_mul_PtNTT : \n");
+	mem_print();
 	free(f);
 
 	g = (uint16_t*)malloc(2 * BRLWE_N * sizeof(uint16_t));
@@ -542,7 +544,9 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 
 	poly_pt_ntt7(g, gpoly);
 	pt_ntt_bowtiemultiply(g, fpoly, gpoly);
-
+	
+	print("\n Check point 2 in Simple_Ring_mul_PtNTT : \n");
+	mem_print();
 	free(fpoly.poly00);
 	free(fpoly.poly01);
 	free(fpoly.poly10);

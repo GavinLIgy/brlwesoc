@@ -566,6 +566,8 @@ BRLWE_Ring_polynomials Simple_Ring_mul_PtNTT(const BRLWE_Ring_polynomials a, con
 		}
 	}
 	
+	m_free(g);
+	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	print("\t| ");print_dec(cycles_now - cycles_begin);//print("*");
 	// print("\n Cycles Number for Simple_Ring_mul_PtNTT = ");print_dec(cycles_now - cycles_begin);

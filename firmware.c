@@ -821,21 +821,21 @@ void main()
 
 	int count = 0;
 	if (memcmp(test_2, recoverm, BRLWE_N * 2) == 0) 
-		print("\t| success!");
+		print("\t| success!\n");
 		// print("\n \ncheck: Decryption success!\n");
 	else {
 		// print("\n \ncheck: Decryption failed!\n");
 		count = counterr(test_2, recoverm);
 		// print("The error count is "); print_dec(count);
 		// print(" of N :"); print_dec(BRLWE_N);
-		print("\t| failed!");print("\t ");print_dec(count);
+		print("\t| failed!\n");print("\t ");print_dec(count);
 		
 	}
 	//mem_print();
 	m_free(key);
 	m_free(cryptom);
 	m_free(recoverm);
-	//mem_print();
+	mem_print();
 	
 	}
 	//mem_print();

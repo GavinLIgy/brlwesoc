@@ -686,7 +686,7 @@ void main()
 	
 	if(count_0 > count_1) difference = count_0 - count_1;
 	else difference = count_1 - count_0;
-	}while(differnece > 50);
+	}while(difference > 50);
 	
 	print("\nEnd of RNG testing");
 	

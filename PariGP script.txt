@@ -1,0 +1,18 @@
+brv=[0,	32,	16,	48,	8,	40,	24,	56,	4,	36,	20,	52,\
+12,	44,	28,	60,	2,	34,	18,	50,	10,	42,	26,	58,\
+6,	38,	22,	54,	14,	46,	30,	62,	1,	33,	17,	49,\
+9,	41,	25,	57,	5,	37,	21,	53,	13,	45,	29,	61,\
+3,	35,	19,	51,	11,	43,	27,	59,	7,	39,	23,	55,\
+15,	47,	31,	63];
+
+q = 7681;
+n = 64;
+mont = Mod(2^18,q);
+
+g=0; for(i=2,q-1,if(znorder(Mod(i,q)) == 2*n, g=Mod(i,q); break))
+
+zetas = lift(vector(n, i, g^(brv[i])*mont))
+omegas_bitrev_montgomery_64 = lift(vector(n/2, i, g^(brv[i])*mont))
+psis_bitrev_montgomery_64 = lift(vector(n, i, g^(brv[i])*mont))
+omegas_inv_bitrev_montgomery_64 = lift(vector(n/2, i, (g^2)^(-brv[2*(i-1)+1])*mont))
+psis_inv_montgomery_64 = lift(vector(n, i, g^(-(i-1))/n*mont))

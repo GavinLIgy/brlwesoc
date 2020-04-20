@@ -651,7 +651,7 @@ void main()
 	//RNG Testing
 	uint32_t cycles_now;
 	uint32_t difference;
-	do{
+	// do{
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
 	setseed32(cycles_now);
 	print("\n RNG Seed =");print_Hex_32(cycles_now);
@@ -684,9 +684,9 @@ void main()
 	print("Count 0 = ");print_dec(count_0);
 	print("\nCount 1 = ");print_dec(count_1);
 	
-	if(count_0 > count_1) difference = count_0 - count_1;
-	else difference = count_1 - count_0;
-	}while(difference > 50);
+	// if(count_0 > count_1) difference = count_0 - count_1;
+	// else difference = count_1 - count_0;
+	// }while(difference > 50);
 	
 	print("\nEnd of RNG testing");
 	

@@ -7,6 +7,7 @@
 //#define RBINLWEENCT 1
 
 //#define hw_mul 1
+#define NTT_Q 7681 
 
 #if defined(RBINLWEENC1) && (RBINLWEENC1 == 1)
 	#define BRLWE_N 256 // n = 256 : polynomials length

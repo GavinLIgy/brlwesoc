@@ -118,6 +118,10 @@ clean:
 	rm -f icebreaker.json icebreaker.log icebreaker.asc icebreaker.rpt icebreaker.bin
 	rm -f icebreaker_syn.v icebreaker_syn_tb.vvp icebreaker_tb.vvp
 
+cleanfw:
+	rm -f hx8kdemo_fw.elf hx8kdemo_fw.hex hx8kdemo_fw.bin cmos.log
+	rm -f icebreaker_fw.elf icebreaker_fw.hex icebreaker_fw.bin
+
 .PHONY: spiflash_tb clean
 .PHONY: hx8kprog hx8kprog_fw hx8ksim hx8ksynsim
 .PHONY: icebprog icebprog_fw icebsim icebsynsim

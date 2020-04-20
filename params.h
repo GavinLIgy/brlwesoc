@@ -8,6 +8,8 @@
 
 //#define hw_mul 1
 
+#define NTT_Q 7681 
+
 #if defined(RBINLWEENC1) && (RBINLWEENC1 == 1)
 	#define BRLWE_N 256 // n = 256 : polynomials length
 	#define BRLWE_Q 128 // q = 128 : log2(q) = coeffidences data length; causing 1 bit of each byte wasted when q = 128
@@ -24,7 +26,6 @@
 
 	#define BRLWE_N 128
 	#define BRLWE_Q 7681
-	#define NTT_Q 7681 
 
 #endif
 

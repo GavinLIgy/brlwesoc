@@ -276,7 +276,7 @@ void enable_flash_crm()
 
 //count the total number of error occur in the system
 //return the error times, length(str1)=length(str2)=BRLWE_N;
-static int counterr(uint8_t* str1, uint8_t* str2) {
+static int counterr(uint16_t* str1, uint16_t* str2) {
 	int i;
 	int count = 0;
 	for (i = 0; i < BRLWE_N; ++i) {
@@ -299,7 +299,7 @@ void print(const char *p)
 		putchar(*(p++));
 }
 
-void print_hex(uint8_t v, int digits)
+void print_hex(uint16_t v, int digits)
 {
 	for (int i = 7; i >= 0; i--) {
 		char c = "0123456789abcdef"[(v >> (4 * i)) & 15];
@@ -309,13 +309,13 @@ void print_hex(uint8_t v, int digits)
 	}
 }
 
-static void phex(uint8_t* str)
+static void phex(uint16_t* str)
 {
 	int i, j;
 	for (i = 0, j = 1; i < BRLWE_N; ++i, ++j) {
-		//print_hex(str[i] & 255,2);//updated, original:printf("%.2x", str[i]);
-		//print_hex(str[i] >> 8,2);
-		print_hex(str[i],2);
+		print_hex(str[i] & 255,2);//updated, original:printf("%.2x", str[i]);
+		print_hex(str[i] >> 8,2);
+		//print_hex(str[i],2);
 		if (j == 16) {
 			print("\r\n");
 			j = 0;
@@ -762,7 +762,7 @@ void main()
 	uint32_t cycles_begin;
 	
 	BRLWE_Ring_polynomials2 key = NULL;
-	key = m_malloc(BRLWE_N * 2);
+	key = m_malloc(BRLWE_N * 2 * 2);
 	// print("\n mem_print() 1 \n");
 	// mem_print();
 	print("\n \nKey Generation:\n");
@@ -790,7 +790,7 @@ void main()
 	phex(test_2);
 
 	BRLWE_Ring_polynomials2 cryptom = NULL;
-	cryptom = m_malloc(BRLWE_N * 2);
+	cryptom = m_malloc(BRLWE_N * 2 * 2);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
@@ -814,8 +814,8 @@ void main()
 	phex(cryptom);
 	phex(cryptom + BRLWE_N);
 	
-	uint8_t* recoverm = NULL;
-	recoverm = m_malloc(BRLWE_N);
+	uint16_t* recoverm = NULL;
+	recoverm = m_malloc(BRLWE_N * 2);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);

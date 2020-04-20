@@ -761,7 +761,7 @@ void main()
 	uint32_t cycles_begin;
 	
 	BRLWE_Ring_polynomials2 key = NULL;
-	key = m_malloc(BRLWE_N * 2 * 2);
+	key = m_malloc(BRLWE_N * 2);
 	// print("\n mem_print() 1 \n");
 	// mem_print();
 	print("\n \nKey Generation:\n");
@@ -789,7 +789,7 @@ void main()
 	phex(test_2);
 
 	BRLWE_Ring_polynomials2 cryptom = NULL;
-	cryptom = m_malloc(BRLWE_N * 2 * 2);
+	cryptom = m_malloc(BRLWE_N * 2);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	cryptom = BRLWE_Encry( (BRLWE_Ring_polynomials) test_1, (BRLWE_Ring_polynomials) key, test_2, cryptom);
@@ -814,7 +814,7 @@ void main()
 	phex(cryptom + BRLWE_N);
 	
 	uint16_t* recoverm = NULL;
-	recoverm = m_malloc(BRLWE_N * 2);
+	recoverm = m_malloc(BRLWE_N);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
 	recoverm = BRLWE_Decry(cryptom, (BRLWE_Ring_polynomials)(key + BRLWE_N), recoverm);
@@ -829,7 +829,7 @@ void main()
 	phex(recoverm);
 
 	int count = 0;
-	if (memcmp(test_2, recoverm, BRLWE_N * 2) == 0) 
+	if (memcmp(test_2, recoverm, BRLWE_N) == 0) 
 		// print("\t| success!");
 		print("\n \ncheck: Decryption success!\n");
 	else {

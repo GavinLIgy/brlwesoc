@@ -299,7 +299,7 @@ void print(const char *p)
 		putchar(*(p++));
 }
 
-void print_hex(uint16_t v, int digits)
+void print_hex(uint8_t v, int digits)
 {
 	for (int i = 7; i >= 0; i--) {
 		char c = "0123456789abcdef"[(v >> (4 * i)) & 15];
@@ -578,7 +578,8 @@ void getrandom_binary(uint8_t* str)
 			tmp = reg_rng_data;
 		}// if RNG is not ready(tmp=0xffff_ffff), wait.
 	for (i = 0; i < 4; i++)	{
-			str[i]=(uint8_t)((tmp >> 24) & 1);
+			//str[i]=(uint8_t)((tmp >> 24) & 1);
+			str[i]=(uint8_t)(tmp/0x10000000)%2;
 			tmp = tmp << 8;
 		}//for uint32_t hex to uint8_t[4]
 	/*
@@ -813,7 +814,7 @@ void main()
 	phex(cryptom);
 	phex(cryptom + BRLWE_N);
 	
-	uint16_t* recoverm = NULL;
+	uint8_t* recoverm = NULL;
 	recoverm = m_malloc(BRLWE_N);
 	
 	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));

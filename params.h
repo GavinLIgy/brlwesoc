@@ -2,7 +2,7 @@
 #define PARAMS_H
 
 //#define RBINLWEENC1 1
-//#define RBINLWEENC2 1
+#define RBINLWEENC2 1
 //#define RBINLWEENC3 1
 //#define RBINLWEENCT 1
 
